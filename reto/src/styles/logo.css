@@ -1,0 +1,19 @@
+/* src/styles/logo.css */
+
+/* Estilo para el focus morado en inputs */
+.input-purple-focus:focus {
+    border-color: rgb(168, 4, 192) !important;
+    box-shadow: 0 0 0 0.25rem rgba(168, 4, 192, 0.25) !important;
+    outline: 0;
+    transition: all 0.3s ease;
+  }
+  
+  /* Efecto hover morado */
+  .input-purple-focus:hover {
+    border-color: rgba(168, 4, 192, 0.8) !important;
+  }
+  
+  /* Estilo activo al hacer click */
+  .input-purple-focus:active {
+    border-color: rgb(140, 0, 160) !important;
+  }
