@@ -6,7 +6,15 @@ function Sidebar() {
   return (
     <div
       className="text-white d-flex flex-column align-items-center pt-4"
-      style={{ width: "250px", height: "100vh", backgroundColor: "#000000" }}
+      style={{
+        width: "250px",
+        height: "100vh",
+        backgroundColor: "#000000",
+        position: "fixed", // 👈 ESTA LÍNEA ES CLAVE
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+      }}
     >
       {/* ✅ Logo sigue centrado */}
       <img

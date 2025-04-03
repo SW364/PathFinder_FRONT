@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import { UserProvider } from "./helpers/UserContext";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./Pages/Dashboard";
 import CareerPath from "./Pages/CareerPath";
@@ -11,9 +12,19 @@ import Profile from "./Pages/Profile";
 function App() {
   return (
     <Router>
-      <div className="d-flex vh-100">
+      <UserProvider>
         <Sidebar />
-        <div className="flex-grow-1 p-4">
+        <div
+          className="flex-grow-1"
+          style={{
+            minHeight: "100vh",
+            overflowY: "auto",
+            backgroundColor: "#ffffff",
+            padding: "2rem",
+            marginLeft: "250px",
+            boxSizing: "border-box",
+          }}
+        >
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/career" element={<CareerPath />} />
@@ -22,7 +33,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
-      </div>
+      </UserProvider>
     </Router>
   );
 }
