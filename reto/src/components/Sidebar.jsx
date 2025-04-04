@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom"; // 👈 Importamos Link
+import { Link } from "react-router-dom";
+import "../styles/Sidebar.css";
 
 function Sidebar() {
   return (
@@ -10,13 +11,12 @@ function Sidebar() {
         width: "250px",
         height: "100vh",
         backgroundColor: "#000000",
-        position: "fixed", // 👈 ESTA LÍNEA ES CLAVE
+        position: "fixed",
         top: 0,
         left: 0,
         zIndex: 1000,
       }}
     >
-      {/* ✅ Logo sigue centrado */}
       <img
         src="/Img/Logo1.png"
         alt="accenture logo"
@@ -30,42 +30,29 @@ function Sidebar() {
         }}
       />
 
-      {/* ✅ Menú alineado a la izquierda pero con padding izquierdo */}
-      <ul
-        className="nav flex-column"
-        style={{ paddingLeft: "55px", width: "100%" }}
-      >
-        <li className="nav-item mb-2">
-          <Link to="/" className="nav-link text-white fs-5 fw-light ps-0">
+      <ul className="nav flex-column w-100">
+        <li className="sidebar-link-container">
+          <Link to="/" className="sidebar-link fs-5 fw-light">
             Dashboard
           </Link>
         </li>
-        <li className="nav-item mb-2">
-          <Link to="/career" className="nav-link text-white fs-5 fw-light ps-0">
+        <li className="sidebar-link-container">
+          <Link to="/career" className="sidebar-link fs-5 fw-light">
             Career path
           </Link>
         </li>
-        <li className="nav-item mb-2">
-          <Link
-            to="/courses"
-            className="nav-link text-white fs-5 fw-light ps-0"
-          >
+        <li className="sidebar-link-container">
+          <Link to="/courses" className="sidebar-link fs-5 fw-light">
             Courses
           </Link>
         </li>
-        <li className="nav-item mb-2">
-          <Link
-            to="/assignation"
-            className="nav-link text-white fs-5 fw-light ps-0"
-          >
+        <li className="sidebar-link-container">
+          <Link to="/assignation" className="sidebar-link fs-5 fw-light">
             Assignation
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            to="/profile"
-            className="nav-link text-white fs-5 fw-light ps-0"
-          >
+        <li className="sidebar-link-container">
+          <Link to="/profile" className="sidebar-link fs-5 fw-light">
             Profile
           </Link>
         </li>

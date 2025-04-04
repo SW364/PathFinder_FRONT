@@ -8,6 +8,7 @@ import CareerPath from "./Pages/CareerPath";
 import Assignation from "./Pages/Assignation";
 import EditProfile from "./Pages/EditProfile";
 import Profile from "./Pages/Profile";
+import Courses from "./Pages/Courses";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/assignation" element={<Assignation />} />
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/courses" element={<Courses />} />
           </Routes>
         </div>
       </UserProvider>

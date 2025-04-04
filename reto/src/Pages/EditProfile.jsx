@@ -80,7 +80,7 @@ function EditProfile() {
           <textarea
             name="courses"
             className="form-control mb-3 auto-expand custom-input"
-            rows="1"
+            rows="4"
             placeholder="Lista de cursos completados"
             value={form.courses}
             onChange={handleChange}
