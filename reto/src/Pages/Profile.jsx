@@ -7,6 +7,11 @@ function Profile() {
   const navigate = useNavigate();
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
+  const [allAbilities, setAllAbilities] = useState([]); // Todas las habilidades del sistema
+  const [userAbilities, setUserAbilities] = useState([]); // Habilidades del usuario
+
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc0MzcyMzI3NSwiZXhwIjoxNzQzODA5Njc1fQ.sFtDWOr6r7_Ec7AgjKuVBRM4V6AwiSrwwrQn0A5IeHM";
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -17,36 +22,57 @@ function Profile() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc0MzcyMzI3NSwiZXhwIjoxNzQzODA5Njc1fQ.sFtDWOr6r7_Ec7AgjKuVBRM4V6AwiSrwwrQn0A5IeHM",
+              token,
             },
           }
         );
-
         const data = await response.json();
+        console.log("📦 Datos del backend:", data);
 
         if (!data.error) {
           setApiData(data);
-        } else {
-          console.warn("Error del backend:", data.error);
+          setUserAbilities(data.abilities || []); // Guarda los IDs de las habilidades
         }
       } catch (error) {
-        console.error("Error al conectar con el backend:", error);
+        console.error("❌ Error al conectar con /employees:", error);
+      }
+    };
+
+    const fetchAllAbilities = async () => {
+      try {
+        const res = await fetch(
+          "https://pathfinder-back-hnoj.onrender.com/abilities"
+        );
+        const abilities = await res.json();
+        console.log("🧠 Todas las habilidades:", abilities);
+        setAllAbilities(abilities);
+      } catch (error) {
+        console.error("❌ Error al cargar habilidades:", error);
       }
     };
 
     fetchProfileData();
+    fetchAllAbilities();
   }, []);
 
   const handleEdit = () => {
     navigate("/profile/edit");
   };
 
+  // Buscar los nombres de las habilidades del usuario
+  const userAbilityIds = userAbilities.map((a) =>
+    typeof a === "object" ? a.id : a
+  ); // cubre ambos casos
+  const abilityNames =
+    allAbilities
+      .filter((a) => userAbilityIds.includes(a.id))
+      .map((a) => a.name)
+      .join(", ") || "Agrega tus habilidades";
+
   const name = apiData?.name || userData.name || "Tu nombre aquí";
   const role = apiData?.rolename || userData.role || "Tu rol";
   const email = apiData?.email || userData.email || "Tu correo";
   const assigned = apiData?.percentage || userData.assigned || "--";
-  const skills = userData.skills || "Agrega tus habilidades";
   const courses = userData.courses || "Agrega tus cursos completados";
   const projects = userData.projects || "Describe tus proyectos aquí";
 
@@ -70,7 +96,7 @@ function Profile() {
       <div className="profile-section-grid">
         <div className="profile-box">
           <h5>Skills</h5>
-          <p>{skills}</p>
+          <p>{abilityNames}</p>
         </div>
 
         <div className="profile-box">

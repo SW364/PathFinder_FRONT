@@ -6,6 +6,7 @@ import "../styles/EditProfile.css";
 function EditProfile() {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
+  const token = localStorage.getItem("authToken");
 
   const [form, setForm] = useState({
     name: "",
@@ -21,6 +22,10 @@ function EditProfile() {
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState("");
 
+  const [abilities, setAbilities] = useState([]);
+  const [selectedAbilities, setSelectedAbilities] = useState([]);
+  const [originalAbilities, setOriginalAbilities] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,8 +35,7 @@ function EditProfile() {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              token:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc0MzcyMzI3NSwiZXhwIjoxNzQzODA5Njc1fQ.sFtDWOr6r7_Ec7AgjKuVBRM4V6AwiSrwwrQn0A5IeHM",
+              token,
             },
           }
         );
@@ -50,13 +54,28 @@ function EditProfile() {
           };
           setForm(loadedData);
           setOriginalData(loadedData);
+          setSelectedAbilities(data.abilities || []);
+          setOriginalAbilities(data.abilities || []);
         }
       } catch (error) {
         console.error("Error cargando datos del perfil:", error);
       }
     };
 
+    const fetchAbilities = async () => {
+      try {
+        const res = await fetch(
+          "https://pathfinder-back-hnoj.onrender.com/abilities"
+        );
+        const data = await res.json();
+        setAbilities(data);
+      } catch (err) {
+        console.error("Error cargando habilidades:", err);
+      }
+    };
+
     fetchData();
+    fetchAbilities();
   }, []);
 
   const handleChange = (e) => {
@@ -65,10 +84,17 @@ function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (form.name !== originalData.name || form.email !== originalData.email) {
+
+    const basicInfoChanged =
+      form.name !== originalData.name || form.email !== originalData.email;
+    const abilitiesChanged =
+      JSON.stringify(selectedAbilities.sort()) !==
+      JSON.stringify(originalAbilities.sort());
+
+    if (basicInfoChanged || abilitiesChanged) {
       setShowModal(true);
     } else {
-      navigate("/profile");
+      confirmUpdate(); // Aunque nada cambió, por seguridad
     }
   };
 
@@ -80,8 +106,7 @@ function EditProfile() {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            token:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc0MzcyMzI3NSwiZXhwIjoxNzQzODA5Njc1fQ.sFtDWOr6r7_Ec7AgjKuVBRM4V6AwiSrwwrQn0A5IeHM",
+            token,
           },
           body: JSON.stringify({
             name: form.name,
@@ -94,6 +119,21 @@ function EditProfile() {
       const data = await response.json();
 
       if (data.msg === "Employee info updated") {
+        // 🔄 Reemplazar las habilidades del usuario
+        for (const abilityId of selectedAbilities) {
+          await fetch(
+            "https://pathfinder-back-hnoj.onrender.com/employees/abilities",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                token,
+              },
+              body: JSON.stringify({ abilityId }),
+            }
+          );
+        }
+
         alert("¡Perfil actualizado exitosamente!");
         setUserData(form);
         navigate("/profile");
@@ -147,33 +187,42 @@ function EditProfile() {
           />
 
           <h5 className="fw-bold mt-3">Skills</h5>
-          <textarea
-            name="skills"
-            className="form-control mb-3 auto-expand custom-input readonly-input"
-            rows="1"
-            placeholder="Escribe tus habilidades"
-            value={form.skills}
-            readOnly
-          />
+          <select
+            multiple
+            className="form-control mb-3 custom-input"
+            value={selectedAbilities}
+            onChange={(e) => {
+              const selected = Array.from(e.target.selectedOptions, (option) =>
+                Number(option.value)
+              );
+              setSelectedAbilities(selected);
+            }}
+          >
+            {abilities.map((ability) => (
+              <option key={ability.id} value={ability.id}>
+                {ability.name}
+              </option>
+            ))}
+          </select>
 
           <h5 className="fw-bold mt-3">Completed Courses</h5>
           <textarea
             name="courses"
-            className="form-control mb-3 auto-expand custom-input readonly-input"
+            className="form-control mb-3 auto-expand custom-input"
             rows="4"
             placeholder="Lista de cursos completados"
             value={form.courses}
-            readOnly
+            onChange={handleChange}
           />
 
           <h5 className="fw-bold mt-3">Projects</h5>
           <textarea
             name="projects"
-            className="form-control mb-3 auto-expand custom-input readonly-input"
+            className="form-control mb-3 auto-expand custom-input"
             rows="1"
             placeholder="Escribe tus proyectos"
             value={form.projects}
-            readOnly
+            onChange={handleChange}
           />
 
           <button type="submit" className="btn btn-dark w-100 mt-4">

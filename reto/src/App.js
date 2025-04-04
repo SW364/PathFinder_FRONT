@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { UserProvider } from "./helpers/UserContext";
-import Sidebar from "./components/Sidebar";
+import Layout from "./components/Layout";
 import Dashboard from "./Pages/Dashboard";
 import CareerPath from "./Pages/CareerPath";
 import Assignation from "./Pages/Assignation";
@@ -16,134 +16,54 @@ function App() {
     <Router>
       <UserProvider>
         <Routes>
-          {/* Página de login */}
           <Route path="/" element={<LoginPage />} />
 
-          {/* Rutas protegidas con Sidebar */}
           <Route
             path="/dashboard"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Dashboard />
-                </div>
-              </>
+              <Layout>
+                <Dashboard />
+              </Layout>
             }
           />
           <Route
             path="/career"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <CareerPath />
-                </div>
-              </>
+              <Layout>
+                <CareerPath />
+              </Layout>
             }
           />
           <Route
             path="/assignation"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Assignation />
-                </div>
-              </>
+              <Layout>
+                <Assignation />
+              </Layout>
             }
           />
           <Route
             path="/profile"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Profile />
-                </div>
-              </>
+              <Layout>
+                <Profile />
+              </Layout>
             }
           />
           <Route
             path="/profile/edit"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <EditProfile />
-                </div>
-              </>
+              <Layout>
+                <EditProfile />
+              </Layout>
             }
           />
           <Route
             path="/courses"
             element={
-              <>
-                <Sidebar />
-                <div
-                  className="flex-grow-1"
-                  style={{
-                    minHeight: "100vh",
-                    overflowY: "auto",
-                    backgroundColor: "#ffffff",
-                    padding: "2rem",
-                    marginLeft: "250px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <Courses />
-                </div>
-              </>
+              <Layout>
+                <Courses />
+              </Layout>
             }
           />
         </Routes>

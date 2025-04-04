@@ -1,70 +1,83 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import '../styles/logo.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../styles/logo.css";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [hasPassword, setHasPassword] = useState(null);
-  const [pass, setPass] = useState('');
-  const [otp, setOtp] = useState('');
-  const [newPass, setNewPass] = useState('');
+  const [pass, setPass] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPass, setNewPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
-  const [infoMessage, setInfoMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState("");
   const navigate = useNavigate();
 
   const handleNoPassword = async () => {
     try {
-      await axios.post('https://pathfinder-back-hnoj.onrender.com/employees/login', {
-        email,
-        pass: ''
-      });
+      await axios.post(
+        "https://pathfinder-back-hnoj.onrender.com/employees/login",
+        {
+          email,
+          pass: "",
+        }
+      );
       setHasPassword(false);
-      setInfoMessage('Please enter the OTP code you received and set your new password.');
+      setInfoMessage(
+        "Please enter the OTP code you received and set your new password."
+      );
     } catch (err) {
-      console.error('Password-less login error:', err);
-      setError('Login error. Please try again.');
+      console.error("Password-less login error:", err);
+      setError("Login error. Please try again.");
     }
   };
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('https://pathfinder-back-hnoj.onrender.com/employees/login', {
-        email,
-        pass
-      });
+      const response = await axios.post(
+        "https://pathfinder-back-hnoj.onrender.com/employees/login",
+        {
+          email,
+          pass,
+        }
+      );
 
       const { token } = response.data;
-      localStorage.setItem('authToken', token);
-      navigate('/profile');
+      localStorage.setItem("authToken", token);
+      navigate("/profile");
     } catch (err) {
-      console.error('Login error:', err);
-      setError('Incorrect email or password.');
+      console.error("Login error:", err);
+      setError("Incorrect email or password.");
     }
   };
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('https://pathfinder-back-hnoj.onrender.com/employees/signup', {
-        email,
-        otp,
-        pass: newPass
-      });
+      const response = await axios.post(
+        "https://pathfinder-back-hnoj.onrender.com/employees/signup",
+        {
+          email,
+          otp,
+          pass: newPass,
+        }
+      );
 
-      if (response.data.msg === 'Employee password setted') {
-        setInfoMessage('Password set successfully. You can now log in.');
+      if (response.data.msg === "Employee password setted") {
+        setInfoMessage("Password set successfully. You can now log in.");
         setHasPassword(true);
-        setOtp('');
-        setNewPass('');
+        setOtp("");
+        setNewPass("");
         setError(null);
       } else {
-        setError('Error setting password. Please verify the OTP and try again.');
+        setError(
+          "Error setting password. Please verify the OTP and try again."
+        );
       }
     } catch (err) {
-      console.error('Signup error:', err);
-      setError('Registration error. Please try again.');
+      console.error("Signup error:", err);
+      setError("Registration error. Please try again.");
     }
   };
 
@@ -72,17 +85,22 @@ export default function LoginPage() {
     <div className="d-flex vh-100 login-container">
       <div className="d-flex flex-column justify-content-center align-items-center bg-white p-5 login-form-container">
         <div className="text-center mb-4">
-          <img 
-            src="Img/logo.png" 
+          <img
+            src="Img/logo.png"
             className="mb-4 logo-animation"
-            style={{ height: "120px" }} 
+            style={{ height: "120px" }}
             alt="Company Logo"
           />
         </div>
 
-        <div className="w-100" style={{ maxWidth: '400px' }}>
+        <div className="w-100" style={{ maxWidth: "400px" }}>
           <div className="mb-4">
-            <label htmlFor="email" className="form-label small text-uppercase text-muted">Email Address</label>
+            <label
+              htmlFor="email"
+              className="form-label small text-uppercase text-muted"
+            >
+              Email Address
+            </label>
             <input
               id="email"
               type="email"
@@ -95,15 +113,17 @@ export default function LoginPage() {
 
           {hasPassword === null && (
             <div className="mb-4 text-center">
-              <p className="mb-3 text-muted">Do you have an existing password?</p>
+              <p className="mb-3 text-muted">
+                Do you have an existing password?
+              </p>
               <div className="d-flex justify-content-center gap-3">
-                <button 
+                <button
                   className="btn px-4 purple-btn rounded-pill"
                   onClick={() => setHasPassword(true)}
                 >
                   Yes
                 </button>
-                <button 
+                <button
                   className="btn px-4 purple-outline-btn rounded-pill"
                   onClick={handleNoPassword}
                 >
@@ -117,24 +137,29 @@ export default function LoginPage() {
             <>
               <div className="mb-4">
                 <div className="d-flex justify-content-between">
-                  <label htmlFor="password" className="form-label small text-uppercase text-muted">Password</label>
-                  <button 
+                  <label
+                    htmlFor="password"
+                    className="form-label small text-uppercase text-muted"
+                  >
+                    Password
+                  </label>
+                  <button
                     className="btn btn-link p-0 text-decoration-none small purple-link"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? 'Hide' : 'Show'}
+                    {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   className="form-control purple-input py-2"
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
                 />
               </div>
-              <button 
+              <button
                 className="btn w-100 py-2 mb-3 purple-btn rounded-pill shadow-sm"
                 onClick={handleLogin}
               >
@@ -146,7 +171,12 @@ export default function LoginPage() {
           {hasPassword === false && (
             <>
               <div className="mb-4">
-                <label htmlFor="otp" className="form-label small text-uppercase text-muted">Verification Code</label>
+                <label
+                  htmlFor="otp"
+                  className="form-label small text-uppercase text-muted"
+                >
+                  Verification Code
+                </label>
                 <input
                   id="otp"
                   type="text"
@@ -157,7 +187,12 @@ export default function LoginPage() {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="newPass" className="form-label small text-uppercase text-muted">New Password</label>
+                <label
+                  htmlFor="newPass"
+                  className="form-label small text-uppercase text-muted"
+                >
+                  New Password
+                </label>
                 <input
                   id="newPass"
                   type="password"
@@ -167,7 +202,7 @@ export default function LoginPage() {
                   onChange={(e) => setNewPass(e.target.value)}
                 />
               </div>
-              <button 
+              <button
                 className="btn w-100 py-2 purple-btn rounded-pill shadow-sm"
                 onClick={handleSignup}
               >
@@ -188,8 +223,8 @@ export default function LoginPage() {
           )}
         </div>
       </div>
-      
-      <div 
+
+      <div
         className="login-image-container position-relative"
         style={{ backgroundImage: 'url("Img/login_img.png")' }}
       >

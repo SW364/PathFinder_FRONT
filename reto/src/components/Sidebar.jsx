@@ -32,7 +32,7 @@ function Sidebar() {
 
       <ul className="nav flex-column w-100">
         <li className="sidebar-link-container">
-          <Link to="/" className="sidebar-link fs-5 fw-light">
+          <Link to="/dashboard" className="sidebar-link fs-5 fw-light">
             Dashboard
           </Link>
         </li>
