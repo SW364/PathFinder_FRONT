@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import LoginPage from "./Pages/Login"; // LoginPage está importado, pero no lo usamos por ahora
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
