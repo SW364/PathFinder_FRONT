@@ -9,40 +9,143 @@ import Assignation from "./Pages/Assignation";
 import EditProfile from "./Pages/EditProfile";
 import Profile from "./Pages/Profile";
 import Courses from "./Pages/Courses";
-import LoginPage from "./Pages/Login"; // 1. Nombre de componente debe comenzar con mayúscula
+import LoginPage from "./Pages/Login";
 
 function App() {
   return (
     <Router>
       <UserProvider>
-        {/* 2. Sidebar no debería mostrarse en la página de login */}
         <Routes>
+          {/* Página de login */}
           <Route path="/" element={<LoginPage />} />
-          <Route path="*" element={ // 3. Rutas protegidas (con layout común)
-            <>
-              <Sidebar />
-              <div
-                className="flex-grow-1"
-                style={{
-                  minHeight: "100vh",
-                  overflowY: "auto",
-                  backgroundColor: "#ffffff",
-                  padding: "2rem",
-                  marginLeft: "250px",
-                  boxSizing: "border-box",
-                }}
-              >
-                <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/career" element={<CareerPath />} />
-                  <Route path="/assignation" element={<Assignation />} />
-                  <Route path="/profile/edit" element={<EditProfile />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/courses" element={<Courses />} />
-                </Routes>
-              </div>
-            </>
-          } />
+
+          {/* Rutas protegidas con Sidebar */}
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Dashboard />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/career"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <CareerPath />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/assignation"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Assignation />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Profile />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <EditProfile />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/courses"
+            element={
+              <>
+                <Sidebar />
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    minHeight: "100vh",
+                    overflowY: "auto",
+                    backgroundColor: "#ffffff",
+                    padding: "2rem",
+                    marginLeft: "250px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <Courses />
+                </div>
+              </>
+            }
+          />
         </Routes>
       </UserProvider>
     </Router>
