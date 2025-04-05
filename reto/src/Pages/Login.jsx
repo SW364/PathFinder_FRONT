@@ -62,7 +62,7 @@ export default function LoginPage() {
           otp,
           pass: newPass,
         }
-      );
+      ); //pri
 
       if (response.data.msg === "Employee password setted") {
         setInfoMessage("Password set successfully. You can now log in.");
@@ -118,7 +118,7 @@ export default function LoginPage() {
               </p>
               <div className="d-flex justify-content-center gap-3">
                 <button
-                  className="btn px-4 purple-btn rounded-pill"
+                  className="btn px-4 purple-outline-btn rounded-pill"
                   onClick={() => setHasPassword(true)}
                 >
                   Yes

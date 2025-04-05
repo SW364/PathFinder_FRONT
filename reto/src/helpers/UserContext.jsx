@@ -11,10 +11,15 @@ export const UserProvider = ({ children }) => {
     skills: "",
     courses: "",
     projects: "",
+    abilities: [] // Añade esto para manejar habilidades
   });
 
+  const updateUserData = (newData) => {
+    setUserData(prev => ({ ...prev, ...newData }));
+  };
+
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData, updateUserData }}>
       {children}
     </UserContext.Provider>
   );

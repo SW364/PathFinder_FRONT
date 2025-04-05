@@ -6,7 +6,7 @@ import "../styles/EditProfile.css";
 function EditProfile() {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
-  const token = localStorage.getItem("authToken");
+  const [token] = useState(localStorage.getItem("authToken"));
 
   const [form, setForm] = useState({
     name: "",
@@ -21,6 +21,7 @@ function EditProfile() {
   const [originalData, setOriginalData] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [abilities, setAbilities] = useState([]);
   const [selectedAbilities, setSelectedAbilities] = useState([]);
@@ -58,7 +59,7 @@ function EditProfile() {
           setOriginalAbilities(data.abilities || []);
         }
       } catch (error) {
-        console.error("Error cargando datos del perfil:", error);
+        console.error("Error loading profile data:", error);
       }
     };
 
@@ -70,13 +71,13 @@ function EditProfile() {
         const data = await res.json();
         setAbilities(data);
       } catch (err) {
-        console.error("Error cargando habilidades:", err);
+        console.error("Error loading abilities:", err);
       }
     };
 
     fetchData();
     fetchAbilities();
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -94,7 +95,7 @@ function EditProfile() {
     if (basicInfoChanged || abilitiesChanged) {
       setShowModal(true);
     } else {
-      confirmUpdate(); // Aunque nada cambió, por seguridad
+      confirmUpdate();
     }
   };
 
@@ -119,7 +120,6 @@ function EditProfile() {
       const data = await response.json();
 
       if (data.msg === "Employee info updated") {
-        // 🔄 Reemplazar las habilidades del usuario
         for (const abilityId of selectedAbilities) {
           await fetch(
             "https://pathfinder-back-hnoj.onrender.com/employees/abilities",
@@ -134,123 +134,177 @@ function EditProfile() {
           );
         }
 
-        alert("¡Perfil actualizado exitosamente!");
-        setUserData(form);
+        alert("Profile successfully updated!");
+
+        setUserData({
+          ...form,
+          abilities: selectedAbilities,
+        });
+
         navigate("/profile");
       } else {
-        alert(data.error || "Error al actualizar el perfil.");
+        alert(data.error || "Error updating profile.");
       }
     } catch (error) {
-      console.error("Error en la solicitud PUT:", error);
-      alert("Error de conexión con el servidor.");
+      console.error("PUT request error:", error);
+      alert("Server connection error.");
     }
   };
 
   return (
-    <div className="edit-container">
-      <div className="edit-card">
-        <h4 className="mb-4 fw-bold">Basic Information</h4>
-        <form onSubmit={handleSubmit}>
-          <input
-            name="name"
-            type="text"
-            className="form-control mb-3 custom-input"
-            placeholder="Nombre"
-            value={form.name}
-            onChange={handleChange}
-          />
-          <input
-            name="role"
-            type="text"
-            className="form-control mb-3 custom-input readonly-input"
-            placeholder="Rol"
-            value={form.role}
-            readOnly
-          />
-          <input
-            name="email"
-            type="email"
-            className="form-control mb-3 custom-input"
-            placeholder="Correo"
-            value={form.email}
-            onChange={handleChange}
-          />
+    <div className="edit-profile-container">
+      <div className="edit-profile-card">
+        <div className="edit-profile-header">
+          <h2>Edit Profile</h2>
+          <p>Update your personal and professional information</p>
+        </div>
 
-          <h5 className="fw-bold mt-4">Assigned</h5>
-          <input
-            name="assigned"
-            type="text"
-            className="form-control mb-3 custom-input readonly-input"
-            placeholder="Ej. 85%"
-            value={form.assigned}
-            readOnly
-          />
+        <form onSubmit={handleSubmit} className="edit-profile-form">
+          <div className="form-section">
+            <h3 className="section-title">Basic Information</h3>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Name</label>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Your full name"
+                  value={form.name}
+                  onChange={handleChange}
+                />
+              </div>
 
-          <h5 className="fw-bold mt-3">Skills</h5>
-          <select
-            multiple
-            className="form-control mb-3 custom-input"
-            value={selectedAbilities}
-            onChange={(e) => {
-              const selected = Array.from(e.target.selectedOptions, (option) =>
-                Number(option.value)
-              );
-              setSelectedAbilities(selected);
-            }}
-          >
-            {abilities.map((ability) => (
-              <option key={ability.id} value={ability.id}>
-                {ability.name}
-              </option>
-            ))}
-          </select>
+              <div className="form-group">
+                <label>Role</label>
+                <input
+                  name="role"
+                  type="text"
+                  placeholder="Your job title"
+                  value={form.role}
+                  readOnly
+                />
+              </div>
 
-          <h5 className="fw-bold mt-3">Completed Courses</h5>
-          <textarea
-            name="courses"
-            className="form-control mb-3 auto-expand custom-input"
-            rows="4"
-            placeholder="Lista de cursos completados"
-            value={form.courses}
-            onChange={handleChange}
-          />
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={form.email}
+                  onChange={handleChange}
+                />
+              </div>
 
-          <h5 className="fw-bold mt-3">Projects</h5>
-          <textarea
-            name="projects"
-            className="form-control mb-3 auto-expand custom-input"
-            rows="1"
-            placeholder="Escribe tus proyectos"
-            value={form.projects}
-            onChange={handleChange}
-          />
+              <div className="form-group">
+                <label>Assignment</label>
+                <input
+                  name="assigned"
+                  type="text"
+                  placeholder="e.g. 85%"
+                  value={form.assigned}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
 
-          <button type="submit" className="btn btn-dark w-100 mt-4">
-            Guardar
-          </button>
+          <div className="form-section">
+            <h3 className="section-title">Abilities</h3>
+            <div className="form-group">
+              <label>Select your abilities</label>
+              <select
+                multiple
+                value={selectedAbilities}
+                onChange={(e) => {
+                  const selected = Array.from(
+                    e.target.selectedOptions,
+                    (option) => Number(option.value)
+                  );
+                  setSelectedAbilities(selected);
+                }}
+              >
+                {abilities.map((ability) => (
+                  <option key={ability.id} value={ability.id}>
+                    {ability.name}
+                  </option>
+                ))}
+              </select>
+              <small>Hold Ctrl (Cmd on Mac) to select multiple</small>
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3 className="section-title">Training</h3>
+            <div className="form-group">
+              <label>Completed Courses</label>
+              <textarea
+                name="courses"
+                placeholder="List your courses separated by commas"
+                value={form.courses}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3 className="section-title">Projects</h3>
+            <div className="form-group">
+              <label>Describe your projects</label>
+              <textarea
+                name="projects"
+                placeholder="Detail the projects you’ve worked on"
+                value={form.projects}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="save-button">
+              Save Changes
+            </button>
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={() => navigate("/profile")}
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
 
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            <h5 className="fw-bold mb-3">Confirmar contraseña</h5>
-            <input
-              type="password"
-              className="form-control mb-3"
-              placeholder="Ingresa tu contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button className="btn btn-dark w-100" onClick={confirmUpdate}>
-              Confirmar
-            </button>
-            <button
-              className="btn btn-secondary w-100 mt-2"
-              onClick={() => setShowModal(false)}
-            >
-              Cancelar
-            </button>
+        <div className="password-modal">
+          <div className="modal-content">
+            <h3>Confirm Changes </h3>
+            <p>Please enter your password to confirm the changes</p>
+            <div className="password-input-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Your password "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </span>
+            </div>
+            <div className="modal-actions">
+              <button onClick={confirmUpdate} className="confirm-button">
+              Confirm
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

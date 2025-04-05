@@ -7,11 +7,9 @@ function Profile() {
   const navigate = useNavigate();
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
-  const [allAbilities, setAllAbilities] = useState([]); // Todas las habilidades del sistema
-  const [userAbilities, setUserAbilities] = useState([]); // Habilidades del usuario
+  const [userAbilities, setUserAbilities] = useState([]);
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsImlhdCI6MTc0MzcyMzI3NSwiZXhwIjoxNzQzODA5Njc1fQ.sFtDWOr6r7_Ec7AgjKuVBRM4V6AwiSrwwrQn0A5IeHM";
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -31,83 +29,96 @@ function Profile() {
 
         if (!data.error) {
           setApiData(data);
-          setUserAbilities(data.abilities || []); // Guarda los IDs de las habilidades
+          setUserAbilities(data.AbilitiesA || []);
         }
       } catch (error) {
         console.error("❌ Error al conectar con /employees:", error);
       }
     };
 
-    const fetchAllAbilities = async () => {
-      try {
-        const res = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/abilities"
-        );
-        const abilities = await res.json();
-        console.log("🧠 Todas las habilidades:", abilities);
-        setAllAbilities(abilities);
-      } catch (error) {
-        console.error("❌ Error al cargar habilidades:", error);
-      }
-    };
-
     fetchProfileData();
-    fetchAllAbilities();
-  }, []);
+  }, [token]);
 
   const handleEdit = () => {
     navigate("/profile/edit");
   };
 
-  // Buscar los nombres de las habilidades del usuario
-  const userAbilityIds = userAbilities.map((a) =>
-    typeof a === "object" ? a.id : a
-  ); // cubre ambos casos
-  const abilityNames =
-    allAbilities
-      .filter((a) => userAbilityIds.includes(a.id))
-      .map((a) => a.name)
-      .join(", ") || "Agrega tus habilidades";
-
   const name = apiData?.name || userData.name || "Tu nombre aquí";
   const role = apiData?.rolename || userData.role || "Tu rol";
   const email = apiData?.email || userData.email || "Tu correo";
   const assigned = apiData?.percentage || userData.assigned || "--";
-  const courses = userData.courses || "Agrega tus cursos completados";
-  const projects = userData.projects || "Describe tus proyectos aquí";
+  const courses = userData.courses || "No courses completed yet";
+  const projects = userData.projects || "No projects added yet";
 
   return (
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-user-info">
           <h2 className="profile-name">{name}</h2>
-          <p className="profile-role">{role}</p>
+          <p className="profile-role">
+            <span className="role-badge">{role}</span>
+          </p>
           <div className="profile-info">
-            <span>{email}</span>
-            <strong className="assigned">Assigned: {assigned}%</strong>
+            <div className="info-item">
+              <i className="fas fa-envelope"></i>
+              <span>{email}</span>
+            </div>
+            <div className="info-item assigned">
+              <i className="fas fa-tasks"></i>
+              <strong>Assigned: {assigned}%</strong>
+            </div>
           </div>
         </div>
 
         <button className="edit-button" onClick={handleEdit}>
-          Edit Profile
+          <i className="fas fa-edit"></i> Edit Profile
         </button>
       </div>
 
-      <div className="profile-section-grid">
-        <div className="profile-box">
-          <h5>Skills</h5>
-          <p>{abilityNames}</p>
+      <div className="profile-content">
+        <div className="profile-section">
+          <div className="skills-box profile-info-box">
+            <div className="box-header">
+              <i className="fas fa-code"></i>
+              <h5>Skills</h5>
+            </div>
+            <div className="box-content skills-list">
+              {userAbilities.length > 0 ? (
+                userAbilities.map((skill, index) => (
+                  <div key={index} className="skill-tag">
+                    <i className="fas fa-check"></i> {skill.name}
+                  </div>
+                ))
+              ) : (
+                <span>No skills added yet</span>
+              )}
+            </div>
+          </div>
+
+          <div className="courses-box profile-info-box">
+            <div className="box-header">
+              <i className="fas fa-graduation-cap"></i>
+              <h5>Completed Courses</h5>
+            </div>
+            <div className="box-content">
+              {courses.split(", ").map((course, index) => (
+                <span key={index} className="course-item">
+                  <i className="fas fa-check-circle"></i> {course}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="profile-box">
-          <h5>Completed Courses</h5>
-          <p>{courses}</p>
+        <div className="projects-box profile-info-box full-width">
+          <div className="box-header">
+            <i className="fas fa-project-diagram"></i>
+            <h5>Projects</h5>
+          </div>
+          <div className="box-content">
+            <p>{projects}</p>
+          </div>
         </div>
-      </div>
-
-      <div className="profile-box full-width">
-        <h5>Projects</h5>
-        <p>{projects}</p>
       </div>
     </div>
   );
