@@ -79,6 +79,12 @@ function EditProfile() {
     fetchAbilities();
   }, [token]);
 
+  const hasChanges =
+    form.name !== originalData.name ||
+    form.email !== originalData.email ||
+    JSON.stringify(selectedAbilities.sort()) !==
+      JSON.stringify(originalAbilities.sort());
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -261,9 +267,14 @@ function EditProfile() {
           </div>
 
           <div className="form-actions">
-            <button type="submit" className="save-button">
+            <button
+              type="submit"
+              className="save-button"
+              disabled={!hasChanges}
+            >
               Save Changes
             </button>
+
             <button
               type="button"
               className="cancel-button"
@@ -296,7 +307,7 @@ function EditProfile() {
             </div>
             <div className="modal-actions">
               <button onClick={confirmUpdate} className="confirm-button">
-              Confirm
+                Confirm
               </button>
               <button
                 onClick={() => setShowModal(false)}
