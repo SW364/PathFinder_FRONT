@@ -10,6 +10,7 @@ import EditProfile from "./Pages/EditProfile";
 import Profile from "./Pages/Profile";
 import Courses from "./Pages/Courses";
 import LoginPage from "./Pages/Login";
+import Recommendations from "./Pages/Recommendations";
 
 function App() {
   return (
@@ -63,6 +64,14 @@ function App() {
             element={
               <Layout>
                 <Courses />
+              </Layout>
+            }
+          />
+          <Route
+            path="/recommendations"
+            element={
+              <Layout>
+                <Recommendations />
               </Layout>
             }
           />
