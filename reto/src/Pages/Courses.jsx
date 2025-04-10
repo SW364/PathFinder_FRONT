@@ -1,30 +1,65 @@
 import React from "react";
+import CourseCard from "../components/CourseCard";
+import { Container, Row, Col } from "react-bootstrap";
 
-function Courses() {
+
+const Courses = () => {
+  const courses = [
+    {
+      image: "Img/Agile.jpg",
+      title: "Leadership and Management of Agile Teams",
+      completed: 75,
+      actionText: "Continue",
+      actionLink: "#",
+      showCertificate: false,
+    },
+    {
+      image: "Img/data.jpg",
+      title: "Data Analysis for Decision Making",
+      completed: 100,
+      actionText: "View Certificate",
+      actionLink: "#",
+      showCertificate: true,
+    },
+    {
+      image: "Img/AI.jpg",
+      title: "Fundamentals of Artificial Intelligence",
+      completed: 100,
+      actionText: "View Certificate",
+      actionLink: "#",
+      showCertificate: true,
+    },
+    {
+      image: "Img/Cyber.jpg",
+      title: "Cybersecurity and Data Protection",
+      completed: 100,
+      actionText: "View Certificate",
+      actionLink: "#",
+      showCertificate: true,
+    },
+    {
+      image: "Img/AI.jpg",
+      title: "Data Science",
+      completed: 100,
+      actionText: "View Certificate",
+      actionLink: "#",
+      showCertificate: true,
+    },
+  ];
+
   return (
-    <div className="courses-container">
-      <h2 className="mb-4">Courses</h2>
-      <p>
-        Here you'll be able to explore, assign, and track all available courses.
-      </p>
+    <Container className="mt-6">
+  <h2 className="mb-5">Your courses 📚</h2>
+  <Row className="g-4">
+    {courses.map((course, idx) => (
+      <Col lg={3} md={6} sm={12} key={idx}>
+        <CourseCard {...course} />
+      </Col>
+    ))}
+  </Row>
+</Container>
 
-      <div
-        className="course-card"
-        style={{
-          backgroundColor: "#f1f1f1",
-          padding: "1rem",
-          borderRadius: "12px",
-          marginTop: "1rem",
-        }}
-      >
-        <h5>React Fundamentals</h5>
-        <p>
-          Learn the basics of React including components, props, and state
-          management.
-        </p>
-      </div>
-    </div>
   );
-}
+};
 
 export default Courses;
