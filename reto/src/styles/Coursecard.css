@@ -1,0 +1,76 @@
+:root {
+  --primary-purple: rgb(164, 4, 252);
+  --light-purple: rgba(164, 4, 252, 0.1);
+  --dark-purple: rgb(120, 0, 200);
+}
+
+.certificate-button, .continue-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.continue-button {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+
+.continue-button:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.certificate-button:hover {
+  background-color: var(--dark-purple);
+}
+
+.course-card {
+  border-radius: 1px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(164, 4, 252, 0.15);
+}
+
+.course-card-img {
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+}
+
+.course-card .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card-title {
+  font-weight: bold;
+  font-size: 1rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 3em; /* Aprox. 2 líneas de texto */
+}
+
+.course-card-progress {
+  color: #555;
+  margin-bottom: 1rem;
+}

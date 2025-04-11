@@ -6,19 +6,19 @@ import { Autoplay } from "swiper/modules";
 
 const courses = [
   {
-    title: "Leadership and Management of Agile Teams",
-    image: "/Img/agile.jpeg", // capital I
-    link: "/course/agile",
+    title: "Cloud Computing Essentials",
+    image: "/Img/cloud.jpg", // capital I
+    link: "/course/cloud",
   },
   {
-    title: "Data Analysis Fundamentals",
-    image: "/Img/data.jpg", // note: .jpg, check extension carefully
-    link: "/course/data-analysis",
+    title: "Design Thinking for Innovation",
+    image: "/Img/design.jpg", // note: .jpg, check extension carefully
+    link: "/course/design",
   },
   {
-    title: "Intro to Cybersecurity",
-    image: "/Img/cyber.jpeg", // capital I
-    link: "/course/cybersecurity",
+    title: "DevOps and Continous Deployment",
+    image: "/Img/DevOps.png", // capital I
+    link: "/course/DevOps",
   },
 ];
 

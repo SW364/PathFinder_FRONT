@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const [infoMessage, setInfoMessage] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false); // ⬅️ agrégalo aquí
 
   const handleNoPassword = async () => {
     try {
@@ -35,13 +36,11 @@ export default function LoginPage() {
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://pathfinder-back-hnoj.onrender.com/employees/login",
-        {
-          email,
-          pass,
-        }
+        { email, pass }
       );
 
       const { token } = response.data;
@@ -50,6 +49,8 @@ export default function LoginPage() {
     } catch (err) {
       console.error("Login error:", err);
       setError("Incorrect email or password.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -162,8 +163,9 @@ export default function LoginPage() {
               <button
                 className="btn w-100 py-2 mb-3 purple-btn rounded-pill shadow-sm"
                 onClick={handleLogin}
+                disabled={loading}
               >
-                Log in
+                {loading ? "Loading..." : "Log in"}
               </button>
             </>
           )}
