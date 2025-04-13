@@ -1,25 +1,14 @@
 // src/components/Layout.jsx
 import React from "react";
 import Sidebar from "./Sidebar";
+import "../styles/Layout.css";
 
 const Layout = ({ children }) => {
   return (
-    <>
+    <div className="layout-container">
       <Sidebar />
-      <div
-        className="flex-grow-1"
-        style={{
-          minHeight: "100vh",
-          overflowY: "auto",
-          backgroundColor: "#ffffff",
-          padding: "2rem",
-          marginLeft: "250px",
-          boxSizing: "border-box",
-        }}
-      >
-        {children}
-      </div>
-    </>
+      <div className="layout-content">{children}</div>
+    </div>
   );
 };
 

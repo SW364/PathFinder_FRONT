@@ -16,12 +16,9 @@ function Sidebar() {
       className="text-white d-flex flex-column justify-content-between pt-4 pb-4"
       style={{
         width: "250px",
-        height: "100vh",
+        minHeight: "100vh",
         backgroundColor: "#000000",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
+        flexShrink: 0,
       }}
     >
       <div>

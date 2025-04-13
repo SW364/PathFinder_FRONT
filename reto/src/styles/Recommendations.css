@@ -1,0 +1,144 @@
+/* Recommendations.css */
+
+/* Page Container */
+.recommendation-page {
+  padding: 2rem 2rem 4rem 2rem; /* Slightly reduced top padding */
+  min-height: 100vh;
+  background: #ffffff; /* ✅ White background */
+  color: #1a1a1a;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title and Decoration */
+.recommendation-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #000000; /* changed from #ffffff to black */
+}
+
+.underline {
+  width: 220px;
+  height: 4px;
+  background: linear-gradient(to right, #9b4dff, #b388ff);
+  border-radius: 3px;
+  margin: 0 auto 2rem auto; /* Reduced bottom margin */
+}
+
+/* Swiper Carousel Container */
+.carousel-wrapper {
+  max-width: 960px; /* Increased width */
+  margin: 0 auto;
+  position: relative;
+  padding: 2.2rem 2rem; /* Reduced top and bottom padding */
+  background: #1e1e1e;
+  border-radius: 28px;
+  box-shadow: 0 0 55px rgba(155, 77, 255, 0.6); /* 💜 Stronger Purple glow */
+}
+
+/* Card Appearance */
+.course-card {
+  background-size: cover;
+  background-position: center;
+  height: 380px; /* Increased height */
+  border-radius: 24px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.5rem;
+  color: white;
+  font-size: 1.6rem;
+  font-weight: 600;
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s;
+  transform: scale(0.9);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  filter: grayscale(40%) brightness(0.85);
+  backdrop-filter: blur(2px);
+  overflow: hidden; /* Prevent contents from overflowing */
+}
+
+.course-card.active {
+  transform: scale(1.1);
+  filter: none;
+  box-shadow: 0 12px 30px rgba(155, 77, 255, 0.5);
+  z-index: 10;
+}
+
+/* Dots */
+.swiper {
+  padding-bottom: 50px;
+}
+
+.swiper-pagination {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  background: #ffffff;
+  opacity: 0.3;
+  width: 10px;
+  height: 10px;
+  margin: 0 6px;
+  border-radius: 50%;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.swiper-pagination-bullet-active {
+  background: #9b4dff;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Links */
+.card-link {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+/* Action Buttons Section */
+.recommendation-page .add-button {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.recommendation-page .add-button button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recommendation-page .add-button button:first-child {
+  background-color: #9b4dff;
+}
+
+.recommendation-page .add-button button:first-child:hover {
+  background-color: #7e3fe1;
+}
+
+.recommendation-page .add-button button:last-child {
+  background-color: #000000; /* 🖤 Black button */
+  opacity: 0.5;
+  pointer-events: none;
+  color: #ffffff;
+}
+
+.recommendation-page .add-button button:last-child.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.recommendation-page .add-button button:last-child:hover {
+  background-color: #333333;
+}
