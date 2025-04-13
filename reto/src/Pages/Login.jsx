@@ -45,7 +45,7 @@ export default function LoginPage() {
 
       const { token } = response.data;
       localStorage.setItem("authToken", token);
-      navigate("/profile");
+      navigate("/Home");
     } catch (err) {
       console.error("Login error:", err);
       setError("Incorrect email or password.");
