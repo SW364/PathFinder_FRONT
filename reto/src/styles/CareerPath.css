@@ -1,230 +1,143 @@
-.career-path-container {
-  background-color: #f9f9f9;
-  padding: 3rem 4rem;
-  margin-left: 260px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
-  position: relative;
+:root {
+  --accent-color: #8a2be2;
+  --dark-gray: #1a1a1a;
+  --light-gray: #ffffff; /* White background */
+  --card-bg: #f1f1f1; /* Gray card box */
 }
 
-.career-path-container h1 {
-  font-size: 2.6rem;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-  color: #1a1a1a;
+/* Container */
+.career-path-container {
+  display: flex;
+  background-color: var(--light-gray);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  padding: 3rem 4rem;
+  padding-left: 30px;
+  padding-top: 30px;
+  position: relative;
+  width: 100%;
+}
+
+/* Main Content Column */
+.goal-main {
+  max-width: 800px;
+  margin-right: auto;
+  z-index: 1;
+}
+
+.goal-main h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--dark-gray);
   position: relative;
   display: inline-block;
 }
 
-.career-path-container h1::after {
+.goal-main h1::after {
   content: "";
   position: absolute;
   bottom: -8px;
   left: 0;
   width: 60px;
   height: 4px;
-  background: linear-gradient(90deg, #6a5acd, #9370db);
+  background: linear-gradient(90deg, var(--accent-color), #9370db);
   border-radius: 2px;
 }
 
-.career-path-container p {
-  font-size: 1.1rem;
+.goal-main p {
+  font-size: 1.05rem;
   line-height: 1.7;
-  max-width: 850px;
-  color: #444;
-  margin-bottom: 3rem;
-  padding-left: 2px;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+/* Form styles */
+form {
+  position: relative;
 }
 
 .form-group {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   position: relative;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   font-weight: 600;
   color: #222;
-  font-size: 1.1rem;
-  letter-spacing: 0.3px;
+  font-size: 1.05rem;
 }
 
-.form-group::after {
-  content: "";
-  position: absolute;
-  bottom: -1.5rem;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 0, 0, 0.1),
-    transparent
-  );
-}
-
-.form-group:last-child::after {
-  display: none;
-}
-
-.career-path-container textarea {
+.form-group textarea {
   background-color: #f1f1f1;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 14px;
   padding: 1.2rem 1.5rem;
   width: 100%;
   resize: none;
   font-size: 1rem;
   color: #333;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.career-path-container textarea:focus {
+.form-group textarea:focus {
   outline: none;
-  box-shadow: 0 5px 15px rgba(136, 136, 255, 0.2);
-  background-color: #ffffff;
+  background-color: #fff;
   border-color: #aaa;
+  box-shadow: 0 5px 15px rgba(136, 136, 255, 0.2);
   transform: translateY(-2px);
 }
 
-.career-path-container textarea::placeholder {
+textarea::placeholder {
   color: #999;
   font-style: italic;
   font-size: 0.95rem;
 }
 
-/* Premium button styling */
-.career-path-container button {
-  background-color: #000;
+/* Button */
+button {
+  background-color: var(--accent-color);
   color: white;
   border: none;
   border-radius: 10px;
   padding: 12px 28px;
   font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.8px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.career-path-container button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: 0.5s;
+button:hover {
+  background-color: #6a1ab8;
+  transform: translateY(-2px);
 }
 
-.career-path-container button:hover {
-  background-color: #222;
-  transform: translateY(-3px);
-  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
-}
-
-.career-path-container button:hover::before {
-  left: 100%;
-}
-
-.career-path-container button:active {
+button:active {
   transform: translateY(-1px);
 }
 
-/* Floating label effect */
-.form-group.focused label {
-  transform: translateY(-5px);
-  color: #6a5acd;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .career-path-container {
-    margin-left: 200px;
-    padding: 2.5rem 3rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .career-path-container {
-    margin-left: 0;
-    padding: 2rem;
-  }
-
-  .career-path-container h1 {
-    font-size: 2.2rem;
-  }
-
-  .career-path-container p {
-    font-size: 1rem;
-  }
-}
-
-/* Decorative elements */
-.career-path-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(
-    circle,
-    rgba(106, 90, 205, 0.1) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  z-index: 0;
-}
-
-.career-path-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 200px;
-  background: linear-gradient(
-    to left,
-    rgba(106, 90, 205, 0.1),
-    rgba(255, 255, 255, 0)
-  );
-  z-index: 0;
-}
-
-form {
-  position: relative;
-  z-index: 1;
-}
-
+/* Tip Card */
 .goal-sidecard {
   position: absolute;
   top: 160px;
   right: 40px;
   width: 300px;
-  padding: 1.8rem;
-  background-color: #ffffff;
+  padding: 1.5rem 1.5rem;
+  background-color: var(--card-bg);
+  backdrop-filter: blur(10px);
   border: 1px solid #e2e2e2;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
   z-index: 2;
 }
 
 .goal-sidecard h3 {
   font-size: 1.1rem;
-  color: #6a5acd;
+  color: var(--accent-color);
   margin-bottom: 1rem;
 }
 
@@ -232,7 +145,7 @@ form {
   list-style: none;
   padding-left: 0;
   font-size: 0.95rem;
-  color: #555;
+  color: #444;
 }
 
 .goal-sidecard li {
@@ -243,13 +156,59 @@ form {
 
 .goal-sidecard li::before {
   content: "✔";
-  color: #6a5acd;
+  color: var(--accent-color);
   position: absolute;
   left: 0;
 }
 
+/* Responsive */
 @media (max-width: 992px) {
+  .career-path-container {
+    flex-direction: column;
+    padding: 2rem;
+  }
+
   .goal-sidecard {
     display: none;
+  }
+
+  .goal-main {
+    margin: 0 auto;
+  }
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse effect on buttons */
+button:hover {
+  animation: pulse 0.4s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   }
 }

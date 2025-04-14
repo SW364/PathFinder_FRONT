@@ -4,11 +4,23 @@
   --light-purple: rgba(164, 4, 252, 0.1);
   --dark-purple: rgb(120, 0, 200);
 }
+
 .profile-container {
   padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-left: 0px; /* 👈 add this to create space from the sidebar */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .profile-card {
@@ -26,18 +38,26 @@
   gap: 2rem;
   margin-bottom: 2rem;
   position: relative;
+  border-left: 5px solid var(--primary-purple);
+  padding-left: 1rem;
+  border-radius: 8px;
 }
-
-
 
 .profile-user-info {
   flex: 1;
 }
 
 .profile-name {
-  font-size: 2rem;
-  margin: 0 0 0.5rem 0;
-  color: #333;
+  font-size: 2.3rem;
+  margin: 0 0 0.2rem 0;
+  color: #222;
+  font-weight: 600;
+}
+
+.profile-subtext {
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: -5px;
 }
 
 .profile-role .role-badge {
@@ -85,7 +105,8 @@
 
 .edit-button:hover {
   background-color: var(--dark-purple);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(120, 0, 200, 0.3);
 }
 
 /* Content */
@@ -106,6 +127,13 @@
   border-radius: 10px;
   padding: 1.5rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-top: 4px solid var(--primary-purple);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
 }
 
 .full-width {
@@ -116,8 +144,10 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  margin-bottom: 1rem;
-  color: #444;
+  margin-bottom: 1.2rem;
+  color: #222; /* or simply "black" */
+
+  font-weight: 600;
 }
 
 .box-header i {
@@ -134,19 +164,23 @@
   color: #555;
 }
 
-
-
 /* Courses */
 .course-item {
   display: block;
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.course-item:hover {
+  background-color: #f0f0f0;
 }
 
 .course-item i {
   color: #10b981;
   margin-right: 0.5rem;
 }
+
 .skills-list {
   display: flex;
   flex-direction: column;
@@ -162,8 +196,19 @@
   align-items: center;
   gap: 8px;
   width: fit-content;
+  transition: background-color 0.3s ease;
 }
 
+.skill-tag:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.empty-text a {
+  color: var(--primary-purple);
+  font-weight: 500;
+  text-decoration: underline;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -172,15 +217,15 @@
     align-items: center;
     text-align: center;
   }
-  
+
   .profile-info {
     justify-content: center;
   }
-  
+
   .profile-section {
     grid-template-columns: 1fr;
   }
-  
+
   .full-width {
     grid-column: span 1;
   }

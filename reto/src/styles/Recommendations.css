@@ -2,71 +2,104 @@
 
 /* Page Container */
 .recommendation-page {
-  padding: 2rem 2rem 4rem 2rem; /* Slightly reduced top padding */
+  padding: 2rem 2rem 4rem 2rem;
   min-height: 100vh;
-  background: #ffffff; /* ✅ White background */
+  background: #ffffff;
   color: #1a1a1a;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Title and Decoration */
 .recommendation-title {
-  font-size: 2.4rem;
-  font-weight: 700;
   text-align: center;
-  margin-bottom: 0.5rem;
-  color: #000000; /* changed from #ffffff to black */
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #000;
+  padding-left: 0;
 }
 
 .underline {
-  width: 220px;
-  height: 4px;
+  width: 160px;
+  height: 3px;
   background: linear-gradient(to right, #9b4dff, #b388ff);
-  border-radius: 3px;
-  margin: 0 auto 2rem auto; /* Reduced bottom margin */
+  border-radius: 2px;
+  margin: 0 auto 2rem auto;
 }
 
 /* Swiper Carousel Container */
 .carousel-wrapper {
-  max-width: 960px; /* Increased width */
+  max-width: 960px;
   margin: 0 auto;
   position: relative;
-  padding: 2.2rem 2rem; /* Reduced top and bottom padding */
-  background: #1e1e1e;
-  border-radius: 28px;
-  box-shadow: 0 0 55px rgba(155, 77, 255, 0.6); /* 💜 Stronger Purple glow */
+  padding: 2rem 2rem;
+  background: #f9f9f9;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Card Appearance */
 .course-card {
   background-size: cover;
   background-position: center;
-  height: 380px; /* Increased height */
-  border-radius: 24px;
+  height: 360px;
+  border-radius: 16px;
   display: flex;
   align-items: flex-end;
-  padding: 1.5rem;
+  padding: 1.25rem;
   color: white;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   transition: transform 0.4s ease-in-out, box-shadow 0.4s;
   transform: scale(0.9);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  filter: grayscale(40%) brightness(0.85);
-  backdrop-filter: blur(2px);
-  overflow: hidden; /* Prevent contents from overflowing */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  filter: grayscale(20%) brightness(0.95);
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .course-card.active {
-  transform: scale(1.1);
+  transform: scale(1.05);
   filter: none;
-  box-shadow: 0 12px 30px rgba(155, 77, 255, 0.5);
+  box-shadow: 0 10px 30px rgba(155, 77, 255, 0.25);
   z-index: 10;
+}
+
+/* Swiper Arrows */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #9b4dff;
+  font-size: 18px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
 }
 
 /* Dots */
 .swiper {
-  padding-bottom: 50px;
+  padding-bottom: 40px;
 }
 
 .swiper-pagination {
@@ -78,11 +111,11 @@
 }
 
 .swiper-pagination-bullet {
-  background: #ffffff;
-  opacity: 0.3;
+  background: #bcbcbc;
+  opacity: 0.4;
   width: 10px;
   height: 10px;
-  margin: 0 6px;
+  margin: 0 4px;
   border-radius: 50%;
   transition: opacity 0.3s, transform 0.3s;
 }
@@ -93,16 +126,9 @@
   transform: scale(1.2);
 }
 
-/* Links */
-.card-link {
-  text-decoration: none;
-  display: block;
-  height: 100%;
-}
-
-/* Action Buttons Section */
+/* Buttons */
 .recommendation-page .add-button {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -110,13 +136,14 @@
 
 .recommendation-page .add-button button {
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
   color: white;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, opacity 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .recommendation-page .add-button button:first-child {
@@ -128,10 +155,9 @@
 }
 
 .recommendation-page .add-button button:last-child {
-  background-color: #000000; /* 🖤 Black button */
+  background-color: #1a1a1a;
   opacity: 0.5;
   pointer-events: none;
-  color: #ffffff;
 }
 
 .recommendation-page .add-button button:last-child.enabled {
@@ -141,4 +167,10 @@
 
 .recommendation-page .add-button button:last-child:hover {
   background-color: #333333;
+}
+
+/* Modal Backdrop Enhancements */
+.modal-backdrop.show {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.2);
 }

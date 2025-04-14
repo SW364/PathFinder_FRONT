@@ -18,14 +18,11 @@ export default function CareerPath() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", form);
-    navigate("/recommendations"); // ← Redirect here
+    navigate("/recommendations");
   };
 
   return (
-    <div
-      className="career-path-container"
-      style={{ padding: "2rem", marginLeft: "40px" }}
-    >
+    <div className="career-path-container fade-in">
       <div className="goal-sidecard">
         <h3>💡 Tips to Write Better Goals</h3>
         <ul>
@@ -35,109 +32,59 @@ export default function CareerPath() {
         </ul>
       </div>
 
-      <h1 style={{ fontWeight: "bold", marginBottom: "0.5rem" }}>
-        What is your next goal?
-      </h1>
-      <p style={{ maxWidth: "850px", marginBottom: "2rem" }}>
-        Let us help you build a career you love. By considering your profile and
-        aspirations, we will recommend personalized courses that set you on the
-        path to achieving your dreams.
-      </p>
+      <div className="goal-main">
+        <h1>What is your next goal?</h1>
+        <p>
+          Let us help you build a career you love. By considering your profile
+          and aspirations, we will recommend personalized courses that set you
+          on the path to achieving your dreams.
+        </p>
 
-      <form onSubmit={handleSubmit} style={{ maxWidth: "700px" }}>
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "600",
-            }}
-          >
-            What is your most important professional objective right now?
-          </label>
-          <textarea
-            name="objective"
-            value={form.objective}
-            onChange={handleChange}
-            placeholder="This helps clarify the exact direction you want to pursue."
-            rows="4"
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              padding: "1rem",
-              border: "1px solid #ccc",
-              resize: "none",
-            }}
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>
+              What is your most important professional objective right now?
+            </label>
+            <textarea
+              name="objective"
+              value={form.objective}
+              onChange={handleChange}
+              placeholder="This helps clarify the exact direction you want to pursue."
+              rows="4"
+            />
+          </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "600",
-            }}
-          >
-            What skills or knowledge do you feel you most need to develop to
-            achieve your goal?
-          </label>
-          <textarea
-            name="skills"
-            value={form.skills}
-            onChange={handleChange}
-            placeholder="This helps identify the priority areas for training and ensures you focus on courses or programs that truly add value."
-            rows="4"
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              padding: "1rem",
-              border: "1px solid #ccc",
-              resize: "none",
-            }}
-          />
-        </div>
+          <div className="form-group">
+            <label>
+              What skills or knowledge do you feel you most need to develop to
+              achieve your goal?
+            </label>
+            <textarea
+              name="skills"
+              value={form.skills}
+              onChange={handleChange}
+              placeholder="This helps identify the priority areas for training and ensures you focus on courses or programs that truly add value."
+              rows="4"
+            />
+          </div>
 
-        <div style={{ marginBottom: "2rem" }}>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "0.5rem",
-              fontWeight: "600",
-            }}
-          >
-            How do your personal values and lifestyle influence the career you
-            want to build?
-          </label>
-          <textarea
-            name="values"
-            value={form.values}
-            onChange={handleChange}
-            placeholder="This question digs deeper into the alignment between your professional aspirations and personal motivations..."
-            rows="4"
-            style={{
-              width: "100%",
-              borderRadius: "10px",
-              padding: "1rem",
-              border: "1px solid #ccc",
-              resize: "none",
-            }}
-          />
-        </div>
+          <div className="form-group">
+            <label>
+              How do your personal values and lifestyle influence the career you
+              want to build?
+            </label>
+            <textarea
+              name="values"
+              value={form.values}
+              onChange={handleChange}
+              placeholder="This question digs deeper into the alignment between your professional aspirations and personal motivations..."
+              rows="4"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="btn btn-dark"
-          style={{
-            width: "160px",
-            fontWeight: "500",
-            letterSpacing: "0.3px",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Find Courses
-        </button>
-      </form>
+          <button type="submit">Find Courses</button>
+        </form>
+      </div>
     </div>
   );
 }

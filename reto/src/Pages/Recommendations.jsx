@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -6,7 +7,6 @@ import "swiper/css/autoplay";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "../styles/Recommendations.css";
-
 import {
   Autoplay,
   EffectCoverflow,
@@ -14,36 +14,74 @@ import {
   Pagination,
 } from "swiper/modules";
 
-const courses = [
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
+const recommendedCourses = [
   {
     title: "Cloud Computing Essentials",
     image: "/Img/cloud.jpg",
-    link: "/course/cloud",
+    completed: 0,
+    actionText: "Start",
+    actionLink: "#",
+    showCertificate: false,
   },
   {
     title: "Design Thinking for Innovation",
     image: "/Img/design.jpg",
-    link: "/course/design",
+    completed: 0,
+    actionText: "Start",
+    actionLink: "#",
+    showCertificate: false,
   },
   {
     title: "DevOps and Continuous Deployment",
     image: "/Img/DevOps.png",
-    link: "/course/DevOps",
+    completed: 0,
+    actionText: "Start",
+    actionLink: "#",
+    showCertificate: false,
   },
-  { title: "AI Fundamentals", image: "/Img/AI.jpg", link: "/course/ai" },
+  {
+    title: "AI Fundamentals",
+    image: "/Img/AI.jpg",
+    completed: 0,
+    actionText: "Start",
+    actionLink: "#",
+    showCertificate: false,
+  },
 ];
 
 export default function Recommendations() {
   const [addedCourses, setAddedCourses] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedCourses = JSON.parse(localStorage.getItem("addedCourses")) || [];
+    setAddedCourses(savedCourses);
+  }, []);
 
   const handleAddCourse = () => {
-    const course = courses[activeIndex];
-    if (!addedCourses.includes(course.title)) {
-      setAddedCourses([...addedCourses, course.title]);
-      alert(`✅ Added: ${course.title}`);
-    }
+    const selected = recommendedCourses[activeIndex];
+    const updated = [...addedCourses, selected];
+    localStorage.setItem("addedCourses", JSON.stringify(updated));
+    setAddedCourses(updated);
   };
+
+  const handleGoToCourses = () => {
+    setShowModal(true);
+  };
+
+  const confirmGoToCourses = () => {
+    setShowModal(false);
+    navigate("/courses");
+  };
+
+  const isAdded = addedCourses.some(
+    (course) => course.title === recommendedCourses[activeIndex].title
+  );
 
   return (
     <div className="recommendation-page">
@@ -75,43 +113,58 @@ export default function Recommendations() {
             slideShadows: false,
           }}
         >
-          {courses.map((course, index) => (
+          {recommendedCourses.map((course, index) => (
             <SwiperSlide key={index}>
               {({ isActive }) => (
                 <div
                   className={`course-card ${isActive ? "active" : ""}`}
                   style={{ backgroundImage: `url(${course.image})` }}
-                ></div>
+                />
               )}
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* Add Button Below */}
       <div className="add-button">
-        <button
-          onClick={handleAddCourse}
-          disabled={addedCourses.includes(courses[activeIndex].title)}
-          style={{
-            opacity: addedCourses.includes(courses[activeIndex].title)
-              ? 0.5
-              : 1,
-            cursor: addedCourses.includes(courses[activeIndex].title)
-              ? "not-allowed"
-              : "pointer",
-          }}
-        >
-          {addedCourses.includes(courses[activeIndex].title) ? "Added" : "Add"}
+        <button onClick={handleAddCourse} disabled={isAdded}>
+          {isAdded ? "Added" : "Add"}
         </button>
 
         <button
           className={addedCourses.length > 0 ? "enabled" : ""}
-          onClick={() => alert("Navigating to your courses...")}
+          onClick={handleGoToCourses}
         >
           Go to Courses
         </button>
       </div>
+
+      {/* Modal */}
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Navigation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to go to your <strong>Courses</strong> page?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            No
+          </Button>
+          <Button
+            style={{ backgroundColor: "#9b4dff", border: "none" }}
+            onClick={confirmGoToCourses}
+          >
+            Yes, Go
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
