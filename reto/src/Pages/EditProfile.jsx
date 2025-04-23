@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
+import Select from "react-select";
 import "../styles/EditProfile.css";
 
 function EditProfile() {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
   const [token] = useState(localStorage.getItem("authToken"));
-
   const [form, setForm] = useState({
     name: "",
     role: "",
@@ -219,24 +219,23 @@ function EditProfile() {
             <h3 className="section-title">Abilities</h3>
             <div className="form-group">
               <label>Select your abilities</label>
-              <select
-                multiple
-                value={selectedAbilities}
-                onChange={(e) => {
-                  const selected = Array.from(
-                    e.target.selectedOptions,
-                    (option) => Number(option.value)
-                  );
-                  setSelectedAbilities(selected);
+              <Select
+                isMulti
+                options={abilities.map((ability) => ({
+                  value: ability.id,
+                  label: ability.name,
+                }))}
+                value={abilities
+                  .filter((ability) => selectedAbilities.includes(ability.id))
+                  .map((a) => ({ value: a.id, label: a.name }))}
+                onChange={(selectedOptions) => {
+                  const selectedIds = selectedOptions.map((opt) => opt.value);
+                  setSelectedAbilities(selectedIds);
                 }}
-              >
-                {abilities.map((ability) => (
-                  <option key={ability.id} value={ability.id}>
-                    {ability.name}
-                  </option>
-                ))}
-              </select>
-              <small>Hold Ctrl (Cmd on Mac) to select multiple</small>
+                placeholder="Search and select your abilities..."
+                className="react-select-container"
+                classNamePrefix="react-select"
+              />
             </div>
           </div>
 
