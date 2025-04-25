@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
-import { Container, Row, Col, Modal, Button} from "react-bootstrap";
+import { Container, Row, Col, Modal, Button } from "react-bootstrap";
 import Header from "../components/Header";
 import "../styles/Courses.css";
 
@@ -31,7 +31,15 @@ const Courses = () => {
         if (data.error) {
           setError(data.error);
         } else {
-          setCourses(data.coursesOfEmployee || []);
+          const fetchedCourses = data.coursesOfEmployee || [];
+          setCourses(fetchedCourses);
+
+          // Guardar cursos completados en localStorage
+          const completedCourses = fetchedCourses.filter(
+            (course) => Number(course.Courseinfo.status) === 100
+          );
+          const courseNames = completedCourses.map((course) => course.name);
+          localStorage.setItem("completedCourses", JSON.stringify(courseNames));
         }
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -45,14 +53,24 @@ const Courses = () => {
   const handleDelete = (title) => {
     const updated = courses.filter((course) => course.name !== title);
     setCourses(updated);
+
+    // Actualizar también en localStorage
+    const updatedCompleted = updated.filter(
+      (course) => Number(course.Courseinfo.status) === 100
+    ).map(course => course.name);
+    localStorage.setItem("completedCourses", JSON.stringify(updatedCompleted));
   };
 
-  const inProgressCourses = courses.filter((course) => course.Courseinfo.status < 100);
-  const completedCourses = courses.filter((course) => course.Courseinfo.status === 100);
+  const inProgressCourses = courses.filter(
+    (course) => Number(course.Courseinfo.status) < 100
+  );
+  const completedCourses = courses.filter(
+    (course) => Number(course.Courseinfo.status) === 100
+  );
 
   return (
     <div className="courses-page">
-      <Header 
+      <Header
         title="Your learning journey continues here"
         subtitle="Pick up where you left off and continue growing your skills!"
         notifications={[]}
@@ -62,8 +80,8 @@ const Courses = () => {
         {error && <div className="alert alert-danger">{error}</div>}
 
         {/* Modal para el certificado dummy */}
-        <Modal 
-          show={showCertificateModal} 
+        <Modal
+          show={showCertificateModal}
           onHide={() => setShowCertificateModal(false)}
           size="lg"
           centered
@@ -72,27 +90,26 @@ const Courses = () => {
             <Modal.Title>Course Certificate</Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center">
-            <img 
-              src="/img/certification.jpeg" // Asegúrate de tener esta imagen en public/img/
-              alt="Course Certificate" 
+            <img
+              src="/img/certification.jpeg"
+              alt="Course Certificate"
               className="img-fluid"
               style={{ maxHeight: "70vh", border: "1px solid #eee" }}
             />
           </Modal.Body>
           <Modal.Footer>
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               onClick={() => setShowCertificateModal(false)}
             >
               Close
             </Button>
-            <Button 
+            <Button
               variant="primary"
               onClick={() => {
-                // Opción para descargar el certificado
-                const link = document.createElement('a');
-                link.href = '/img/certificate.jpg';
-                link.download = 'certificate.jpg';
+                const link = document.createElement("a");
+                link.href = "/img/certificate.jpg";
+                link.download = "certificate.jpg";
                 link.click();
               }}
             >

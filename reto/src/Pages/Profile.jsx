@@ -8,8 +8,6 @@ function Profile() {
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
-  
-  
 
   const token = localStorage.getItem("authToken");
 
@@ -32,13 +30,58 @@ function Profile() {
         if (!data.error) {
           setApiData(data);
           setUserAbilities(data.abilitiesOfEmployee || []);
+          localStorage.setItem("userName", data.name);
         }
       } catch (error) {
         console.error("❌ Error al conectar con /employees:", error);
       }
     };
 
+    const fetchInactiveProjects = async () => {
+      try {
+        const apiUrl = new URL("https://pathfinder-back-hnoj.onrender.com/employees/projects");
+        apiUrl.searchParams.append("status", "false");
+
+        const response = await fetch(apiUrl.toString(), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error en la solicitud");
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        const formattedProjects = data.rolesOfEmployee.map((role) => ({
+          id: role.id,
+          name: role.Project.name,
+          platform: role.name,
+          percentage: role.Assigned?.status ? 50 : 0,
+          status: role.Project.status,
+        }));
+
+        const inactiveProjects = formattedProjects.filter((project) => !project.status);
+
+        const projectDescriptions = inactiveProjects.map(
+          (project) => `${project.name} (${project.platform})`
+        );
+
+        localStorage.setItem("inactiveProjects", JSON.stringify(projectDescriptions));
+      } catch (error) {
+        console.error("Error obteniendo proyectos inactivos:", error);
+      }
+    };
+
     fetchProfileData();
+    fetchInactiveProjects();
   }, [token]);
 
   const handleEdit = () => {
@@ -46,20 +89,12 @@ function Profile() {
   };
 
   const name = localStorage.getItem("userName") || "Usuario";
-  
   const role = apiData?.rolename || userData.role || "Tu rol";
   const email = apiData?.email || userData.email || "Tu correo";
   const assigned = apiData?.percentage || userData.assigned || "--";
-  const courses = userData.courses || "No courses completed yet";
-  const projects = userData.projects || "No projects added yet";
-  
-  useEffect(() => {
-    if (name) {
-      localStorage.setItem("userName", name);
-    }
-  }, [name]);
-  
-  
+  const storedCourses = JSON.parse(localStorage.getItem("completedCourses")) || [];
+  const inactiveProjects = JSON.parse(localStorage.getItem("inactiveProjects")) || [];
+
   return (
     <div className="profile-container">
       <div className="profile-header">
@@ -111,11 +146,15 @@ function Profile() {
               <h5>Completed Courses</h5>
             </div>
             <div className="box-content">
-              {courses.split(", ").map((course, index) => (
-                <span key={index} className="course-item">
-                  <i className="fas fa-check-circle"></i> {course}
-                </span>
-              ))}
+              {storedCourses.length > 0 ? (
+                storedCourses.map((course, index) => (
+                  <span key={index} className="course-item">
+                    <i className="fas fa-check-circle"></i> {course}
+                  </span>
+                ))
+              ) : (
+                <span>No courses completed yet</span>
+              )}
             </div>
           </div>
         </div>
@@ -123,10 +162,18 @@ function Profile() {
         <div className="projects-box profile-info-box full-width">
           <div className="box-header">
             <i className="fas fa-project-diagram"></i>
-            <h5>Projects</h5>
+            <h5>Completed Projects</h5>
           </div>
           <div className="box-content">
-            <p>{projects}</p>
+            {inactiveProjects.length > 0 ? (
+              inactiveProjects.map((project, index) => (
+                <span key={index} className="course-item">
+                  <i className="fas fa-times-circle"></i> {project}
+                </span>
+              ))
+            ) : (
+              <span>No completed projects yet</span>
+            )}
           </div>
         </div>
       </div>

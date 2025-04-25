@@ -4,14 +4,17 @@ import { Card, ProgressBar, Badge, ListGroup } from "react-bootstrap";
 import { Laptop } from "react-bootstrap-icons";
 
 const Projects = ({ projects }) => (
-  <Card className="borde">
-    <Card.Header className="bg-white border-bottom d-flex align-items-center">
-      <h5 className="mb-0 fw-bold text-dark">Projects</h5>
-      <Badge pill bg="dark" text="white" className="ms-auto">
-        {projects.length} active
-      </Badge>
-    </Card.Header>
-    <Card.Body className="pt-0">
+  <Card className="border">
+  <Card.Header className="bg-white border-bottom d-flex align-items-center">
+    <h5 className="mb-0 fw-bold text-dark">Projects</h5>
+    <Badge pill bg="dark" text="white" className="ms-auto">
+      {projects.length} active
+    </Badge>
+  </Card.Header>
+  <Card.Body className="pt-0">
+    {projects.length === 0 ? (
+      <div className="text-center py-4 text-muted">No active projects</div>
+    ) : (
       <ListGroup variant="flush">
         {projects.map((project, i) => (
           <ListGroup.Item key={i} className="border-bottom py-3 px-0">
@@ -27,36 +30,30 @@ const Projects = ({ projects }) => (
                 now={project.percentage} 
                 className="flex-grow-1 me-3 bg-light" 
                 variant="dark"
-                style={{ 
-                  height: '6px',
-                  backgroundColor: '#f8f9fa' // Light gray background
-                }}
+                style={{ height: '6px', backgroundColor: '#f8f9fa' }}
               />
-              <small className="fw-bold" style={{ 
-                minWidth: '40px', 
-                color: '#6f42c1' // Purple color for percentage
-              }}>
+              <small className="fw-bold" style={{ minWidth: '40px', color: '#6f42c1' }}>
                 {project.percentage}%
               </small>
             </div>
           </ListGroup.Item>
         ))}
       </ListGroup>
-      {projects.length === 0 && (
-        <div className="text-center py-4 text-muted">
-          No active projects
-        </div>
-      )}
-    </Card.Body>
-  </Card>
+    )}
+  </Card.Body>
+</Card>
+ 
+   
 );
 
 Projects.propTypes = {
   projects: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.number,
       name: PropTypes.string.isRequired,
       platform: PropTypes.string.isRequired,
       percentage: PropTypes.number.isRequired,
+      status: PropTypes.bool
     })
   ).isRequired,
 };
