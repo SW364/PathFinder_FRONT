@@ -8,6 +8,7 @@ function EditProfile() {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
   const [token] = useState(localStorage.getItem("authToken"));
+  const [employeeId, setEmployeeId] = useState(null);
   const [form, setForm] = useState({
     name: "",
     role: "",
@@ -42,6 +43,7 @@ function EditProfile() {
         );
 
         const data = await response.json();
+        setEmployeeId(data.id);
 
         if (!data.error) {
           const loadedData = {
@@ -55,8 +57,8 @@ function EditProfile() {
           };
           setForm(loadedData);
           setOriginalData(loadedData);
-          setSelectedAbilities(data.abilities || []);
-          setOriginalAbilities(data.abilities || []);
+          setSelectedAbilities(data.AbilitiesA?.map((a) => a.id) || []);
+          setOriginalAbilities(data.AbilitiesA?.map((a) => a.id) || []);
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
@@ -69,7 +71,13 @@ function EditProfile() {
           "https://pathfinder-back-hnoj.onrender.com/abilities"
         );
         const data = await res.json();
-        setAbilities(data);
+
+        // Filter out abilities the user already has
+        const filteredAbilities = data.filter(
+          (ability) => !selectedAbilities.includes(ability.id)
+        );
+
+        setAbilities(filteredAbilities);
       } catch (err) {
         console.error("Error loading abilities:", err);
       }
@@ -126,8 +134,13 @@ function EditProfile() {
       const data = await response.json();
 
       if (data.msg === "Employee info updated") {
-        for (const abilityId of selectedAbilities) {
-          await fetch(
+        const newAbilities = selectedAbilities
+          .filter((id) => !originalAbilities.includes(id))
+          .filter((id) => typeof id === "number" && !isNaN(id));
+
+        for (const abilityId of newAbilities) {
+          console.log("Sending abilityId:", abilityId);
+          const res = await fetch(
             "https://pathfinder-back-hnoj.onrender.com/employees/abilities",
             {
               method: "PUT",
@@ -135,9 +148,18 @@ function EditProfile() {
                 "Content-Type": "application/json",
                 token,
               },
-              body: JSON.stringify({ abilityId }),
+              body: JSON.stringify({
+                abilityId,
+              }),
             }
           );
+
+          const result = await res.json();
+          console.log("Response status:", res.status);
+          console.log("Response body:", result);
+          if (!res.ok || result.error) {
+            console.error("Failed to add ability:", result.error);
+          }
         }
 
         alert("Profile successfully updated!");

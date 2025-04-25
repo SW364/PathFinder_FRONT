@@ -43,8 +43,9 @@ export default function LoginPage() {
         { email, pass }
       );
 
-      const { token } = response.data;
+      const { token, level } = response.data;
       localStorage.setItem("authToken", token);
+      localStorage.setItem("userLevel", level.name);
       navigate("/Home");
     } catch (err) {
       console.error("Login error:", err);

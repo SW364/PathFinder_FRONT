@@ -5,11 +5,15 @@ import "../styles/Sidebar.css";
 
 function Sidebar() {
   const navigate = useNavigate();
+  const level = localStorage.getItem("userLevel"); // "Usuario", "TFS", or "Manager"
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("userLevel");
     navigate("/");
   };
+
+  const isAdvancedUser = level === "TFS" || level === "Manager";
 
   return (
     <div
@@ -36,31 +40,40 @@ function Sidebar() {
         />
 
         <ul className="nav flex-column w-100">
-        <li className="sidebar-link-container">
+          <li className="sidebar-link-container">
             <Link to="/home" className="sidebar-link fs-5 fw-light">
               Home
             </Link>
           </li>
-          <li className="sidebar-link-container">
-            <Link to="/dashboard" className="sidebar-link fs-5 fw-light">
-              Dashboard
-            </Link>
-          </li>
+
+          {isAdvancedUser && (
+            <li className="sidebar-link-container">
+              <Link to="/dashboard" className="sidebar-link fs-5 fw-light">
+                Dashboard
+              </Link>
+            </li>
+          )}
+
           <li className="sidebar-link-container">
             <Link to="/career" className="sidebar-link fs-5 fw-light">
               Career path
             </Link>
           </li>
+
           <li className="sidebar-link-container">
             <Link to="/courses" className="sidebar-link fs-5 fw-light">
               Courses
             </Link>
           </li>
-          <li className="sidebar-link-container">
-            <Link to="/assignation" className="sidebar-link fs-5 fw-light">
-              Assignation
-            </Link>
-          </li>
+
+          {isAdvancedUser && (
+            <li className="sidebar-link-container">
+              <Link to="/assignation" className="sidebar-link fs-5 fw-light">
+                Assignation
+              </Link>
+            </li>
+          )}
+
           <li className="sidebar-link-container">
             <Link to="/profile" className="sidebar-link fs-5 fw-light">
               Profile

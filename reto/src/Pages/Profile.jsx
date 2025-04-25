@@ -29,7 +29,7 @@ function Profile() {
 
         if (!data.error) {
           setApiData(data);
-          setUserAbilities(data.AbilitiesA || []);
+          setUserAbilities(data.abilitiesOfEmployee || []);
         }
       } catch (error) {
         console.error("❌ Error al conectar con /employees:", error);
