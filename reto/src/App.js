@@ -19,7 +19,6 @@ function App() {
       <UserProvider>
         <Routes>
           <Route path="/" element={<LoginPage />} />
-
           <Route
             path="/dashboard"
             element={

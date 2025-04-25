@@ -8,6 +8,8 @@ function Profile() {
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
+  
+  
 
   const token = localStorage.getItem("authToken");
 
@@ -43,13 +45,21 @@ function Profile() {
     navigate("/profile/edit");
   };
 
-  const name = apiData?.name || userData.name || "Tu nombre aquí";
+  const name = localStorage.getItem("userName") || "Usuario";
+  
   const role = apiData?.rolename || userData.role || "Tu rol";
   const email = apiData?.email || userData.email || "Tu correo";
   const assigned = apiData?.percentage || userData.assigned || "--";
   const courses = userData.courses || "No courses completed yet";
   const projects = userData.projects || "No projects added yet";
-
+  
+  useEffect(() => {
+    if (name) {
+      localStorage.setItem("userName", name);
+    }
+  }, [name]);
+  
+  
   return (
     <div className="profile-container">
       <div className="profile-header">

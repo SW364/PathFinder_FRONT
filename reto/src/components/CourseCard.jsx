@@ -1,63 +1,90 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
+import "../styles/Coursecard.css";
 
 const CourseCard = ({
   image,
   title,
+  description,
   completed,
   actionText,
   actionLink,
   showCertificate,
-  onDelete,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const renderPopover = (
+    <Popover id={`popover-${title}`} className="custom-popover">
+      <Popover.Body className="popover-body">
+        <p>{description}</p>
+      </Popover.Body>
+    </Popover>
+  );
+
+  const handleButtonClick = () => {
+    if (showCertificate) {
+      setIsOpen(true);
+    } else {
+      window.location.href = actionLink;
+    }
+  };
+
   return (
-    <Card className="shadow-sm p-2 bg-light rounded h-100 position-relative">
-      {/* 3-dot Dropdown for deletable courses */}
-      {onDelete && (
-        <Dropdown className="position-absolute top-0 end-0 m-2">
-          <Dropdown.Toggle
-            variant="light"
-            size="sm"
-            style={{
-              border: "none",
-              background: "transparent",
-              fontSize: "1.3rem",
-              color: "#333",
-            }}
-          >
-            ⋮
-          </Dropdown.Toggle>
+    <>
+      <OverlayTrigger
+        placement="top"
+        delay={{ show: 150, hide: 300 }}
+        overlay={renderPopover}
+        trigger={["hover", "focus"]}
+      >
+        <Card className="shadow-sm p-2 bg-light rounded h-100 position-relative course-card-hover">
+          <Card.Img
+            variant="top"
+            src={`/Img/${image}`}
+            alt={title}
+            style={{ height: "180px", objectFit: "cover" }}
+          />
+          <Card.Body className="d-flex flex-column justify-content-between text-center">
+            <Card.Title>{title}</Card.Title>
+            <Card.Text>Completed: {completed}%</Card.Text>
+            <div className="d-grid gap-2">
+              <Button
+                variant="primary"
+                style={{
+                  backgroundColor: "var(--accent-color)",
+                  borderColor: "var(--accent-color)",
+                }}
+                onClick={handleButtonClick}
+              >
+                {actionText}
+              </Button>
+            </div>
+          </Card.Body>
+        </Card>
+      </OverlayTrigger>
 
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={onDelete} className="text-danger">
-              Remove
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
-
-      <Card.Img
-        variant="top"
-        src={image}
-        alt={title}
-        style={{ height: "180px", objectFit: "cover" }}
-      />
-      <Card.Body className="d-flex flex-column justify-content-between">
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>Completed: {completed}%</Card.Text>
-        <div className="d-grid gap-2">
-          <Button
-            variant="dark"
-            href={actionLink}
-            disabled={completed === 0 && showCertificate}
+      {/* Esto activa directamente el visor de pantalla completa */}
+      <PhotoProvider>
+        {isOpen && (
+          <PhotoView
+            src="Img/certification.jpeg"
+            onClose={() => setIsOpen(false)}
           >
-            {actionText}
-          </Button>
-        </div>
-      </Card.Body>
-    </Card>
+            {/* invisible trigger element */}
+            <img
+              src="Img/certification.jpeg"
+              alt="Certificate"
+              style={{ display: "none" }}
+            />
+          </PhotoView>
+        )}
+      </PhotoProvider>
+    </>
   );
 };
 

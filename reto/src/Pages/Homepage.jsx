@@ -1,82 +1,84 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { UserContext } from "../helpers/UserContext";
-import Notifications from "../components/Notifications";
-import Projects from "../components/Projects";
+import Header from "../components/Header"; // Asegúrate de que la ruta sea correcta
+import CertificationCard from "../components/CertificationCard";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
-  const { userData } = useContext(UserContext);
-  const [apiData, setApiData] = useState(null);
   const [notifications, setNotifications] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const token = localStorage.getItem("authToken");
+  const [certs, setCerts] = useState([]);
+  const name = localStorage.getItem("userName") || "Usuario";
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              token,
-            },
-          }
-        );
-        const data = await response.json();
-        if (!data.error) {
-          setApiData(data);
-          setNotifications([
-            "Tu certificación de SCRUM Master está por vencer",
-            "Te han aceptado la asignación de Luis Méndez para tu proyecto Plataforma de Banca Digital - BBanco",
-          ]);
-          setProjects([
-            {
-              name: "Plataforma de Banca Digital",
-              platform: "BBanco",
-              percentage: 80,
-            },
-            {
-              name: "Portal de Gestión de Créditos",
-              platform: "FinanZapp",
-              percentage: 50,
-            },
-            {
-              name: "Plataforma de Inversiones",
-              platform: "InvestEasy",
-              percentage: 90,
-            },
-          ]);
-        }
-      } catch (err) {
-        console.error("Error al obtener datos:", err);
+    fetchCertifications();
+  }, []);
+
+  const fetchCertifications = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const response = await fetch("https://pathfinder-back-hnoj.onrender.com/employees/certifications", {
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
       }
-    };
 
-    fetchData();
-  }, [token]);
+      const data = await response.json();
+      const certsData = data.certificationsOfEmployee.map((cert) => ({
+        id: cert.id,
+        name: cert.name,
+        description: cert.description,
+        expiration: cert.Certinfo.expiration,
+      }));
 
-  const name = apiData?.name || userData.name || "Usuario";
+      setCerts(certsData);
+
+      const now = new Date();
+      const expiringSoon = certsData.filter((cert) => {
+        const expirationDate = new Date(cert.expiration);
+        const diffDays = (expirationDate - now) / (1000 * 60 * 60 * 24);
+        return diffDays <= 7;
+      });
+
+      if (expiringSoon.length > 0) {
+        const newNotifs = expiringSoon.map(
+          (c) => `The certification "${c.name}" Expiring soon`
+        );
+        setNotifications(newNotifs);
+      }
+    } catch (error) {
+      console.error("Error obteniendo certificaciones:", error);
+      setNotifications(["Hubo un error al cargar las certificaciones"]);
+    }
+  };
 
   return (
     <>
-      <section className="hero-section">
-        <div className="container hero-text">
-          <h1>Bienvenido, {name} </h1>
-          <p>Consulta tus notificaciones y proyectos activos</p>
-        </div>
-      </section>
+      {/* Reemplazamos la sección hero con nuestro Header parametrizable */}
+      <Header 
+        title={`Welcome, ${name}`}
+        subtitle="Check your notifications and active certifications"
+        notifications={notifications}
+      />
 
       <Container className="homepage-container fade-in">
-        <Row>
-          <Col md={6}>
-            <Notifications notifications={notifications} />
-          </Col>
-          <Col md={6}>
-            <Projects projects={projects} />
-          </Col>
+        {/* Eliminamos la columna de notificaciones ya que ahora están en el modal */}
+        <Row className="mt-4">
+          <h4 className="mb-3">Certifications</h4>
+          {certs.map((cert) => (
+            <Col key={cert.id} md={6} className="mb-3">
+              <CertificationCard
+                name={cert.name}
+                description={cert.description}
+                expiration={cert.expiration}
+              />
+            </Col>
+          ))}
         </Row>
       </Container>
     </>
