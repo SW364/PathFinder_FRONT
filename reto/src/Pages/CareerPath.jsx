@@ -15,10 +15,36 @@ export default function CareerPath() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", form);
-    navigate("/recommendations");
+
+    try {
+      const token = localStorage.getItem("authToken");
+
+      const response = await fetch(
+        "https://pathfinder-back-hnoj.onrender.com/ai/courses",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.error) {
+        localStorage.setItem("recommendedCourses", JSON.stringify(data));
+        navigate("/recommendations");
+      } else {
+        alert("⚠️ AI recommendation failed: " + data.error);
+      }
+    } catch (error) {
+      console.error("❌ Error fetching AI courses:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (

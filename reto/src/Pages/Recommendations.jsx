@@ -17,48 +17,22 @@ import {
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const recommendedCourses = [
-  {
-    title: "Cloud Computing Essentials",
-    image: "/Img/cloud.jpg",
-    completed: 0,
-    actionText: "Start",
-    actionLink: "#",
-    showCertificate: false,
-  },
-  {
-    title: "Design Thinking for Innovation",
-    image: "/Img/design.jpg",
-    completed: 0,
-    actionText: "Start",
-    actionLink: "#",
-    showCertificate: false,
-  },
-  {
-    title: "DevOps and Continuous Deployment",
-    image: "/Img/DevOps.png",
-    completed: 0,
-    actionText: "Start",
-    actionLink: "#",
-    showCertificate: false,
-  },
-  {
-    title: "AI Fundamentals",
-    image: "/Img/AI.jpg",
-    completed: 0,
-    actionText: "Start",
-    actionLink: "#",
-    showCertificate: false,
-  },
-];
-
 export default function Recommendations() {
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showCourseModal, setShowCourseModal] = useState(false);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [addedCourses, setAddedCourses] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Load AI-recommended courses
+    const aiCourses =
+      JSON.parse(localStorage.getItem("recommendedCourses")) || [];
+    setRecommendedCourses(aiCourses);
+
+    // Load added courses
     const savedCourses = JSON.parse(localStorage.getItem("addedCourses")) || [];
     setAddedCourses(savedCourses);
   }, []);
@@ -80,8 +54,17 @@ export default function Recommendations() {
   };
 
   const isAdded = addedCourses.some(
-    (course) => course.title === recommendedCourses[activeIndex].title
+    (course) => course.title === recommendedCourses[activeIndex]?.title
   );
+
+  if (recommendedCourses.length === 0) {
+    return (
+      <div className="recommendation-page">
+        <h2 className="recommendation-title">No courses found</h2>
+        <p>Please return to the previous step and try again.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="recommendation-page">
@@ -118,7 +101,15 @@ export default function Recommendations() {
               {({ isActive }) => (
                 <div
                   className={`course-card ${isActive ? "active" : ""}`}
-                  style={{ backgroundImage: `url(${course.image})` }}
+                  style={{
+                    backgroundImage: `url(/Img/${
+                      decodeURIComponent(course.imgUrl) || "default.jpg"
+                    })`,
+                  }}
+                  onClick={() => {
+                    setSelectedCourse(course); // ⬅️ sets modal content
+                    setShowCourseModal(true); // ⬅️ opens modal
+                  }}
                 />
               )}
             </SwiperSlide>
@@ -162,6 +153,33 @@ export default function Recommendations() {
             onClick={confirmGoToCourses}
           >
             Yes, Go
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* New Course Info Modal */}
+      <Modal
+        show={showCourseModal}
+        onHide={() => setShowCourseModal(false)}
+        dialogClassName="course-detail-modal" // ← custom class
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedCourse?.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img
+            src={`/Img/${decodeURIComponent(selectedCourse?.imgUrl)}`}
+            alt={selectedCourse?.name}
+          />
+          <div className="course-description">
+            <p>{selectedCourse?.description}</p>
+            {/* Optionally add more info like rating, instructor, etc */}
+          </div>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCourseModal(false)}>
+            Close
           </Button>
         </Modal.Footer>
       </Modal>

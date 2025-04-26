@@ -174,3 +174,48 @@
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+.course-detail-modal .modal-dialog {
+  width: 90vw !important;
+  max-width: 1400px !important;
+  margin: 2rem auto !important;
+}
+
+.course-detail-modal .modal-content {
+  width: 100%;
+  max-width: 5000px; /* Increase as needed */
+  margin: auto;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.course-detail-modal .modal-body {
+  display: flex;
+  flex-direction: row; /* ← switch to row */
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.course-detail-modal img {
+  width: 50%; /* ← only half of modal */
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0;
+}
+
+.course-detail-modal .course-description {
+  width: 50%;
+  font-size: 1.05rem;
+  color: #333;
+  text-align: justify;
+}
+
+.course-detail-modal p {
+  font-size: 1.05rem;
+  color: #333;
+  text-align: justify;
+  margin: 0;
+}

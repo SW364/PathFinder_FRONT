@@ -45,7 +45,7 @@ const CourseCard = ({
         <Card className="shadow-sm p-2 bg-light rounded h-100 position-relative course-card-hover">
           <Card.Img
             variant="top"
-            src={`Img/${image}`}
+            src={`/Img/${image}`} // ✅ Correct
             alt={title}
             style={{ height: "180px", objectFit: "cover" }}
           />
