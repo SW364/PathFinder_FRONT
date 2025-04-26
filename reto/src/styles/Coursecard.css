@@ -2,6 +2,7 @@
   --accent-color: #8a2be2;
   --dark-gray: #1a1a1a;
   --light-gray: #ffffff;
+  --dark-purple: rgb(120, 0, 200);
 }
 
 .course-card-wrapper {
@@ -71,4 +72,25 @@
 .course-card-wrapper:hover .card-description-slide {
   right: 0;
   opacity: 1;
+}
+.custom-modal-content {
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+
+.custom-modal-header
+.modal-footer {
+  background-color: transparent;
+  border-top: none;
+}
+.view {
+  background-color: var(--accent-color);
+  border-color: var (--accent-color);
+  color: white;
+}
+.view:hover {
+  background-color: var(--dark-purple);
+  border-color: var(--dark-purple);
 }

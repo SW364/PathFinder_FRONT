@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CourseCard from "../components/CourseCard";
-import { Container, Row, Col, Modal, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Header from "../components/Header";
 import "../styles/Courses.css";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
-  const [showCertificateModal, setShowCertificateModal] = useState(false);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -54,10 +53,9 @@ const Courses = () => {
     const updated = courses.filter((course) => course.name !== title);
     setCourses(updated);
 
-    // Actualizar también en localStorage
-    const updatedCompleted = updated.filter(
-      (course) => Number(course.Courseinfo.status) === 100
-    ).map(course => course.name);
+    const updatedCompleted = updated
+      .filter((course) => Number(course.Courseinfo.status) === 100)
+      .map((course) => course.name);
     localStorage.setItem("completedCourses", JSON.stringify(updatedCompleted));
   };
 
@@ -79,45 +77,6 @@ const Courses = () => {
       <Container>
         {error && <div className="alert alert-danger">{error}</div>}
 
-        {/* Modal para el certificado dummy */}
-        <Modal
-          show={showCertificateModal}
-          onHide={() => setShowCertificateModal(false)}
-          size="lg"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Course Certificate</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="text-center">
-            <img
-              src="/img/certification.jpeg"
-              alt="Course Certificate"
-              className="img-fluid"
-              style={{ maxHeight: "70vh", border: "1px solid #eee" }}
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => setShowCertificateModal(false)}
-            >
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = "/img/certificate.jpg";
-                link.download = "certificate.jpg";
-                link.click();
-              }}
-            >
-              Download Certificate
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
         {inProgressCourses.length > 0 && (
           <>
             <h2 className="section-header mt-4">Courses in Progress</h2>
@@ -125,7 +84,7 @@ const Courses = () => {
               {inProgressCourses.map((course, idx) => (
                 <Col lg={3} md={6} sm={12} key={idx}>
                   <CourseCard
-                    image={course.imgUrl}
+                    image={course.imgUrl || "placeholder.jpg"}
                     title={course.name}
                     description={course.description}
                     completed={course.Courseinfo.status}
@@ -147,12 +106,12 @@ const Courses = () => {
               {completedCourses.map((course, idx) => (
                 <Col lg={3} md={6} sm={12} key={idx}>
                   <CourseCard
-                    image={course.imgUrl}
+                    image={course.imgUrl || "placeholder.jpg"}
                     title={course.name}
                     description={course.description}
                     completed={course.Courseinfo.status}
                     actionText="View Certificate"
-                    onActionClick={() => setShowCertificateModal(true)}
+                    actionLink="#"
                     showCertificate={true}
                     onDelete={() => handleDelete(course.name)}
                   />

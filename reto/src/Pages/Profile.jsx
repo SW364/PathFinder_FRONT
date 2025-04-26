@@ -8,6 +8,7 @@ function Profile() {
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
+  const [completedCourses, setCompletedCourses] = useState([]);
 
   const token = localStorage.getItem("authToken");
 
@@ -50,15 +51,11 @@ function Profile() {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Error en la solicitud");
-        }
+        if (!response.ok) throw new Error("Error en la solicitud");
 
         const data = await response.json();
 
-        if (data.error) {
-          throw new Error(data.error);
-        }
+        if (data.error) throw new Error(data.error);
 
         const formattedProjects = data.rolesOfEmployee.map((role) => ({
           id: role.id,
@@ -80,8 +77,38 @@ function Profile() {
       }
     };
 
+    const fetchCompletedCourses = async () => {
+      try {
+        const response = await fetch(
+          "https://pathfinder-back-hnoj.onrender.com/employees/courses",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              token,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!data.error) {
+          const fetchedCourses = data.coursesOfEmployee || [];
+          const completedCourses = fetchedCourses.filter(
+            (course) => Number(course.Courseinfo.status) === 100
+          );
+          const courseNames = completedCourses.map((course) => course.name);
+          localStorage.setItem("completedCourses", JSON.stringify(courseNames));
+          setCompletedCourses(courseNames);
+        }
+      } catch (error) {
+        console.error("❌ Error fetching completed courses:", error);
+      }
+    };
+
     fetchProfileData();
     fetchInactiveProjects();
+    fetchCompletedCourses();
   }, [token]);
 
   const handleEdit = () => {
@@ -92,7 +119,9 @@ function Profile() {
   const role = apiData?.rolename || userData.role || "Tu rol";
   const email = apiData?.email || userData.email || "Tu correo";
   const assigned = apiData?.percentage || userData.assigned || "--";
-  const storedCourses = JSON.parse(localStorage.getItem("completedCourses")) || [];
+  const storedCourses = completedCourses.length
+    ? completedCourses
+    : JSON.parse(localStorage.getItem("completedCourses")) || [];
   const inactiveProjects = JSON.parse(localStorage.getItem("inactiveProjects")) || [];
 
   return (
