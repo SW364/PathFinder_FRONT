@@ -9,6 +9,7 @@ export default function CareerPath() {
     values: "",
   });
 
+  const [loading, setLoading] = useState(false); // ✅ loading state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,6 +18,7 @@ export default function CareerPath() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // ✅ start loading
     console.log("Form submitted:", form);
 
     try {
@@ -44,6 +46,8 @@ export default function CareerPath() {
     } catch (error) {
       console.error("❌ Error fetching AI courses:", error);
       alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false); // ✅ stop loading
     }
   };
 
@@ -108,7 +112,9 @@ export default function CareerPath() {
             />
           </div>
 
-          <button type="submit">Find Courses</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Find Courses"}
+          </button>
         </form>
       </div>
     </div>
