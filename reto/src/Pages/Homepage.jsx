@@ -9,12 +9,36 @@ const HomePage = () => {
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
   const [projects, setProjects] = useState([]);
-  const name = localStorage.getItem("userName") || "Usuario";
+  const [name, setName] = useState(localStorage.getItem("userName") || "Usuario");
 
   useEffect(() => {
+    fetchUserName(); // Obtener el nombre
     fetchCertifications();
     fetchProjects();
   }, []);
+
+  const fetchUserName = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch("https://pathfinder-back-hnoj.onrender.com/employees/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+      });
+
+      if (!response.ok) throw new Error("Error al obtener el nombre del usuario");
+
+      const data = await response.json();
+      if (!data.error && data.name) {
+        localStorage.setItem("userName", data.name);
+        setName(data.name);
+      }
+    } catch (error) {
+      console.error("Error obteniendo el nombre de usuario:", error);
+    }
+  };
 
   const fetchCertifications = async () => {
     try {
@@ -61,49 +85,46 @@ const HomePage = () => {
   const fetchProjects = async () => {
     try {
       const token = localStorage.getItem("authToken");
-  
+
       const apiUrl = new URL("https://pathfinder-back-hnoj.onrender.com/employees/projects");
-      apiUrl.searchParams.append('status', 'true'); // Solo proyectos activos
-  
+      apiUrl.searchParams.append("status", "true"); // Solo proyectos activos
+
       const response = await fetch(apiUrl.toString(), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           token: token,
-        }
+        },
       });
-  
+
       if (!response.ok) {
         throw new Error("Error en la solicitud");
       }
-  
+
       const data = await response.json();
-  
+
       if (data.error) {
         throw new Error(data.error);
       }
-  
-      const formattedProjects = data.rolesOfEmployee.map(role => ({
+
+      const formattedProjects = data.rolesOfEmployee.map((role) => ({
         id: role.id,
         name: role.Project.name,
         platform: role.name, // Rol como "plataforma"
-        percentage: role.Assigned?.status ? 50: 0,
-        status: role.Project.status
+        percentage: role.Assigned?.status ? 50 : 0,
+        status: role.Project.status,
       }));
-  
-      // Filtrar y actualizar el estado de proyectos
-      const activeProjects = formattedProjects.filter(project => project.status);
-      setProjects(activeProjects); // <--- ESTA LÍNEA FALTABA
-  
+
+      const activeProjects = formattedProjects.filter((project) => project.status);
+      setProjects(activeProjects);
     } catch (error) {
       console.error("Error obteniendo proyectos:", error);
     }
   };
-  
 
   return (
     <>
-      <Header 
+      <Header
         title={`Welcome, ${name}`}
         subtitle="Check your notifications and active certifications"
         notifications={notifications}
