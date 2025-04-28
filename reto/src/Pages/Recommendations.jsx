@@ -27,12 +27,10 @@ export default function Recommendations() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load AI-recommended courses
     const aiCourses =
       JSON.parse(localStorage.getItem("recommendedCourses")) || [];
     setRecommendedCourses(aiCourses);
 
-    // Load added courses
     const savedCourses = JSON.parse(localStorage.getItem("addedCourses")) || [];
     setAddedCourses(savedCourses);
   }, []);
@@ -102,13 +100,13 @@ export default function Recommendations() {
                 <div
                   className={`course-card ${isActive ? "active" : ""}`}
                   style={{
-                    backgroundImage: `url(/Img/${
+                    backgroundImage: `url("/Img/${
                       decodeURIComponent(course.imgUrl) || "default.jpg"
-                    })`,
+                    }")`,
                   }}
                   onClick={() => {
-                    setSelectedCourse(course); // ⬅️ sets modal content
-                    setShowCourseModal(true); // ⬅️ opens modal
+                    setSelectedCourse(course);
+                    setShowCourseModal(true);
                   }}
                 />
               )}
@@ -130,7 +128,7 @@ export default function Recommendations() {
         </button>
       </div>
 
-      {/* Modal */}
+      {/* Confirm Navigation Modal */}
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -157,23 +155,49 @@ export default function Recommendations() {
         </Modal.Footer>
       </Modal>
 
-      {/* New Course Info Modal */}
+      {/* Course Detail Modal */}
       <Modal
         show={showCourseModal}
         onHide={() => setShowCourseModal(false)}
-        dialogClassName="course-detail-modal" // ← custom class
+        dialogClassName="course-detail-modal"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedCourse?.name}</Modal.Title>
-        </Modal.Header>
         <Modal.Body>
-          <img
-            src={`/Img/${decodeURIComponent(selectedCourse?.imgUrl)}`}
-            alt={selectedCourse?.name}
-          />
-          <div className="course-description">
-            <p>{selectedCourse?.description}</p>
-            {/* Optionally add more info like rating, instructor, etc */}
+          <div className="course-detail-layout">
+            <div className="course-info">
+              <h1 className="course-title">{selectedCourse?.name}</h1>
+              <p className="course-description-text">
+                {selectedCourse?.description}
+              </p>
+              <div className="course-extra">
+                <p>
+                  <strong>Created by:</strong>{" "}
+                  {selectedCourse?.instructor || "Unknown"}
+                </p>
+                <p>
+                  <strong>Language:</strong>{" "}
+                  {selectedCourse?.language || "English"}
+                </p>
+              </div>
+              <div className="rating-stars">
+                <span className="star">★</span>
+                <span className="star">★</span>
+                <span className="star">★</span>
+                <span className="star">★</span>
+                <span className="star">☆</span>
+                <span className="rating-number">(4.0)</span>
+              </div>
+              <p className="preview-text">Preview this course</p>
+            </div>
+
+            <div className="course-image-container">
+              <div className="course-image">
+                <img
+                  src={`/Img/${decodeURIComponent(selectedCourse?.imgUrl)}`}
+                  alt={selectedCourse?.name}
+                />
+                <div className="play-button">▶</div>
+              </div>
+            </div>
           </div>
         </Modal.Body>
 

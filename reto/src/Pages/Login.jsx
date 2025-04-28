@@ -46,6 +46,24 @@ export default function LoginPage() {
       const { token, level } = response.data;
       localStorage.setItem("authToken", token);
       localStorage.setItem("userLevel", level.name);
+
+      // 🟣 Fetch the user's name immediately after login
+      const nameResponse = await axios.get(
+        "https://pathfinder-back-hnoj.onrender.com/employees/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+
+      if (nameResponse.data && nameResponse.data.name) {
+        localStorage.setItem("userName", nameResponse.data.name);
+      } else {
+        console.warn("No user name received from server.");
+      }
+
       navigate("/Home");
     } catch (err) {
       console.error("Login error:", err);
