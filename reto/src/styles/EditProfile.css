@@ -1,0 +1,346 @@
+/* Estilos base */
+:root {
+  --primary-purple: rgb(164, 4, 252);
+  --light-purple: rgba(164, 4, 252, 0.1);
+  --dark-purple: rgb(120, 0, 200);
+  --secondary-color: #6c757d;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --text-color: #333;
+}
+
+body {
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  color: var(--text-color);
+  background-color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+.section-title {
+  font-family: "Poppins", sans-serif;
+}
+
+.edit-profile-container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100vh;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.edit-profile-header {
+  width: 100%;
+  background-color: white;
+  padding: 2rem 2rem 1rem 2rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.edit-profile-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+}
+
+.edit-profile-header p {
+  margin: 0.5rem 0 0;
+  color: var(--dark-color);
+  font-size: 1.05rem;
+  opacity: 0.9;
+  border-left: 4px solid var(--primary-purple);
+  padding-left: 1rem;
+  padding-top: 0.25rem;
+  margin-top: 1rem;
+  background-color: var(--light-purple);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.edit-profile-card {
+  width: 100%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.edit-profile-form {
+  padding: 3rem 2rem;
+  width: 100%;
+  margin-left: 0;
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.form-section {
+  background-color: #fafafa;
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--dark-color);
+  border-left: 3px solid var(--primary-purple);
+  padding-left: 0.6rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px var(--light-purple);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: var(--primary-purple);
+}
+
+.form-group input[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.form-group select[multiple] {
+  min-height: 150px;
+  padding: 0.5rem;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--secondary-color);
+  font-size: 0.85rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.save-button,
+.cancel-button {
+  flex: 1;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.save-button {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.save-button:hover {
+  background-color: var(--dark-purple);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(164, 4, 252, 0.3);
+}
+
+.cancel-button {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: var(--dark-purple);
+  transform: translateY(-2px);
+}
+
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: var(--dark-color);
+}
+
+.modal-content p {
+  margin-bottom: 1.5rem;
+  color: var(--secondary-color);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.confirm-button,
+.cancel-button {
+  flex: 1;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.confirm-button {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: var(--dark-purple);
+}
+
+.password-input-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding: 0.8rem;
+  padding-right: 70px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 35%;
+  transform: translateY(-50%);
+  color: var(--primary-purple);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  background: var(--light-purple);
+  border-radius: 4px;
+}
+
+.password-toggle:hover {
+  background: rgba(164, 4, 252, 0.2);
+}
+
+@media (max-width: 768px) {
+  .edit-profile-container {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .edit-profile-form {
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,90 @@
+.notification-wrapper {
+  position: relative;
+  margin-left: 15px;
+}
+
+.notification-button {
+  background: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: block;
+  outline: none;
+  transition: transform 0.2s ease;
+}
+
+.notification-button:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.bell-icon {
+  width: 26px;
+  height: 26px;
+  fill: #333;
+  display: block;
+  transition: fill 0.3s ease;
+}
+
+.notification-button:hover .bell-icon {
+  fill: #333; /* mismo color, sin cambio */
+}
+
+.notification-button.ringing .bell-icon {
+  animation: ring 0.5s ease-in-out;
+}
+
+@keyframes ring {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.notification-counter {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  font-weight: bold;
+  box-shadow: 0 0 0 2px white;
+}
+
+/* Modal sin borde ni sombra */
+.modern-notification-modal .modal-content {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px;
+}
+
+.modern-notification-modal .modal-header-custom {
+  background: #6f42c1;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modern-notification-modal .modal-title-custom {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.modern-notification-modal .close {
+  color: white;
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+

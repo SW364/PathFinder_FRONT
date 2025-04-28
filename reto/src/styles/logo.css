@@ -1,0 +1,94 @@
+/* src/styles/logo.css */
+
+:root {
+  --primary-purple: rgb(164, 4, 252);
+  --light-purple: rgba(164, 4, 252, 0.1);
+  --dark-purple: rgb(120, 0, 200);
+}
+
+/* Layout */
+.login-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.login-form-container {
+  width: 50%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.login-image-container {
+  width: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Animations */
+.logo-animation {
+  transition: transform 0.3s ease;
+}
+
+.logo-animation:hover {
+  transform: scale(1.05);
+}
+
+/* Inputs */
+.purple-input {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.purple-input:focus {
+  border-color: var(--primary-purple) !important;
+  box-shadow: 0 0 0 0.2rem rgba(164, 4, 252, 0.25) !important;
+}
+
+.purple-input:hover {
+  border-color: var(--primary-purple);
+}
+
+/* Buttons */
+.purple-btn {
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.purple-btn:hover {
+  background-color: var(--dark-purple);
+  transform: translateY(-1px);
+}
+
+.purple-outline-btn {
+  border: 1px solid var(--primary-purple);
+  color: var(--primary-purple);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.purple-outline-btn:hover {
+  background-color: var(--light-purple);
+}
+
+/* Links */
+.purple-link {
+  color: var(--primary-purple) !important;
+  transition: all 0.3s ease;
+}
+
+.purple-link:hover {
+  color: var(--dark-purple) !important;
+  text-decoration: underline !important;
+}
+
+/* Alerts */
+.purple-alert {
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-purple);
+}

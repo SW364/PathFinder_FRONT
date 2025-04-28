@@ -1,0 +1,232 @@
+/* Estilos base */
+:root {
+  --primary-purple: rgb(164, 4, 252);
+  --light-purple: rgba(164, 4, 252, 0.1);
+  --dark-purple: rgb(120, 0, 200);
+}
+
+.profile-container {
+  padding: 2rem;
+  margin-left: 0px; /* 👈 add this to create space from the sidebar */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 2rem;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  border-left: 5px solid var(--primary-purple);
+  padding-left: 1rem;
+  border-radius: 8px;
+}
+
+.profile-user-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 2.3rem;
+  margin: 0 0 0.2rem 0;
+  color: #222;
+  font-weight: 600;
+}
+
+.profile-subtext {
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: -5px;
+}
+
+.profile-role .role-badge {
+  background: #f0f0f0;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.profile-info {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  color: #666;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-item i {
+  color: #a777e3;
+}
+
+.assigned {
+  color: black;
+  font-weight: 600;
+}
+
+.edit-button {
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: var(--dark-purple);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(120, 0, 200, 0.3);
+}
+
+/* Content */
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-info-box {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-top: 4px solid var(--primary-purple);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  color: #222; /* or simply "black" */
+
+  font-weight: 600;
+}
+
+.box-header i {
+  color: #a777e3;
+  font-size: 1.2rem;
+}
+
+.box-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.box-content {
+  color: #555;
+}
+
+/* Courses */
+.course-item {
+  display: block;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.course-item:hover {
+  background-color: #f0f0f0;
+}
+
+.course-item i {
+  color: #10b981;
+  margin-right: 0.5rem;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skill-tag {
+  background-color: #eef2f5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  transition: background-color 0.3s ease;
+}
+
+.skill-tag:hover {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.empty-text a {
+  color: var(--primary-purple);
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    justify-content: center;
+  }
+
+  .profile-section {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+}

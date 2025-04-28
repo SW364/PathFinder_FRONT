@@ -1,0 +1,464 @@
+/* Recommendations.css */
+
+/* Page Container */
+.recommendation-page {
+  padding: 2rem 2rem 4rem 2rem;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Title and Decoration */
+.recommendation-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #000;
+  padding-left: 0;
+}
+
+.underline {
+  width: 160px;
+  height: 3px;
+  background: linear-gradient(to right, #9b4dff, #b388ff);
+  border-radius: 2px;
+  margin: 0 auto 2rem auto;
+}
+
+/* Swiper Carousel Container */
+.carousel-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  padding: 2rem 2rem;
+  background: #f9f9f9;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Card Appearance */
+.course-card {
+  background-size: cover;
+  background-position: center;
+  height: 360px;
+  border-radius: 16px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s;
+  transform: scale(0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  filter: grayscale(20%) brightness(0.95);
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.course-card.active {
+  transform: scale(1.05);
+  filter: none;
+  box-shadow: 0 10px 30px rgba(155, 77, 255, 0.25);
+  z-index: 10;
+}
+
+/* Swiper Arrows */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #9b4dff;
+  font-size: 18px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  opacity: 1;
+}
+
+/* Dots */
+.swiper {
+  padding-bottom: 40px;
+}
+
+.swiper-pagination {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.swiper-pagination-bullet {
+  background: #bcbcbc;
+  opacity: 0.4;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  border-radius: 50%;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.swiper-pagination-bullet-active {
+  background: #9b4dff;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* Buttons */
+.recommendation-page .add-button {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.recommendation-page .add-button button {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-page .add-button button:first-child {
+  background-color: #9b4dff;
+}
+
+.recommendation-page .add-button button:first-child:hover {
+  background-color: #7e3fe1;
+}
+
+.recommendation-page .add-button button:last-child {
+  background-color: #1a1a1a;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.recommendation-page .add-button button:last-child.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.recommendation-page .add-button button:last-child:hover {
+  background-color: #333333;
+}
+
+/* Modal Backdrop Enhancements */
+.modal-backdrop.show {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.course-detail-modal .modal-dialog {
+  width: 95vw !important; /* Make it almost full screen */
+  max-width: 1600px !important; /* Bigger on large screens */
+  height: 90vh !important; /* 🔥 New: set height to 90% of screen */
+  max-height: 90vh !important;
+  margin: 2rem auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-detail-modal .modal-content {
+  width: 100%;
+  height: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  margin: auto;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  overflow: auto;
+  background: linear-gradient(to bottom, #ffffff, #f7f7f7);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(155, 77, 255, 0.25);
+  .course-detail-modal .modal-content {
+    letter-spacing: 0.2px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.course-detail-modal .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.course-detail-modal img {
+  width: 60%; /* ⬅️ was 50% */
+  height: auto;
+  max-height: 600px; /* ⬅️ was 500px */
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.course-detail-modal .course-description {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.5rem; /* ⬅️ make text bigger */
+  color: #333;
+  text-align: justify;
+  padding: 1rem;
+}
+
+.course-detail-modal p {
+  font-size: 1.05rem;
+  color: #333;
+  text-align: justify;
+  margin: 0;
+}
+
+.course-card {
+  background-size: cover; /* ✅ Keep cover for powerful visual */
+  background-position: center;
+  height: 360px;
+  width: 100%;
+  border-radius: 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  transform: scale(0.85); /* smaller when not active */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  filter: grayscale(20%) brightness(0.95);
+  overflow: hidden;
+}
+
+.course-card:hover {
+  transform: scale(1);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.course-card.active {
+  transform: scale(1.05); /* bigger when active */
+  filter: none;
+  box-shadow: 0 12px 30px rgba(155, 77, 255, 0.25);
+  z-index: 10;
+}
+
+.course-detail-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
+}
+
+.course-detail-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 1rem; /* 🔥 smaller gap between title and text */
+  padding-top: 0; /* 🔥 no padding at top */
+}
+
+.course-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ✨ center elements horizontally */
+  margin-top: 0;
+  padding: 0 2rem;
+  text-align: center; /* ✨ title and text aligned to center */
+}
+
+.course-image {
+  position: relative; /* ⬅️ Needed for absolute positioning */
+  width: 100%;
+  max-width: 450px;
+  height: 280px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.course-image img {
+  width: 100%;
+  height: 280px; /* 🔥 Fixed height */
+  max-width: 500px; /* 🔥 Optional: max width */
+  object-fit: cover; /* 🔥 Cover entire space without distortion */
+  border-radius: 12px;
+}
+
+.course-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 0;
+  padding: 0 1rem;
+}
+
+.course-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  padding: 0;
+  white-space: nowrap;
+  color: #1a1a1a;
+  position: relative; /* Needed to anchor the underline */
+  padding-bottom: 0.5rem; /* Give space for the underline */
+}
+.course-description-text {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.6;
+}
+
+.course-extra {
+  font-size: 1rem;
+  color: #666;
+}
+
+.course-extra p {
+  margin: 0.25rem 0;
+}
+
+.course-image {
+  width: 100%;
+  max-width: 450px; /* 🔥 Max width for modal images */
+  height: 280px; /* 🔥 Fixed height */
+  background: white; /* 🔥 Background for a clean frame */
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 🔥 force all to fill the frame evenly */
+}
+
+.rating-stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.rating-stars .star {
+  font-size: 1.5rem;
+  color: #9b4dff; /* from gold to purple */
+}
+
+.rating-stars .rating-number {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  color: #666;
+}
+.course-title::after {
+  content: "";
+  position: absolute;
+  left: 0; /* <-- align to the start of the text */
+  bottom: 0; /* <-- move it to just under the text */
+  width: 60px; /* Width of the underline */
+  height: 4px; /* Thickness of the line */
+  background: linear-gradient(to right, #9b4dff, #b388ff);
+  border-radius: 3px;
+}
+
+.modal-footer button.btn-secondary {
+  background-color: #9b4dff;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(155, 77, 255, 0.3);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-footer button.btn-secondary:hover {
+  background-color: #7e3fe1;
+  box-shadow: 0 6px 18px rgba(155, 77, 255, 0.5);
+}
+
+/* 🎬 PLAY BUTTON */
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: white;
+  background: rgba(155, 77, 255, 0.7); /* semi-transparent purple */
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.play-button:hover {
+  background: rgba(123, 44, 255, 0.9); /* darker on hover */
+}
+
+.course-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.preview-text {
+  font-size: 1rem;
+  color: #9b4dff;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.8s ease-in;
+}
