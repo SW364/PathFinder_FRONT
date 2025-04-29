@@ -27,7 +27,7 @@ function Sidebar() {
     >
       <div>
         <img
-          src="/Img/Logo1.png"
+          src="/img/Logo1.png"
           alt="accenture logo"
           className="mb-4"
           style={{
