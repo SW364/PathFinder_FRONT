@@ -106,7 +106,7 @@ export default function LoginPage() {
       <div className="d-flex flex-column justify-content-center align-items-center bg-white p-5 login-form-container">
         <div className="text-center mb-4">
           <img
-            src="img/Logo1.png"
+            src="img/Logo.png"
             className="mb-4 logo-animation"
             style={{ height: "120px" }}
             alt="Company Logo"
