@@ -69,7 +69,6 @@ export default function Recommendations() {
       <h2 className="recommendation-title">Recommended Courses</h2>
       <div className="underline" />
 
-      <div className="carousel-wrapper">
         <Swiper
           modules={[Autoplay, EffectCoverflow, Navigation, Pagination]}
           effect="coverflow"
@@ -100,7 +99,7 @@ export default function Recommendations() {
                 <div
                   className={`course-card ${isActive ? "active" : ""}`}
                   style={{
-                    backgroundImage: `url("/Img/${
+                    backgroundImage: `url("/img/${
                       decodeURIComponent(course.imgUrl) || "default.jpg"
                     }")`,
                   }}
@@ -111,9 +110,9 @@ export default function Recommendations() {
                 />
               )}
             </SwiperSlide>
+
           ))}
         </Swiper>
-      </div>
 
       <div className="add-button">
         <button onClick={handleAddCourse} disabled={isAdded}>
@@ -192,7 +191,7 @@ export default function Recommendations() {
             <div className="course-image-container">
               <div className="course-image">
                 <img
-                  src={`/Img/${decodeURIComponent(selectedCourse?.imgUrl)}`}
+                  src={`/img/${decodeURIComponent(selectedCourse?.imgUrl)}`}
                   alt={selectedCourse?.name}
                 />
                 <div className="play-button">▶</div>
