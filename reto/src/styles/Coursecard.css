@@ -87,7 +87,7 @@
 }
 .view {
   background-color: var(--accent-color);
-  border-color: var (--accent-color);
+  border-color: var(--dark-purple);
   color: white;
 }
 .view:hover {

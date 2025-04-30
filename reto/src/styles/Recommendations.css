@@ -42,7 +42,8 @@
 .course-card {
   background-size: cover;
   background-position: center;
-  height: 80px;
+  height: 60px;
+  width: 100%;
   border-radius: 16px;
   display: flex;
   align-items: flex-end;
