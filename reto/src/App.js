@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 
 import { UserProvider } from "./helpers/UserContext";
 import Layout from "./components/Layout";
@@ -13,9 +18,17 @@ import LoginPage from "./Pages/Login";
 import Recommendations from "./Pages/Recommendations";
 import HomePage from "./Pages/Homepage";
 
+// 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [token, setToken] = useState(() => localStorage.getItem("authToken"));
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setToken(token);
+    setCheckingAuth(false);
+  }, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -24,26 +37,28 @@ function AuthWrapper({ children }) {
         setToken(newToken);
       } else {
         setToken(null);
-        navigate("/"); // Redirige a login
+        navigate("/"); // Redirige si el token se elimina
       }
     };
 
     window.addEventListener("storage", handleStorageChange);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, [navigate]);
 
   useEffect(() => {
-    if (!token) {
+    if (!checkingAuth && !token && window.location.pathname !== "/") {
       navigate("/");
     }
-  }, [token, navigate]);
+  }, [token, checkingAuth, navigate]);
+
+  if (checkingAuth) return null; // o puedes mostrar un spinner aquí
 
   return children;
 }
 
+// APP PRINCIPAL
 function App() {
   return (
     <Router>
