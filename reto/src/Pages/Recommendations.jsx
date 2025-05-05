@@ -114,7 +114,14 @@ export default function Recommendations() {
           ))}
         </Swiper>
       </div>
+// Id_6
+// Este botón ejecutará la lógica para agregar un curso recomendado al perfil del usuario.
 
+// Id_6
+// Cuando el usuario haga clic, se llamará a un endpoint POST para guardar el curso como "agregado".
+
+// Id_6
+// Se debe 
       <div className="add-button">
         <button onClick={handleAddCourse} disabled={isAdded}>
           {isAdded ? "Added" : "Add"}
@@ -210,3 +217,8 @@ export default function Recommendations() {
     </div>
   );
 }
+
+// Id_8
+// Función para obtener la lista de cursos recomendados desde el backend (GET /courses).
+// Esta llamada debe ejecutarse al cargar el componente CourseCard y actualizar el estado de cursos.
+
