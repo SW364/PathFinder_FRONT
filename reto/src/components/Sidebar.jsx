@@ -56,7 +56,7 @@ function Sidebar() {
 
           <li className="sidebar-link-container">
             <Link to="/career" className="sidebar-link fs-5 fw-light">
-              Career path
+              Career Path
             </Link>
           </li>
 

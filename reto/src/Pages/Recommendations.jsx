@@ -99,7 +99,7 @@ export default function Recommendations() {
                 <div
                   className={`course-card ${isActive ? "active" : ""}`}
                   style={{
-                    backgroundImage: `url("/img/${
+                    backgroundImage: `url("img/${
                       decodeURIComponent(course.imgUrl) || "default.jpg"
                     }")`,
                   }}
@@ -114,6 +114,11 @@ export default function Recommendations() {
           ))}
         </Swiper>
 
+// Id_6
+// Cuando el usuario haga clic, se llamará a un endpoint POST para guardar el curso como "agregado".
+
+// Id_6
+// Se debe 
       <div className="add-button">
         <button onClick={handleAddCourse} disabled={isAdded}>
           {isAdded ? "Added" : "Add"}
@@ -209,3 +214,8 @@ export default function Recommendations() {
     </div>
   );
 }
+
+// Id_8
+// Función para obtener la lista de cursos recomendados desde el backend (GET /courses).
+// Esta llamada debe ejecutarse al cargar el componente CourseCard y actualizar el estado de cursos.
+
