@@ -66,13 +66,12 @@ function Sidebar() {
             </Link>
           </li>
 
-          {isAdvancedUser && (
-            <li className="sidebar-link-container">
-              <Link to="/assignation" className="sidebar-link fs-5 fw-light">
-                Assignation
-              </Link>
-            </li>
-          )}
+          <li className="sidebar-link-container">
+            <Link to="/assignation" className="sidebar-link fs-5 fw-light">
+              Assignation
+            </Link>
+          </li>
+
 
           <li className="sidebar-link-container">
             <Link to="/profile" className="sidebar-link fs-5 fw-light">

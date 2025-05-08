@@ -17,6 +17,7 @@ import Courses from "./Pages/Courses";
 import LoginPage from "./Pages/Login";
 import Recommendations from "./Pages/Recommendations";
 import HomePage from "./Pages/Homepage";
+import { AllCourses } from "./Pages/AllCourses";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -79,6 +80,14 @@ function App() {
               element={
                 <Layout>
                   <CareerPath />
+                </Layout>
+              }
+            />
+            <Route
+              path="/allcourses"
+              element={
+                <Layout>
+                  <AllCourses/>
                 </Layout>
               }
             />
