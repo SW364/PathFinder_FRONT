@@ -114,11 +114,7 @@ export default function Recommendations() {
           ))}
         </Swiper>
 
-// Id_6
-// Cuando el usuario haga clic, se llamará a un endpoint POST para guardar el curso como "agregado".
 
-// Id_6
-// Se debe 
       <div className="add-button">
         <button onClick={handleAddCourse} disabled={isAdded}>
           {isAdded ? "Added" : "Add"}
