@@ -16,15 +16,7 @@ function Sidebar() {
   const isAdvancedUser = level === "TFS" || level === "Manager";
 
   return (
-    <div
-      className="text-white d-flex flex-column justify-content-between pt-4 pb-4"
-      style={{
-        width: "250px",
-        minHeight: "100vh",
-        backgroundColor: "#000000",
-        flexShrink: 0,
-      }}
-    >
+    <div className="sidebar-container text-white d-flex flex-column">
       <div>
         <img
           src="/Img/Logo1.png"
@@ -82,12 +74,14 @@ function Sidebar() {
         </ul>
       </div>
 
-      <button
-        className="btn btn-outline-light mt-4 w-75 mx-auto fw-bold"
-        onClick={handleLogout}
-      >
-        Log out
-      </button>
+      <div className="logout-button-container mt-auto p-3">
+        <button
+          className="btn btn-outline-light w-100 fw-bold"
+          onClick={handleLogout}
+        >
+          Log out
+        </button>
+      </div>
     </div>
   );
 }

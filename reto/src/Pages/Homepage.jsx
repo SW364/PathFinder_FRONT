@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap"; // ⬅️ Removed Container
 import Header from "../components/Header";
 import CertificationCard from "../components/CertificationCard";
 import Projects from "../components/Projects";
@@ -9,10 +9,12 @@ const HomePage = () => {
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [name, setName] = useState(localStorage.getItem("userName") || "Usuario");
+  const [name, setName] = useState(
+    localStorage.getItem("userName") || "Usuario"
+  );
 
   useEffect(() => {
-    fetchUserName(); // Obtener el nombre
+    fetchUserName();
     fetchCertifications();
     fetchProjects();
   }, []);
@@ -20,15 +22,19 @@ const HomePage = () => {
   const fetchUserName = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch("https://pathfinder-back-hnoj.onrender.com/employees/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          token,
-        },
-      });
+      const response = await fetch(
+        "https://pathfinder-back-hnoj.onrender.com/employees/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            token,
+          },
+        }
+      );
 
-      if (!response.ok) throw new Error("Error al obtener el nombre del usuario");
+      if (!response.ok)
+        throw new Error("Error al obtener el nombre del usuario");
 
       const data = await response.json();
       if (!data.error && data.name) {
@@ -44,12 +50,15 @@ const HomePage = () => {
     try {
       const token = localStorage.getItem("authToken");
 
-      const response = await fetch("https://pathfinder-back-hnoj.onrender.com/employees/certifications", {
-        headers: {
-          "Content-Type": "application/json",
-          token: token,
-        },
-      });
+      const response = await fetch(
+        "https://pathfinder-back-hnoj.onrender.com/employees/certifications",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Error en la solicitud");
 
@@ -86,8 +95,10 @@ const HomePage = () => {
     try {
       const token = localStorage.getItem("authToken");
 
-      const apiUrl = new URL("https://pathfinder-back-hnoj.onrender.com/employees/projects");
-      apiUrl.searchParams.append("status", "true"); // Solo proyectos activos
+      const apiUrl = new URL(
+        "https://pathfinder-back-hnoj.onrender.com/employees/projects"
+      );
+      apiUrl.searchParams.append("status", "true");
 
       const response = await fetch(apiUrl.toString(), {
         method: "GET",
@@ -97,25 +108,23 @@ const HomePage = () => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
+      if (!response.ok) throw new Error("Error en la solicitud");
 
       const data = await response.json();
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
+      if (data.error) throw new Error(data.error);
 
       const formattedProjects = data.rolesOfEmployee.map((role) => ({
         id: role.id,
         name: role.Project.name,
-        platform: role.name, // Rol como "plataforma"
+        platform: role.name,
         percentage: role.Assigned?.status ? 50 : 0,
         status: role.Project.status,
       }));
 
-      const activeProjects = formattedProjects.filter((project) => project.status);
+      const activeProjects = formattedProjects.filter(
+        (project) => project.status
+      );
       setProjects(activeProjects);
     } catch (error) {
       console.error("Error obteniendo proyectos:", error);
@@ -130,7 +139,7 @@ const HomePage = () => {
         notifications={notifications}
       />
 
-      <Container className="homepage-container fade-in">
+      <div className="homepage-container fade-in">
         <Row className="mt-4">
           <Col>
             <Projects projects={projects} />
@@ -149,7 +158,7 @@ const HomePage = () => {
             </Col>
           ))}
         </Row>
-      </Container>
+      </div>
     </>
   );
 };
