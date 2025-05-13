@@ -131,6 +131,9 @@ const HomePage = () => {
     }
   };
 
+  //id_9
+  //Funcion para obtener la lista de certificaciones desde el backend (GET /certifications).
+  // Esta llamada debe ejecutarse al cargar el componente Notifications con la condicion de que la fecha de expirarcion sea menor a 7 dias.
   return (
     <>
       <Header
@@ -164,3 +167,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+// id_8
+// Función para obtener la lista de cursos recomendados desde el backend (GET /courses).
+// Esta llamada debe ejecutarse al cargar el componente CourseCard y actualizar el estado de cursos.
+// Función para agregar un curso al perfil del usuario (POST).
+// Se llamará cuando el usuario haga clic en el botón "Add".

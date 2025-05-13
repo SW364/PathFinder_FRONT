@@ -106,7 +106,7 @@ export default function LoginPage() {
       <div className="d-flex flex-column justify-content-center align-items-center bg-white p-5 login-form-container">
         <div className="text-center mb-4">
           <img
-            src="Img/logo.png"
+            src="img/Logo.png"
             className="mb-4 logo-animation"
             style={{ height: "120px" }}
             alt="Company Logo"
@@ -247,7 +247,7 @@ export default function LoginPage() {
 
       <div
         className="login-image-container position-relative"
-        style={{ backgroundImage: 'url("Img/login_img.png")' }}
+        style={{ backgroundImage: 'url("img/login_img.png")' }}
       >
         <div className="position-absolute bottom-0 start-0 p-4 text-white">
           <h4>Horizons</h4>

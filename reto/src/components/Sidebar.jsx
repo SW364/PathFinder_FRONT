@@ -19,7 +19,7 @@ function Sidebar() {
     <div className="sidebar-container text-white d-flex flex-column">
       <div>
         <img
-          src="/Img/Logo1.png"
+          src="/img/Logo1.png"
           alt="accenture logo"
           className="mb-4"
           style={{
@@ -48,7 +48,7 @@ function Sidebar() {
 
           <li className="sidebar-link-container">
             <Link to="/career" className="sidebar-link fs-5 fw-light">
-              Career path
+              Career Path
             </Link>
           </li>
 
@@ -58,13 +58,12 @@ function Sidebar() {
             </Link>
           </li>
 
-          {isAdvancedUser && (
-            <li className="sidebar-link-container">
-              <Link to="/assignation" className="sidebar-link fs-5 fw-light">
-                Assignation
-              </Link>
-            </li>
-          )}
+          <li className="sidebar-link-container">
+            <Link to="/assignation" className="sidebar-link fs-5 fw-light">
+              Assignation
+            </Link>
+          </li>
+
 
           <li className="sidebar-link-container">
             <Link to="/profile" className="sidebar-link fs-5 fw-light">
