@@ -69,7 +69,6 @@ export default function Recommendations() {
       <h2 className="recommendation-title">Recommended Courses</h2>
       <div className="underline" />
 
-      <div className="carousel-wrapper">
         <Swiper
           modules={[Autoplay, EffectCoverflow, Navigation, Pagination]}
           effect="coverflow"
@@ -111,17 +110,11 @@ export default function Recommendations() {
                 />
               )}
             </SwiperSlide>
+
           ))}
         </Swiper>
-      </div>
-// Id_6
-// Este botón ejecutará la lógica para agregar un curso recomendado al perfil del usuario.
 
-// Id_6
-// Cuando el usuario haga clic, se llamará a un endpoint POST para guardar el curso como "agregado".
 
-// Id_6
-// Se debe 
       <div className="add-button">
         <button onClick={handleAddCourse} disabled={isAdded}>
           {isAdded ? "Added" : "Add"}

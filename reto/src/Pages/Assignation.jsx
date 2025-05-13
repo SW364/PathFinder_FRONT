@@ -1,9 +1,17 @@
 import React from "react";
+import {UserView} from "../components/UserView";
+import { TfsView } from "../components/TfsView";
+import { ManagerView } from "../components/ManagerView";
+
 
 export default function Assignation() {
+  const level = localStorage.getItem("userLevel");
+  //const token = localStorage.getItem("authToken");
   return (
     <div>
-      <h1>Assignation</h1>
+      {level === "Usuario" && <UserView />}
+      {level === "TFS" && <TfsView />}
+      {level === "Manager" && <ManagerView />}
     </div>
   );
 }
