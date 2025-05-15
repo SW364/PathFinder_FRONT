@@ -18,6 +18,7 @@ import LoginPage from "./Pages/Login";
 import Recommendations from "./Pages/Recommendations";
 import HomePage from "./Pages/Homepage";
 import { AllCourses } from "./Pages/AllCourses";
+import CreateProjectPage from "./Pages/CreateProject";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -104,6 +105,14 @@ function App() {
               element={
                 <Layout>
                   <Profile />
+                </Layout>
+              }
+            />
+             <Route
+              path="/createproject"
+              element={
+                <Layout>
+                  <CreateProjectPage/>
                 </Layout>
               }
             />

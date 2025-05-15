@@ -1,11 +1,12 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Sidebar.css";
 
 function Sidebar({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
-  const level = localStorage.getItem("userLevel");
+  const level = localStorage.getItem("userLevel"); // "Usuario", "TFS", or "Manager"
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");

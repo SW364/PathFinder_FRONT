@@ -145,16 +145,17 @@ const HomePage = () => {
         collapsed={collapsed}
         setCollapsed={setCollapsed}
       />
-
       <div className="homepage-container fade-in">
         <Row className="mt-4">
           <Col>
             <Projects projects={projects} />
           </Col>
         </Row>
+        <div className="section-header-container">
+          <h4 className="section-header">Certifications</h4>
+        </div>
 
-        <Row className="mt-4">
-          <h4 className="mb-3">Certifications</h4>
+        <Row className="mt-2">
           {certs.map((cert) => (
             <Col key={cert.id} md={6} className="mb-3">
               <CertificationCard

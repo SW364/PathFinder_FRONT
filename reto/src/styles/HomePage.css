@@ -56,3 +56,8 @@
     transform: translateY(0);
   }
 }
+.section-header {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px; /* Ajusta según lo que quieras mover a la derecha */
+}
