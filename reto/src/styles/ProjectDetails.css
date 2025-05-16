@@ -1,4 +1,4 @@
-.goal-main {
+.project-details-page .goal-main {
     max-width: 500px;
     margin-right: auto;
     z-index: 1;
@@ -47,6 +47,20 @@ button:active {
   backdrop-filter: blur(5px);
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+
+.modal-dialog {
+  max-width: 800px;
+}
+
+
+
+.custom-modal-body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+
 
 
 
