@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Container, Spinner, Alert, Row, Col, Badge, Card,
-  Form, Modal, Button
+  Container,
+  Spinner,
+  Alert,
+  Row,
+  Col,
+  Card,
+  Modal,
+  Button
 } from 'react-bootstrap';
 import {
-  FaHourglassStart, FaHourglassEnd, FaCalendarAlt,
-  FaCheckCircle, FaTimesCircle, FaPlus, FaMinus
+  FaHourglassStart,
+  FaHourglassEnd,
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaPlus,
+  FaMinus
 } from 'react-icons/fa';
-import "../styles/ProjectDetails.css";
+
+import '../styles/ProjectDetails.css';
 import '../styles/StaffCard.css';
 import StaffCardProject from '../components/StaffCardProject';
 import SearchBar from '../components/SearchBar';
 
 const ProjectDetail = () => {
   const { id } = useParams();
+
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,6 +36,11 @@ const ProjectDetail = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [candidates, setCandidates] = useState([]);
+  const [candidateFilter, setCandidateFilter] = useState('');
+  const [confirmingEmployee, setConfirmingEmployee] = useState(null);
+  const [aiSuggestions, setAISuggestions] = useState([]);
+  const [aiLoading, setAiLoading] = useState(false);
+
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -43,46 +61,104 @@ const ProjectDetail = () => {
     fetchProject();
   }, [id]);
 
-  const handleAssignClick = async (employeeId) => {
-    if (!selectedRole) {
-      alert("No role selected");
-      return;
+  const fetchCandidates = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch('https://pathfinder-back-hnoj.onrender.com/employees/staff', {
+        headers: { 'Content-Type': 'application/json', token },
+      });
+      const data = await res.json();
+      if (Array.isArray(data.staff)) setCandidates(data.staff);
+      else console.error('No candidates found');
+    } catch (err) {
+      console.error('Error fetching candidates', err);
     }
+  };
+
+  const fetchAISuggestions = async (roleId, roleName) => {
+    try {
+      setAISuggestions([]);
+      const token = localStorage.getItem('authToken');
+
+      const aiRes = await fetch(`https://pathfinder-back-hnoj.onrender.com/ai/staff?roleId=${roleId}`, {
+        headers: { 'Content-Type': 'application/json', token },
+      });
+      const aiData = await aiRes.json();
+
+      const normalize = (str) => str.trim().toLowerCase();
+
+      // Encuentra la clave correcta del rol
+      const roleKey = Object.keys(aiData).find(
+        key => normalize(key) === normalize(roleName)
+      );
+
+      const aiSuggestionsRaw = roleKey ? aiData[roleKey] : [];
+      const suggestedIds = aiSuggestionsRaw.map(emp => emp.id);
+
+      // Carga todos los empleados y filtra
+      const allRes = await fetch(`https://pathfinder-back-hnoj.onrender.com/employees/staff`, {
+        headers: { 'Content-Type': 'application/json', token },
+      });
+      const allData = await allRes.json();
+
+      const detailedSuggestions = allData.staff.filter(emp =>
+        suggestedIds.includes(emp.id)
+      );
+
+      setAISuggestions(detailedSuggestions);
+    } catch (err) {
+      console.error('Error fetching AI suggestions', err);
+      setAISuggestions([]);
+    }
+  };
+
+
+  const handleAssignClick = async () => {
     const token = localStorage.getItem('authToken');
-    if (!token) {
-      alert("No auth token found");
-      return;
-    }
-  
+    if (!token || !selectedRole || !confirmingEmployee) return;
+
     try {
       const res = await fetch('https://pathfinder-back-hnoj.onrender.com/projects/assign', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token,
-        },
+        headers: { 'Content-Type': 'application/json', token },
         body: JSON.stringify({
           roleId: selectedRole.id || selectedRole._id,
-          employeeId,
+          employeeId: confirmingEmployee.id || confirmingEmployee._id,
         }),
       });
-  
+
       const data = await res.json();
-  
       if (data.error) {
         alert(`Error: ${data.error}`);
       } else if (data.msg) {
         alert(data.msg);
-        setShowModal(false);
-        // Aquí refresca proyecto si quieres
+
+        const roleId = selectedRole.id || selectedRole._id;
+
+        setProject(prev => {
+          const updatedRoles = (prev.Roles || []).map(role => {
+            const currentRoleId = role.id || role._id;
+            if (currentRoleId === roleId) {
+              return {
+                ...role,
+                rolesByEmployee: [confirmingEmployee]
+              };
+            }
+            return role;
+          });
+          return { ...prev, Roles: updatedRoles };
+        });
+
+        handleCloseModal();
       } else {
-        alert("Unexpected response");
+        alert('Unexpected response');
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to assign employee");
+      alert('Failed to assign employee');
     }
-  };  
+  };
+
 
   const handleRemoveClick = (role) => {
     setSelectedRole(role);
@@ -93,18 +169,25 @@ const ProjectDetail = () => {
   const handleAddClick = async (role) => {
     setSelectedRole(role);
     setModalType('add');
-    try {
-      const token = localStorage.getItem('authToken');
-      const res = await fetch('https://pathfinder-back-hnoj.onrender.com/employees/staff', {
-        headers: { 'Content-Type': 'application/json', token },
-      });
-      const data = await res.json();
-      if (Array.isArray(data.staff)) setCandidates(data.staff);
-      else console.error("No candidates found");
-    } catch (err) {
-      console.error("Error fetching candidates", err);
-    }
+    setCandidateFilter('');
+    await fetchCandidates();
     setShowModal(true);
+  };
+
+  const handleAISuggestionsClick = async (role) => {
+    setSelectedRole(role);
+    setModalType('aiSuggestions');
+    setAISuggestions([]);
+    setAiLoading(true);      
+    setShowModal(true);     
+    await fetchAISuggestions(role.id || role._id, role.name);
+    setAiLoading(false);  
+  };
+
+
+  const handleCandidateClick = (employee) => {
+    setConfirmingEmployee(employee);
+    setModalType('confirmAssign');
   };
 
   const handleCloseModal = () => {
@@ -112,10 +195,12 @@ const ProjectDetail = () => {
     setSelectedRole(null);
     setModalType(null);
     setCandidates([]);
+    setCandidateFilter('');
+    setConfirmingEmployee(null);
+    setAISuggestions([]);
   };
 
   const handleConfirmRemove = () => {
-    // Implementar lógica para remover al empleado del rol
     setShowModal(false);
   };
 
@@ -146,6 +231,10 @@ const ProjectDetail = () => {
 
   const filteredRoles = (project.Roles || []).filter(({ name }) =>
     name.toLowerCase().includes(roleFilter.toLowerCase())
+  );
+
+  const filteredCandidates = candidates.filter((c) =>
+    c.name?.toLowerCase().includes(candidateFilter.toLowerCase())
   );
 
   return (
@@ -218,20 +307,29 @@ const ProjectDetail = () => {
 
                     {assignedEmployee ? (
                       <Button
-                        variant="outline-danger"
+                        variant="danger" 
                         className="d-flex align-items-center gap-2"
                         onClick={() => handleRemoveClick(role)}
                       >
                         <FaMinus /> Remove from role
                       </Button>
                     ) : (
-                      <Button
-                        variant="outline-success"
-                        className="d-flex align-items-center gap-2"
-                        onClick={() => handleAddClick(role)}
-                      >
-                        <FaPlus /> Add to role
-                      </Button>
+                      <div className="d-flex gap-2 flex-wrap">
+                        <Button
+                          variant="success" 
+                          className="d-flex align-items-center gap-2"
+                          onClick={() => handleAddClick(role)}
+                        >
+                          <FaPlus /> Add to role
+                        </Button>
+                        <Button
+                          variant="accenture"
+                          className="d-flex align-items-center gap-2"
+                          onClick={() => handleAISuggestionsClick(role)}
+                        >
+                          <FaPlus /> AI Suggestions
+                        </Button>
+                      </div>
                     )}
                   </Card.Body>
                 </Card>
@@ -245,16 +343,13 @@ const ProjectDetail = () => {
         )}
       </Row>
 
-      <Modal
-        show={showModal}
-        onHide={handleCloseModal}
-        centered
-        dialogClassName="custom-modal-width"
-      >
+      <Modal show={showModal} onHide={handleCloseModal} centered dialogClassName="custom-modal-width">
         <Modal.Header closeButton>
           <Modal.Title>
             {modalType === 'remove'
               ? `Remove from ${selectedRole?.name}`
+              : modalType === 'confirmAssign'
+              ? `Confirm assignment`
               : `Add to ${selectedRole?.name}`}
           </Modal.Title>
         </Modal.Header>
@@ -265,29 +360,59 @@ const ProjectDetail = () => {
               Are you sure you want to remove the employee from the{' '}
               <strong>{selectedRole?.name}</strong> role?
             </p>
+          ) : modalType === 'confirmAssign' ? (
+            <p>
+              Are you sure you want to assign{' '}
+              <strong>{confirmingEmployee?.name}</strong> to{' '}
+              <strong>{selectedRole?.name}</strong>?
+            </p>
           ) : (
             <>
-              <p>Select a candidate for <strong>{selectedRole?.name}</strong>:</p>
-              {candidates.length > 0 ? (
-  <div
-    style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-      gap: '16px',
-      maxHeight: '375px',
-      overflowY: 'auto'
-    }}
-  >
-    {candidates.map((emp) => (
-      <StaffCardProject
-        key={emp.id || emp._id}
-        staff={emp}
-        onAssign={() => handleAssignClick(emp.id || emp._id)}
-      />
-    ))}
+              <div className="d-flex align-items-center mb-3 flex-wrap gap-3">
+                <p className="mb-0">
+                  {modalType === 'aiSuggestions'
+                    ? 'AI Suggested candidates for '
+                    : `Select a candidate for `}
+                  <strong>{selectedRole?.name}</strong>:
+                </p>
+                {modalType === 'add' && (
+                  <SearchBar
+                    placeholder="Search candidates..."
+                    value={candidateFilter}
+                    onChange={(e) => setCandidateFilter(e.target.value)}
+                  />
+                )}
+              </div>
+              {modalType === 'aiSuggestions' && aiLoading ? (
+  <div className="text-center my-4">
+    <Spinner animation="border" variant="primary" />
+    <p className="mt-2">Loading AI suggestions...</p>
   </div>
 ) : (
-  <p>No available candidates</p>
+  <>
+    {(modalType === 'add' ? filteredCandidates : aiSuggestions).length > 0 ? (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+          gap: '16px',
+          maxHeight: '375px',
+          overflowY: 'auto'
+        }}
+      >
+        {(modalType === 'add' ? filteredCandidates : aiSuggestions).map((emp) => (
+          <StaffCardProject
+            key={emp.id || emp._id}
+            staff={emp}
+            onAssign={() => handleCandidateClick(emp)}
+            showDetails={false}
+          />
+        ))}
+      </div>
+    ) : (
+      <p>No available candidates</p>
+    )}
+  </>
 )}
 
             </>
@@ -303,6 +428,11 @@ const ProjectDetail = () => {
               Remove
             </Button>
           )}
+          {modalType === 'confirmAssign' && (
+            <Button variant="success" onClick={handleAssignClick}>
+              Confirm Assign
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </Container>
@@ -310,3 +440,4 @@ const ProjectDetail = () => {
 };
 
 export default ProjectDetail;
+

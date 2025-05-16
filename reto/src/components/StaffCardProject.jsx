@@ -6,7 +6,6 @@ const StaffCardProject = ({ staff, onAssign }) => {
   const [expanded, setExpanded] = useState(false);
 
   const {
-    id,
     name,
     email,
     capability,
