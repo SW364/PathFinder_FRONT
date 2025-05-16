@@ -13,7 +13,6 @@ import '../styles/StaffCard.css';
 import StaffCardProject from '../components/StaffCardProject';
 import SearchBar from '../components/SearchBar';
 
-
 const ProjectDetail = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
@@ -43,6 +42,47 @@ const ProjectDetail = () => {
     };
     fetchProject();
   }, [id]);
+
+  const handleAssignClick = async (employeeId) => {
+    if (!selectedRole) {
+      alert("No role selected");
+      return;
+    }
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert("No auth token found");
+      return;
+    }
+  
+    try {
+      const res = await fetch('https://pathfinder-back-hnoj.onrender.com/projects/assign', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          token,
+        },
+        body: JSON.stringify({
+          roleId: selectedRole.id || selectedRole._id,
+          employeeId,
+        }),
+      });
+  
+      const data = await res.json();
+  
+      if (data.error) {
+        alert(`Error: ${data.error}`);
+      } else if (data.msg) {
+        alert(data.msg);
+        setShowModal(false);
+        // Aquí refresca proyecto si quieres
+      } else {
+        alert("Unexpected response");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to assign employee");
+    }
+  };  
 
   const handleRemoveClick = (role) => {
     setSelectedRole(role);
@@ -75,7 +115,7 @@ const ProjectDetail = () => {
   };
 
   const handleConfirmRemove = () => {
-    console.log(`Removing employee from role: ${selectedRole}`);
+    // Implementar lógica para remover al empleado del rol
     setShowModal(false);
   };
 
@@ -108,151 +148,165 @@ const ProjectDetail = () => {
     name.toLowerCase().includes(roleFilter.toLowerCase())
   );
 
-
-
   return (
     <Container className="mt-5">
       <Row className="align-items-center mb-4">
         <Col md={10}>
           <h2 className="mb-1">{project.name}</h2>
-          <p className="text-muted mb-0">Client: <strong>{project.client || 'Unassigned'}</strong></p>
+          <p className="text-muted mb-0">
+            Client: <strong>{project.client || 'Unassigned'}</strong>
+          </p>
         </Col>
       </Row>
 
       <Card className="mb-4 shadow-sm">
         <Card.Body>
           <p className="text-muted mb-4">Description: {project.description}</p>
+
           <Row className="mb-2 align-items-center">
             <Col xs={1}><FaHourglassStart style={{ color: '#6f42c1' }} /></Col>
             <Col><strong>Start Date:</strong> {project.startDate || 'Not defined'}</Col>
           </Row>
+
           <Row className="mb-2 align-items-center">
             <Col xs={1}><FaHourglassEnd style={{ color: '#6f42c1' }} /></Col>
             <Col><strong>End Date:</strong> {project.endDate || 'In progress'}</Col>
           </Row>
+
           <Row className="align-items-center">
             <Col xs={1}><FaCalendarAlt style={{ color: '#6f42c1' }} /></Col>
             <Col>
               <strong>Status:</strong>{' '}
               {project.status ? (
-                <span className="text-success"><FaCheckCircle className="me-1" />Active</span>
+                <span className="text-success">
+                  <FaCheckCircle className="me-1" /> Active
+                </span>
               ) : (
-                <span className="text-muted"><FaTimesCircle className="me-1" />Inactive</span>
+                <span className="text-muted">
+                  <FaTimesCircle className="me-1" /> Inactive
+                </span>
               )}
             </Col>
           </Row>
         </Card.Body>
       </Card>
 
-      <div className="project-details-page" style={{ display: 'flex', alignItems: 'center', gap: '25px' }}>
+      <div className="project-details-page d-flex align-items-center gap-4">
         <h4>Assigned Roles</h4>
         <SearchBar
           placeholder="Search roles..."
           value={roleFilter}
-          onChange={e => setRoleFilter(e.target.value)}
+          onChange={(e) => setRoleFilter(e.target.value)}
         />
-
       </div>
 
       <Row className="mt-3">
-      {filteredRoles.length > 0 ? filteredRoles.map(({ role, description, employee }, idx) => (
-  <Col key={idx} md={4} className="mb-3">
-    <Card className="h-100 shadow-sm">
-      <Card.Body>
-        <h5>{role}</h5>
-        <p className="text-muted">{description}</p>
-        <p><strong>Employee:</strong>{' '}
-          {employee ? employee : <span className="text-muted">Not assigned</span>}
-        </p>
+        {filteredRoles.length > 0 ? (
+          filteredRoles.map((role, idx) => {
+            const assignedEmployee = role.rolesByEmployee?.[0];
+            return (
+              <Col key={idx} md={4} className="mb-3">
+                <Card className="h-100 shadow-sm">
+                  <Card.Body>
+                    <h5>{role.name}</h5>
+                    <p className="text-muted">{role.description}</p>
+                    <p><strong>Employee:</strong>{' '}
+                      {assignedEmployee ? assignedEmployee.name : (
+                        <span className="text-muted">Not assigned</span>
+                      )}
+                    </p>
 
-        {employee ? (
-          <Button
-            variant="outline-danger"
-            className="d-flex align-items-center gap-2"
-            onClick={() => handleRemoveClick(role)}
-          >
-            <FaMinus /> Remove from role
-          </Button>
+                    {assignedEmployee ? (
+                      <Button
+                        variant="outline-danger"
+                        className="d-flex align-items-center gap-2"
+                        onClick={() => handleRemoveClick(role)}
+                      >
+                        <FaMinus /> Remove from role
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline-success"
+                        className="d-flex align-items-center gap-2"
+                        onClick={() => handleAddClick(role)}
+                      >
+                        <FaPlus /> Add to role
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })
         ) : (
-          <Button
-            variant="outline-success"
-            className="d-flex align-items-center gap-2"
-            onClick={() => handleAddClick(role)}
-          >
-            <FaPlus /> Add to role
-          </Button>
+          <Col>
+            <p className="text-muted">No roles match your search.</p>
+          </Col>
         )}
-      </Card.Body>
-    </Card>
-  </Col>
-)) : (
-  <Col>
-    <p className="text-muted">No roles match your search.</p>
-  </Col>
-)}
-
       </Row>
 
       <Modal
-  show={showModal}
-  onHide={handleCloseModal}
-  centered
-  dialogClassName="custom-modal-width"
->
-  <Modal.Header closeButton>
-    <Modal.Title>
-      {modalType === 'remove' ? `Remove from ${selectedRole}` : `Add to ${selectedRole}`}
-    </Modal.Title>
-  </Modal.Header>
+        show={showModal}
+        onHide={handleCloseModal}
+        centered
+        dialogClassName="custom-modal-width"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {modalType === 'remove'
+              ? `Remove from ${selectedRole?.name}`
+              : `Add to ${selectedRole?.name}`}
+          </Modal.Title>
+        </Modal.Header>
 
-  <Modal.Body className="custom-modal-body">
-    {modalType === 'remove' ? (
-      <p>
-        Are you sure you want to remove the employee from the <strong>{selectedRole}</strong> role?
-      </p>
-    ) : (
-      <>
-        <p>Select a candidate for <strong>{selectedRole}</strong>:</p>
-        {candidates.length > 0 ? (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '16px',
-              maxHeight: '375px'
-            }}
-          >
-            {candidates.map((emp) => (
-              <StaffCardProject key={emp.id || emp._id} staff={emp} />
-            ))}
-          </div>
-        ) : (
-          <p>No available candidates</p>
-        )}
-      </>
-    )}
-  </Modal.Body>
+        <Modal.Body className="custom-modal-body">
+          {modalType === 'remove' ? (
+            <p>
+              Are you sure you want to remove the employee from the{' '}
+              <strong>{selectedRole?.name}</strong> role?
+            </p>
+          ) : (
+            <>
+              <p>Select a candidate for <strong>{selectedRole?.name}</strong>:</p>
+              {candidates.length > 0 ? (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+      gap: '16px',
+      maxHeight: '375px',
+      overflowY: 'auto'
+    }}
+  >
+    {candidates.map((emp) => (
+      <StaffCardProject
+        key={emp.id || emp._id}
+        staff={emp}
+        onAssign={() => handleAssignClick(emp.id || emp._id)}
+      />
+    ))}
+  </div>
+) : (
+  <p>No available candidates</p>
+)}
 
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Cancel
-    </Button>
-    {modalType === 'remove' && (
-      <Button variant="danger" onClick={handleConfirmRemove}>
-        Remove
-      </Button>
-    )}
-  </Modal.Footer>
-</Modal>
+            </>
+          )}
+        </Modal.Body>
 
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>
+          {modalType === 'remove' && (
+            <Button variant="danger" onClick={handleConfirmRemove}>
+              Remove
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
 
 export default ProjectDetail;
-
-
-
-
-
-
