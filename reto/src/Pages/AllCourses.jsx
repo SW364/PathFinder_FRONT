@@ -13,12 +13,15 @@ export const AllCourses = () => {
       try {
         const token = localStorage.getItem("authToken");
 
-        const response = await fetch("https://pathfinder-back-hnoj.onrender.com/courses/", {
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-          },
-        });
+        const response = await fetch(
+          "https://pathfinder-back-hnoj.onrender.com/courses/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              token: token,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -39,7 +42,10 @@ export const AllCourses = () => {
 
   return (
     <div>
-      <Header title="Our Courses" subtitle="Explore our wide range of courses" />
+      <Header
+        title="Our Courses"
+        subtitle="Explore our wide range of courses"
+      />
       <Container className="mt-4">
         <h2 className="mb-4">Available Courses</h2>
 
@@ -49,17 +55,13 @@ export const AllCourses = () => {
           </div>
         )}
 
-        {error && (
-          <Alert variant="danger">
-            {error}
-          </Alert>
-        )}
+        {error && <Alert variant="danger">{error}</Alert>}
 
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {courses.map((course) => (
             <Col key={course.id}>
               <CourseCard
-                image={course.image || "placeholder.jpg"} // asegúrate de que cada curso tenga imagen o usa una por defecto
+                image={course.imgUrl || "placeholder.jpg"} // asegúrate de que cada curso tenga imagen o usa una por defecto
                 title={course.name}
                 description={course.description}
                 completed={course.completed || 0}
