@@ -63,7 +63,7 @@ const StaffCard = ({ staff }) => {
                     <div><strong>{role.name}</strong></div>
                     <small>{role.description}</small><br />
                     <Badge bg={role.Assigned?.status ? 'success' : 'secondary'}>
-                      {role.Assigned?.status ? 'Asignado' : 'No asignado'}
+                      {role.Assigned?.status ? 'Asignado' : 'Finalizado'}
                     </Badge>
                     {role.Project?.name && <span> - Proyecto: {role.Project.name}</span>}
                   </ListGroup.Item>
