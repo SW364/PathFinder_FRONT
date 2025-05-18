@@ -1,10 +1,16 @@
 import { useState } from 'react';
-import { Badge, Card, ListGroup } from 'react-bootstrap';
+import { Badge, Card, ListGroup, Button } from 'react-bootstrap';
 import '../styles/ProjectCard.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectCard = ({ project }) => {
   const [expanded, setExpanded] = useState(false);
-  const { name, description, startDate, endDate, Roles } = project;
+  const navigate = useNavigate();
+  const { id, name, description, startDate, endDate, Roles } = project;
+
+  const handleCreateRolesClick = () => {
+    navigate(`/assignation/project/manager/${id}`);
+  };
 
   return (
     <Card 
@@ -12,11 +18,23 @@ const ProjectCard = ({ project }) => {
       onClick={() => setExpanded(!expanded)}
     >
       <Card.Body>
-        <div className="project-header">
-          <h3 className="project-name">{name}</h3>
-          <Badge bg="purple" className="project-role">Proyecto</Badge>
+        <div className="project-header d-flex justify-content-between align-items-center">
+          <div className="d-flex align-items-center gap-2">
+            <h3 className="project-name mb-0">{name}</h3>
+            <Badge bg="purple" className="project-role">Proyecto</Badge>
+          </div>
+          <Button 
+            variant="outline-primary" 
+            size="sm" 
+            onClick={(e) => {
+              e.stopPropagation(); // Evita que se active el expand al hacer clic en el botón
+              handleCreateRolesClick();
+            }}
+          >
+            Create Roles
+          </Button>
         </div>
-        
+
         <div className="project-details">
           <div className="project-detail-item">
             <span className="detail-label">Descripción:</span>

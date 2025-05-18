@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import CourseCard from "../components/CourseCard";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
+import "../styles/AllCourses.css";
+import SearchIcon from "@mui/icons-material/Search";
 
 export const AllCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Estado de búsqueda
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -40,14 +43,35 @@ export const AllCourses = () => {
     fetchCourses();
   }, []);
 
+  // Filtrar cursos por nombre según lo que escriba el usuario
+  const filteredCourses = courses.filter((course) =>
+    course.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <Header
         title="Our Courses"
         subtitle="Explore our wide range of courses"
       />
-      <Container className="mt-4">
-        <h2 className="mb-4">Available Courses</h2>
+      <Container className="all-couses">
+        <Row className="align-items-center mb-4">
+          <Col>
+            <h2>Available Courses</h2>
+          </Col>
+          <Col md="4">
+            <div className="search-bar-container">
+              <SearchIcon className="search-icon" />
+              <input
+                type="text"
+                className="form-control search-input"
+                placeholder="Search courses..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </Col>
+        </Row>
 
         {loading && (
           <div className="text-center">
@@ -56,22 +80,27 @@ export const AllCourses = () => {
         )}
 
         {error && <Alert variant="danger">{error}</Alert>}
-
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {courses.map((course) => (
-            <Col key={course.id}>
-              <CourseCard
-                image={course.imgUrl || "placeholder.jpg"} // asegúrate de que cada curso tenga imagen o usa una por defecto
-                title={course.name}
-                description={course.description}
-                completed={course.completed || 0}
-                actionText="Add"
-                showCertificate={false}
-                onActionClick={() => alert(`Added course: ${course.name}`)}
-              />
-            </Col>
-          ))}
-        </Row>
+                {filteredCourses.length === 0 && !loading && !error ? (
+          <Alert className="text-center custom-alert">
+            No results found.
+          </Alert>
+        ) : (
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+            {filteredCourses.map((course) => (
+              <Col key={course.id}>
+                <CourseCard
+                  image={course.imgUrl || "placeholder.jpg"}
+                  title={course.name}
+                  description={course.description}
+                  completed={course.completed || 0}
+                  actionText="Add"
+                  showCertificate={false}
+                  onActionClick={() => alert(`Added course: ${course.name}`)}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
     </div>
   );
