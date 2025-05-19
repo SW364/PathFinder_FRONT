@@ -18,6 +18,9 @@ import LoginPage from "./Pages/Login";
 import Recommendations from "./Pages/Recommendations";
 import HomePage from "./Pages/Homepage";
 import { AllCourses } from "./Pages/AllCourses";
+import CreateProjectPage from "./Pages/CreateProject";
+import ProjectDetail from "./Pages/ProjectDetail";
+import { ProjectDetailM } from "./Pages/ProjectDetailM";
 
 // 🔒 AUTH WRAPPER CORREGIDO
 function AuthWrapper({ children }) {
@@ -107,6 +110,14 @@ function App() {
                 </Layout>
               }
             />
+             <Route
+              path="/createproject"
+              element={
+                <Layout>
+                  <CreateProjectPage/>
+                </Layout>
+              }
+            />
             <Route
               path="/profile/edit"
               element={
@@ -136,6 +147,22 @@ function App() {
               element={
                 <Layout>
                   <HomePage />
+                </Layout>
+              }
+            />
+            <Route 
+              path="/assignation/project/:id"
+              element={
+                <Layout>
+                  <ProjectDetail />
+                </Layout>
+              }
+            />
+             <Route 
+              path="/assignation/project/manager/:id"
+              element={
+                <Layout>
+                  <ProjectDetailM/>
                 </Layout>
               }
             />
