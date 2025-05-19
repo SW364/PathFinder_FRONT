@@ -182,7 +182,7 @@ export const ProjectDetailM = () => {
                 </Col>
                 <Col md={2}>
                   <button
-                    className="btn btn-danger"
+                    className='remove'
                     onClick={() => handleRemoveRole(index)}
                   >
                     Remove
@@ -191,16 +191,16 @@ export const ProjectDetailM = () => {
               </Row>
             ))}
 
-            <button className="btn btn-secondary mt-2" onClick={handleAddRole}>
+            <button className="outline-purple-add-role btn btn-sm"  onClick={handleAddRole}>
               + Add Role
             </button>
 
-            <button className="btn btn-primary mt-2 ms-2" onClick={handleSubmitRoles}>
+            <button  className="outline-purple-submit-role btn btn-sm" onClick={handleSubmitRoles}>
               Submit Roles
             </button>
 
             {submitMessage && (
-              <Alert variant={submitMessage.includes('added') ? 'success' : 'danger'} className="mt-3">
+              <Alert className="text-center custom-alert mt-3 ">
                 {submitMessage}
               </Alert>
             )}
