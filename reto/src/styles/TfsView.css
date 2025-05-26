@@ -1,6 +1,27 @@
-.search-bar-container-Tfs  {
-  position: relative;
-  width: 250px;;
+.search-bar-container-Tfs {
+  position: absolute;
+  top: -60px;
+  left: 800px;
+  width: 250px;
+}
+
+
+@media (max-width: 768px) {
+  .search-bar-container-Tfs {
+     position: absolute;
+  top: -60px;
+  left: 500px;
+  width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar-container-Tfs {
+     position: absolute;
+  top: -60px;
+  left: 10px;
+  width: 250px;
+  }
 }
 
 .search-icon-Tfs  {

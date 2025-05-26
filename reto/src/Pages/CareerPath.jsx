@@ -4,12 +4,9 @@ import "../styles/CareerPath.css";
 import SidebarExpandButton from "../components/SidebarExpandButton";
 import { useLocation } from "react-router-dom";
 
-<<<<<<< HEAD
-export default function CareerPath() {
-  const API_BACK = process.env.REACT_APP_API_URL; 
-=======
+  
 export default function CareerPath({ collapsed, setCollapsed }) {
->>>>>>> 941fb4cc2a771e7e5f0b5e757a4c795a1d42dd6d
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [form, setForm] = useState({
     objective: "",
     skills: "",
