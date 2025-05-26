@@ -4,6 +4,7 @@ import StaffCard from "./StaffCard";
 import ProjectCard from "./ProjectCard";
 import { Container, Row, Col, Alert, Spinner, Button } from "react-bootstrap";
 import "../styles/ManagerView.css";
+import SearchIcon from "@mui/icons-material/Search"
 
 export const ManagerView = () => {
   const [staffList, setStaffList] = useState([]);
@@ -82,6 +83,20 @@ export const ManagerView = () => {
               Projects information
             </h4>
           </div>
+          <Row>
+          <Col xs={12} md={4} className="mt-2 mt-md-0">
+            <div className="search-bar-container-Tfs position-relative">
+              <SearchIcon className="search-icon-Tfs position-absolute" />
+              <input
+                type="text"
+                className="form-control search-input-Tfs ps-4"
+                placeholder={`Search ${activeSection}`}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </Col>
+        </Row>
           <Button
             className="new-project-btn"
             variant="outline"
@@ -90,15 +105,6 @@ export const ManagerView = () => {
             New Project
           </Button>
         </div>
-
-        {/* 🔥 Puedes también agregar un buscador aquí */}
-        <input
-          type="text"
-          className="form-control my-2"
-          placeholder={`Search ${activeSection}`}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
 
         {loading ? (
           <div className="d-flex justify-content-center my-5">

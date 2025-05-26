@@ -7,7 +7,7 @@ const ProjectCard = ({ project }) => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const { id, name, description, startDate, endDate, Roles } = project;
-
+  console.log(project)
   const handleCreateRolesClick = () => {
     navigate(`/assignation/project/manager/${id}`);
   };

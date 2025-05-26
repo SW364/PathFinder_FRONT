@@ -198,7 +198,7 @@ function EditProfile({ collapsed, setCollapsed }) {
 
         <form onSubmit={handleSubmit} className="edit-profile-form">
           <div className="form-section">
-            <h3 className="section-title">Basic Information</h3>
+            <h3 className="section-title">Ba  sic Information</h3>
             <div className="form-grid">
               <div className="form-group">
                 <label>Name</label>
