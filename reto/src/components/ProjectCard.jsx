@@ -34,7 +34,7 @@ return (
     <Card.Body>
       <div className="project-header d-flex justify-content-between align-items-center">
         <div className="d-flex align-items-center gap-2">
-          <h3 className="project-name mb-0">{name}</h3>
+          <h3 className="project-name mb-0">{name}</h3> 
           <Badge bg="purple" className="project-role">Proyecto</Badge>
         </div>
       </div>
