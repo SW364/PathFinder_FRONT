@@ -6,6 +6,7 @@ import "../styles/Profile.css";
 
 function Profile() {
   const navigate = useNavigate();
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
@@ -17,7 +18,7 @@ function Profile() {
     const fetchProfileData = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {
@@ -42,7 +43,7 @@ function Profile() {
     const fetchInactiveProjects = async () => {
       try {
         const apiUrl = new URL(
-          "https://pathfinder-back-hnoj.onrender.com/employees/projects"
+          `${API_BACK}/employees/projects`
         );
         apiUrl.searchParams.append("status", "false");
 
@@ -88,7 +89,7 @@ function Profile() {
     const fetchCompletedCourses = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/courses",
+          `${API_BACK}/employees/courses`,
           {
             method: "GET",
             headers: {

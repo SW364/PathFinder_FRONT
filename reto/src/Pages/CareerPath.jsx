@@ -4,6 +4,7 @@ import "../styles/CareerPath.css";
 import { useEffect } from "react";
 
 export default function CareerPath() {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [form, setForm] = useState({
     objective: "",
     skills: "",
@@ -25,7 +26,7 @@ export default function CareerPath() {
     try {
       // Paso 1: Guardar objetivos del usuario
       const saveResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/goals",
+        `${API_BACK}/employees/goals`,
         {
           method: "PUT",
           headers: {
@@ -47,7 +48,7 @@ export default function CareerPath() {
 
       // Paso 2: Obtener recomendaciones
       const aiResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/ai/courses",
+        `${API_BACK}/ai/courses`,
         {
           method: "GET",
           headers: {
@@ -78,7 +79,7 @@ export default function CareerPath() {
       const token = localStorage.getItem("authToken");
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {

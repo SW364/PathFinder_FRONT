@@ -6,6 +6,7 @@ import "../styles/AllCourses.css";
 import SearchIcon from "@mui/icons-material/Search";
 
 export const AllCourses = () => {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,7 +18,7 @@ export const AllCourses = () => {
         const token = localStorage.getItem("authToken");
 
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/courses/",
+          `${API_BACK}/courses/`,
           {
             headers: {
               "Content-Type": "application/json",

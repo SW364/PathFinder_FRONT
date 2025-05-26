@@ -7,6 +7,7 @@ import "../styles/EditProfile.css";
 function EditProfile() {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [token] = useState(localStorage.getItem("authToken"));
   const [employeeId, setEmployeeId] = useState(null);
   const [form, setForm] = useState({
@@ -32,7 +33,7 @@ function EditProfile() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {
@@ -68,7 +69,7 @@ function EditProfile() {
     const fetchAbilities = async () => {
       try {
         const res = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/abilities"
+          `${API_BACK}/abilities`
         );
         const data = await res.json();
 
@@ -116,7 +117,7 @@ function EditProfile() {
   const confirmUpdate = async () => {
     try {
       const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/update",
+        `${API_BACK}/employees/update`,
         {
           method: "PUT",
           headers: {
@@ -141,7 +142,7 @@ function EditProfile() {
         for (const abilityId of newAbilities) {
           console.log("Sending abilityId:", abilityId);
           const res = await fetch(
-            "https://pathfinder-back-hnoj.onrender.com/employees/abilities",
+            `${API_BACK}/employees/abilities`,
             {
               method: "PUT",
               headers: {

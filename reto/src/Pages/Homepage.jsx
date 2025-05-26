@@ -19,6 +19,7 @@ import {
 } from "swiper/modules";
 
 const HomePage = () => {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -55,7 +56,7 @@ const HomePage = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/",
+        `${API_BACK}/employees/`,
         {
           method: "GET",
           headers: {
@@ -83,7 +84,7 @@ const HomePage = () => {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/certifications",
+        `${API_BACK}/employees/certifications`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +129,7 @@ const HomePage = () => {
       const token = localStorage.getItem("authToken");
 
       const apiUrl = new URL(
-        "https://pathfinder-back-hnoj.onrender.com/employees/projects"
+        `${API_BACK}/employees/projects`
       );
       apiUrl.searchParams.append("status", "true");
 
