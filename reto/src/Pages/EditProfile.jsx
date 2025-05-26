@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
+import SidebarExpandButton from "../components/SidebarExpandButton";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
 import Select from "react-select";
 import "../styles/EditProfile.css";
 
-function EditProfile() {
+function EditProfile({ collapsed, setCollapsed }) {
   const { setUserData } = useContext(UserContext);
   const navigate = useNavigate();
   const API_BACK = process.env.REACT_APP_API_URL; 
@@ -184,7 +185,14 @@ function EditProfile() {
     <div className="edit-profile-container">
       <div className="edit-profile-card">
         <div className="edit-profile-header">
-          <h2>Edit Profile</h2>
+          <div className="header-title-wrapper">
+            {collapsed && (
+              <div className="sidebar-button-wrapper">
+                <SidebarExpandButton setCollapsed={setCollapsed} />
+              </div>
+            )}
+            <h2>Edit Profile</h2>
+          </div>
           <p>Update your personal and professional information</p>
         </div>
 
@@ -310,7 +318,7 @@ function EditProfile() {
 
       {showModal && (
         <div className="password-modal">
-          <div className="edit-profile-page">
+          <div className="edit-profile-page ">
             <h3>Confirm Changes </h3>
             <p>Please enter your password to confirm the changes</p>
             <div className="password-input-wrapper">

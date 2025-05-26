@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
+import SidebarExpandButton from "../components/SidebarExpandButton";
 import ProjectTimeline from "../components/ProjectTimeline";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../helpers/UserContext";
 import "../styles/Profile.css";
 
-function Profile() {
+function Profile({ collapsed, setCollapsed }) {
   const navigate = useNavigate();
   const API_BACK = process.env.REACT_APP_API_URL; 
   const { userData } = useContext(UserContext);
   const [apiData, setApiData] = useState(null);
   const [userAbilities, setUserAbilities] = useState([]);
   const [completedCourses, setCompletedCourses] = useState([]);
+  const isSidebarCollapsed = collapsed;
 
   const token = localStorage.getItem("authToken");
 
@@ -136,27 +138,36 @@ function Profile() {
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-user-info">
-          <h2 className="profile-name">{name}</h2>
-          <p className="profile-role">
-            <span className="role-badge">{role}</span>
-          </p>
-          <div className="profile-info">
-            <div className="info-item">
-              <i className="fas fa-envelope"></i>
-              <span>{email}</span>
+      <div className="profile-header-wrapper">
+        {isSidebarCollapsed && (
+          <div className="sidebar-button-wrapper">
+            <SidebarExpandButton setCollapsed={setCollapsed} />
+          </div>
+        )}
+
+        <div className="profile-header">
+          <div className="header-inner">
+            <div className="profile-user-info">
+              <h2 className="profile-name">{name}</h2>
+              <p className="profile-role">
+                <span className="role-badge">{role}</span>
+              </p>
+              <div className="profile-info">
+                <div className="info-item">
+                  <i className="fas fa-envelope"></i>
+                  <span>{email}</span>
+                </div>
+                <div className="info-item assigned">
+                  <i className="fas fa-tasks"></i>
+                  <strong>Assigned: {assigned}%</strong>
+                </div>
+              </div>
             </div>
-            <div className="info-item assigned">
-              <i className="fas fa-tasks"></i>
-              <strong>Assigned: {assigned}%</strong>
-            </div>
+            <button className="edit-button" onClick={handleEdit}>
+              <i className="fas fa-edit"></i> Edit Profile
+            </button>
           </div>
         </div>
-
-        <button className="edit-button" onClick={handleEdit}>
-          <i className="fas fa-edit"></i> Edit Profile
-        </button>
       </div>
       <div className="profile-content">
         <div className="profile-section">

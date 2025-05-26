@@ -137,23 +137,6 @@
   margin-top: 0.2rem; /* Opcional: ajusta si se ve muy arriba */
 }
 
-.floating-collapse-btn-header {
-  background-color: transparent;
-  color: white;
-  border: none;
-  width: 60px;
-  height: 60px;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .header-flex-row {
   display: flex;
   align-items: center;
@@ -189,13 +172,34 @@
   height: 48px !important;
   fill: red !important; /* Cámbialo luego a white si lo quieres blanco */
 }
-.bootstrap-expand-button {
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-  margin-right: 1rem; /* Espaciado si lo necesitas */
+.expand-btn-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; /* Align child to top */
+  margin-right: 1rem;
+  margin-top: -5rem; /* Optional: adjust how high you want it */
+}
+.floating-expand-btn-header {
+  background-color: rgba(255, 255, 255, 0.2); /* Light semi-transparent grey */
+  color: white; /* The > symbol */
+  border: none;
+  font-size: 2.5rem;
+  font-weight: 900;
+  cursor: pointer;
+  transform: rotate(-10deg);
+  padding: 0.3rem 0.8rem; /* Add spacing for better click area */
+  margin-right: 0.6rem;
+  line-height: 1;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.floating-expand-btn-header:hover {
+  background-color: rgba(255, 255, 255, 0.35); /* Light purple hover */
+  color: #7c2ae8; /* Slightly darker arrow */
+}
+
+.header-title-row {
+  display: flex;
+  align-items: center; /* ✅ Alinea verticalmente > y título */
+  gap: 0.8rem; /* Espacio entre el símbolo y el texto */
 }

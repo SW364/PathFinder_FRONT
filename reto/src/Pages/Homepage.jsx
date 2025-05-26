@@ -1,9 +1,9 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Layout from "../components/Layout";
 import React, { useEffect, useState } from "react";
-import { Row, Col } from "react-bootstrap"; // ⬅️ Removed Container
+import { Row, Col } from "react-bootstrap";
 import MiniCalendar from "../components/MiniCalendar";
-import Header from "../components/Header";
 import CertificationCard from "../components/CertificationCard";
 import Projects from "../components/Projects";
 import "../styles/HomePage.css";
@@ -21,9 +21,8 @@ import {
 const HomePage = () => {
   const API_BACK = process.env.REACT_APP_API_URL; 
   const [showModal, setShowModal] = useState(false);
+  const [newNote, setNewNote] = useState("");
   const [selectedCourse, setSelectedCourse] = useState(null);
-
-  const [collapsed, setCollapsed] = useState(false);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
@@ -45,7 +44,6 @@ const HomePage = () => {
     fetchProjects();
   }, []);
 
-  // ⬇️ Este es el NUEVO useEffect que necesitas
   useEffect(() => {
     const storedCourses =
       JSON.parse(localStorage.getItem("recommendedCourses")) || [];
@@ -65,7 +63,6 @@ const HomePage = () => {
           },
         }
       );
-
       if (!response.ok)
         throw new Error("Error al obtener el nombre del usuario");
 
@@ -144,7 +141,6 @@ const HomePage = () => {
       if (!response.ok) throw new Error("Error en la solicitud");
 
       const data = await response.json();
-
       if (data.error) throw new Error(data.error);
 
       const formattedProjects = data.rolesOfEmployee.map((role) => ({
@@ -164,19 +160,8 @@ const HomePage = () => {
     }
   };
 
-  //id_9
-  //Funcion para obtener la lista de certificaciones desde el backend (GET /certifications).
-  // Esta llamada debe ejecutarse al cargar el componente Notifications con la condicion de que la fecha de expirarcion sea menor a 7 dias.
-  const fixedSubtitle = "Check your notifications and active certifications";
   return (
     <>
-      <Header
-        title={`Welcome, ${name}`}
-        subtitle={fixedSubtitle}
-        notifications={notifications}
-        collapsed={collapsed}
-        setCollapsed={setCollapsed}
-      />
       <div className="homepage-container fade-in">
         <Row className="mt-4">
           <Col md={8}>
@@ -184,9 +169,9 @@ const HomePage = () => {
               <Projects projects={projects} />
             </div>
 
-            {/* ✅ Quick Notes directamente debajo de Projects */}
             <div className="notes-box mt-4">
-              <h5>📝 Quick Notes</h5>
+              <h5 className="section-header">Quick Notes</h5>
+
               {savedNotes.length > 0 ? (
                 <ul className="saved-notes-list mt-3">
                   {savedNotes.map((note, index) => (
@@ -199,7 +184,7 @@ const HomePage = () => {
                           title="Mark as done"
                           onClick={() => alert(`✔️ Marked as done: ${note}`)}
                         >
-                          ✅
+                          <i className="bi bi-check-circle-fill"></i>
                         </button>
                         <button
                           className="note-delete-btn"
@@ -215,7 +200,7 @@ const HomePage = () => {
                             );
                           }}
                         >
-                          ❌
+                          <i className="bi bi-trash-fill"></i>
                         </button>
                       </div>
                     </li>
@@ -226,6 +211,31 @@ const HomePage = () => {
                   No notes available at the moment.
                 </p>
               )}
+              <div className="add-note-form">
+                <input
+                  type="text"
+                  placeholder="Write your note..."
+                  value={newNote}
+                  onChange={(e) => setNewNote(e.target.value)}
+                  className="new-note-input"
+                />
+                <button
+                  className="save-note-btn"
+                  onClick={() => {
+                    if (newNote.trim()) {
+                      const updatedNotes = [...savedNotes, newNote.trim()];
+                      setSavedNotes(updatedNotes);
+                      localStorage.setItem(
+                        "quickNotesList",
+                        JSON.stringify(updatedNotes)
+                      );
+                      setNewNote(""); // Clear input
+                    }
+                  }}
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </Col>
 
@@ -249,6 +259,7 @@ const HomePage = () => {
             </Col>
           ))}
         </Row>
+
         {recommendedCourses.length > 0 && (
           <>
             <div className="section-header-container mt-5">
@@ -299,6 +310,7 @@ const HomePage = () => {
           </>
         )}
       </div>
+
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -355,8 +367,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-// id_8
-// Función para obtener la lista de cursos recomendados desde el backend (GET /courses).
-// Esta llamada debe ejecutarse al cargar el componente CourseCard y actualizar el estado de cursos.
-// Función para agregar un curso al perfil del usuario (POST).
-// Se llamará cuando el usuario haga clic en el botón "Add".

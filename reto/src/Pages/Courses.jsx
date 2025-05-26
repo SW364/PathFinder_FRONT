@@ -69,12 +69,6 @@ const Courses = () => {
 
   return (
     <div className="courses-page">
-      <Header
-        title="Your learning journey continues here"
-        subtitle="Pick up where you left off and continue growing your skills!"
-        notifications={[]}
-      />
-
       <Container>
         {error && <div className="alert alert-danger">{error}</div>}
 

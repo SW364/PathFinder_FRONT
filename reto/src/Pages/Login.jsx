@@ -65,7 +65,7 @@ export default function LoginPage() {
         console.warn("No user name received from server.");
       }
 
-      navigate("/Home");
+      navigate("/home");
     } catch (err) {
       console.error("Login error:", err);
       setError("Incorrect email or password.");

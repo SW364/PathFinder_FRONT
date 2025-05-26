@@ -47,28 +47,29 @@ const Header = ({
       <section className="hero-section">
         <div className="hero-text">
           <div className="header-flex-row">
-            {/* Botón Bootstrap Icons para expandir la sidebar */}
-            {collapsed && (
-              <div
-                className="bootstrap-expand-button"
-                onClick={() => setCollapsed(false)}
-              >
-                <i className="bi bi-chevron-right"></i>
-              </div>
-            )}
-
-            {/* Título y subtítulo */}
-            <div className="header-text-area">
-              <h1 className="header-title">{title}</h1>
-              {subtitle && (
-                <p className="header-subtitle">
-                  {displayedText}
-                  {!doneTyping && <span className="blinking-cursor">|</span>}
-                </p>
+            {/* Title + Expand button in a row */}
+            <div className="header-text-area header-title-row">
+              {collapsed && (
+                <button
+                  className="floating-expand-btn-header"
+                  onClick={() => setCollapsed(false)}
+                >
+                  &gt;
+                </button>
               )}
+
+              <div>
+                <h1 className="header-title">{title}</h1>
+                {subtitle && (
+                  <p className="header-subtitle">
+                    {displayedText}
+                    {!doneTyping && <span className="blinking-cursor">|</span>}
+                  </p>
+                )}
+              </div>
             </div>
 
-            {/* Campana de notificaciones */}
+            {/* Notification bell */}
             <div className="notification-wrapper">
               <button
                 className={`notification-button ${
