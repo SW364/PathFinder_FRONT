@@ -344,3 +344,21 @@ h2,
     width: 100%;
   }
 }
+
+.sidebar-button-wrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 0.4rem;
+  margin-right: 1rem;
+}
+
+.header-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* spacing between button and title */
+}
+
+.sidebar-button-wrapper {
+  padding-top: 0; /* Remove vertical spacing */
+  margin-right: 0; /* Remove extra margin if needed */
+}

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
 import CourseCard from "../components/CourseCard";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import "../styles/AllCourses.css";
 import SearchIcon from "@mui/icons-material/Search";
+import Header from "../components/Header";
 
 export const AllCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -80,10 +80,8 @@ export const AllCourses = () => {
         )}
 
         {error && <Alert variant="danger">{error}</Alert>}
-                {filteredCourses.length === 0 && !loading && !error ? (
-          <Alert className="text-center custom-alert">
-            No results found.
-          </Alert>
+        {filteredCourses.length === 0 && !loading && !error ? (
+          <Alert className="text-center custom-alert">No results found.</Alert>
         ) : (
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             {filteredCourses.map((course) => (

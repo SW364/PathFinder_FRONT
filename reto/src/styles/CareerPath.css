@@ -186,3 +186,20 @@ button:hover {
     transform: translateY(0);
   }
 }
+
+.sidebar-toggle-container {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+}
+
+/* If sidebar is collapsed, reduce left padding */
+.layout-container.collapsed .career-path-container {
+  padding-left: 2rem;
+}
+
+/* Expand goal-main when sidebar is collapsed */
+.layout-container.collapsed .goal-main {
+  max-width: none;
+}
