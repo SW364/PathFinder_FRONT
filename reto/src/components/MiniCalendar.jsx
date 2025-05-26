@@ -8,12 +8,18 @@ const MiniCalendar = () => {
 
   return (
     <div className="mini-calendar-container">
-      <h5 className="calendar-title">📅Save the date</h5>
+      <h5 className="calendar-section-header">Your Monthly View</h5>
+
       <Calendar
         onChange={setDate}
         value={date}
-        formatMonthYear={(locale, date) =>
-          date.toLocaleString("es-ES", { month: "long" })
+        locale="en-US" // 🌎 Set the locale to English (United States)
+        formatMonthYear={
+          (locale, date) => date.toLocaleString("en-US", { month: "short" }) // e.g., Jan, Feb, Mar
+        }
+        formatShortWeekday={
+          (locale, date) =>
+            date.toLocaleDateString("en-US", { weekday: "short" }) // e.g., Mon, Tue
         }
       />
     </div>
