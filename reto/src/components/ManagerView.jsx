@@ -84,20 +84,18 @@ export const ManagerView = () => {
               Projects information
             </h4>
           </div>
-          <Row>
           <Col xs={12} md={4} className="mt-2 mt-md-0">
-            <div className="search-bar-container-Tfs position-relative">
-              <SearchIcon className="search-icon-Tfs position-absolute" />
+            <div className="search-bar-container">
+              <SearchIcon className="search-icon" />
               <input
                 type="text"
-                className="form-control search-input-Tfs ps-4"
+                className="form-control search-input"
                 placeholder={`Search ${activeSection}`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </Col>
-        </Row>
           <Button
             className="new-project-btn"
             variant="outline"
