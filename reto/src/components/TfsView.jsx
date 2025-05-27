@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "./Header";
 import StaffCard from "./StaffCard";
 import ProjectCardLink from "./ProjectCardLink";
 import { Container, Row, Col, Alert, Spinner } from "react-bootstrap";
@@ -7,6 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import "../styles/TfsView.css";
 
 export const TfsView = () => {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [staffList, setStaffList] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [error, setError] = useState("");
@@ -19,10 +19,10 @@ export const TfsView = () => {
       try {
         const token = localStorage.getItem("authToken");
         const [staffRes, projectRes] = await Promise.all([
-          fetch("https://pathfinder-back-hnoj.onrender.com/employees/staff", {
+          fetch(`${API_BACK}/employees/staff}`, {
             headers: { "Content-Type": "application/json", token },
           }),
-          fetch("https://pathfinder-back-hnoj.onrender.com/projects/", {
+          fetch(`${API_BACK}/projects/`, {
             headers: { "Content-Type": "application/json", token },
           }),
         ]);

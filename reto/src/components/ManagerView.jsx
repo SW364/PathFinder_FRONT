@@ -6,6 +6,7 @@ import { Container, Row, Col, Alert, Spinner, Button } from "react-bootstrap";
 import "../styles/ManagerView.css";
 
 export const ManagerView = () => {
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [staffList, setStaffList] = useState([]);
   const [projectList, setProjectList] = useState([]);
   const [error, setError] = useState("");
@@ -21,10 +22,10 @@ export const ManagerView = () => {
         const token = localStorage.getItem("authToken");
 
         const [staffRes, projectRes] = await Promise.all([
-          fetch("https://pathfinder-back-hnoj.onrender.com/employees/staff", {
+          fetch(`${API_BACK}/employees/staff`, {
             headers: { "Content-Type": "application/json", token },
           }),
-          fetch("https://pathfinder-back-hnoj.onrender.com/projects/", {
+          fetch(`${API_BACK}/projects/`, {
             headers: { "Content-Type": "application/json", token },
           }),
         ]);
