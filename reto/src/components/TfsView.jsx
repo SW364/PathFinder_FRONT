@@ -19,7 +19,7 @@ export const TfsView = () => {
       try {
         const token = localStorage.getItem("authToken");
         const [staffRes, projectRes] = await Promise.all([
-          fetch(`${API_BACK}/employees/staff}`, {
+          fetch(`${API_BACK}/employees/staff`, {
             headers: { "Content-Type": "application/json", token },
           }),
           fetch(`${API_BACK}/projects/`, {
