@@ -116,7 +116,6 @@ function App() {
                 <Layout
                   title={
                     {
-                      Usuario: "Your Current Projects",
                       TFS: "TFS Dashboard – Manage Your Teams",
                       Manager: "Manager View – Oversee Project Assignments",
                     }[localStorage.getItem("userLevel")] ||

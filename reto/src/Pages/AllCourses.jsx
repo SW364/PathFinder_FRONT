@@ -3,7 +3,7 @@ import CourseCard from "../components/CourseCard";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import "../styles/AllCourses.css";
 import SearchIcon from "@mui/icons-material/Search";
-import Header from "../components/Header";
+
 
 export const AllCourses = () => {
   const API_BACK = process.env.REACT_APP_API_URL; 
@@ -51,10 +51,6 @@ export const AllCourses = () => {
 
   return (
     <div>
-      <Header
-        title="Our Courses"
-        subtitle="Explore our wide range of courses"
-      />
       <Container className="all-couses">
         <Row className="align-items-center mb-4">
           <Col>
