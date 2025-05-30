@@ -8,12 +8,12 @@ import { useEffect } from "react";
 // 🎨 Colores más vibrantes
 const getKpiColor = (title) => {
   switch (title) {
-    case "Total Applications":
+    case "Total Employees":
       return "#7e3ff2"; // Morado
-    case "Short Candidates":
-      return "#fbbf24"; // Amarillo
-    case "Rejected Candidates":
-      return "#ef4444"; // Rojo
+    case "Assigned Employees":
+      return "#38b2ac";
+    case "Unassigned":
+      return "#60a5fa";
     default:
       return "#7e57c2"; // Fallback
   }
@@ -157,7 +157,7 @@ const KpiCard = ({ title, value, percent, growth }) => {
           >
             <Typography
               sx={{
-                fontSize: "18px",
+                fontSize: "15px",
                 fontWeight: "800",
                 color: color,
                 fontFamily: "'Inter', sans-serif",

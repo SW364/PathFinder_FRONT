@@ -23,13 +23,13 @@
 .bell-icon {
   width: 26px;
   height: 26px;
-  fill: #333;
+  fill: white;
   display: block;
   transition: fill 0.3s ease;
 }
 
 .notification-button:hover .bell-icon {
-  fill: #333; /* mismo color, sin cambio */
+  fill: #111; /* mismo color, sin cambio */
 }
 
 .notification-button.ringing .bell-icon {

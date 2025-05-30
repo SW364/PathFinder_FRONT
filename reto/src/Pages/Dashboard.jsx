@@ -1,38 +1,60 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import KpiGrid from "../components/KpiGrid";
 import StatsCard from "../components/StatsCard";
 import AcquisitionsCard from "../components/AcquisitionsCard";
 import "../styles/Dashboard.css";
 
 export default function Dashboard() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken"); // 🔑 Token dinámico guardado por login
+    if (!token) {
+      setError("No token found. Please log in.");
+      return;
+    }
+
+    fetch("https://pathfinder-back-hnoj.onrender.com/data", {
+      method: "GET",
+      headers: { token },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("BACKEND DATA:", json); // 🔥 Aquí agregamos el console.log
+        if (json.error) {
+          setError(json.error);
+        } else {
+          setData(json);
+        }
+      })
+      .catch((err) => {
+        setError("Failed to fetch data");
+        console.error(err);
+      });
+  }, []);
+
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>Loading...</div>;
+
   return (
     <Box
       sx={{ padding: "2rem", backgroundColor: "#f4f6f8", minHeight: "100vh" }}
     >
-      {/* 🔥 KPI Cards */}
-      <KpiGrid />
-
-      {/* 🔥 Stats and Acquisitions Layout */}
+      <KpiGrid assigned={data.Assigned} />
       <Box
         mt={4}
         display="flex"
         gap={3}
-        flexWrap="nowrap" // Prevent wrapping
-        alignItems="flex-start" // Align cards at the top
+        flexWrap="nowrap"
+        alignItems="flex-start"
       >
-        {/* Statistics Card */}
         <Box flexGrow={1}>
-          {" "}
-          {/* Takes remaining width */}
-          <StatsCard />
+          <StatsCard monthlyAssigned={data.monthlyAssigned} />
         </Box>
-
-        {/* Acquisitions Card */}
         <Box width="300px">
-          {" "}
-          {/* Fixed width for Acquisitions */}
-          <AcquisitionsCard />
+          <AcquisitionsCard courses={data.coursesByPopularity} />
         </Box>
       </Box>
     </Box>

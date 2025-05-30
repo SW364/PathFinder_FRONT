@@ -19,10 +19,31 @@ import {
 } from "swiper/modules";
 
 const HomePage = () => {
+  // Add these lines in HomePage.jsx (inside your component):
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
+  const [addedCourses, setAddedCourses] = useState(() => {
+    return JSON.parse(localStorage.getItem("addedCourses")) || [];
+  });
+
+  const handleAddCourse = () => {
+    const selected = recommendedCourses[0]; // 👈 You can pick the first course or handle selection
+    const updated = [...addedCourses, selected];
+    localStorage.setItem("addedCourses", JSON.stringify(updated));
+    setAddedCourses(updated);
+  };
+
+  const handleGoToCourses = () => {
+    window.location.href = "/courses"; // Or use react-router's navigate("/courses")
+  };
+
+  const isAdded = addedCourses.some(
+    (course) => course?.title === recommendedCourses[0]?.title // 👈 Adjust as needed
+  );
+
   const [showModal, setShowModal] = useState(false);
   const [newNote, setNewNote] = useState("");
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [recommendedCourses, setRecommendedCourses] = useState([]);
+
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -306,6 +327,20 @@ const HomePage = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
+            <div className="homepage-add-button-container">
+              <div className="add-button">
+                <button onClick={handleAddCourse} disabled={isAdded}>
+                  {isAdded ? "Added" : "Add"}
+                </button>
+
+                <button
+                  className={addedCourses.length > 0 ? "enabled" : ""}
+                  onClick={handleGoToCourses}
+                >
+                  Go to Courses
+                </button>
+              </div>
+            </div>
           </>
         )}
       </div>

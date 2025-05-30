@@ -1,64 +1,44 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
-import { FiCalendar } from "react-icons/fi";
 
-const StatsCard = () => {
+const StatsCard = ({ monthlyAssigned }) => {
   const [mode, setMode] = useState("month");
+
+  // 🔥 Crear un array con 12 posiciones llenas con 0
+  const monthData = Array(12).fill(0);
+  monthlyAssigned?.forEach((item) => {
+    const monthIndex = parseInt(item.month, 10) - 1; // Convertir a índice 0-11
+    monthData[monthIndex] = item.count; // Asignar el count
+  });
 
   const fullData = {
     month: [
       {
-        name: "Applications",
-        data: [80, 70, 85, 75, 90, 95, 80, 65, 70, 85, 75, 80],
+        name: "Assignments",
+        data: monthData,
         color: "#6C3DF3",
       },
-      {
-        name: "Shortlisted",
-        data: [50, 45, 55, 50, 60, 65, 55, 50, 60, 62, 63, 64],
-        color: "#FFC34D",
-      },
-      {
-        name: "Rejected",
-        data: [30, 25, 35, 28, 40, 45, 35, 28, 40, 45, 42, 41],
-        color: "#FF6347",
-      },
-      {
-        name: "OnHold",
-        data: [10, 15, 20, 18, 25, 30, 20, 18, 20, 22, 23, 24],
-        color: "#C7C7FF",
-      },
     ],
-    week: [
-      { name: "Applications", data: [80, 75, 72, 85], color: "#6C3DF3" },
-      { name: "Shortlisted", data: [60, 50, 55, 62], color: "#FFC34D" },
-      { name: "Rejected", data: [35, 28, 32, 30], color: "#FF6347" },
-      { name: "OnHold", data: [20, 22, 18, 25], color: "#C7C7FF" },
-    ],
+    week: [], // Si después quieres datos semanales
   };
 
-  const xCategories =
-    mode === "month"
-      ? [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ]
-      : ["Week 1", "Week 2", "Week 3", "Week 4"];
+  const xCategories = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const [activeSeries, setActiveSeries] = useState({
-    Applications: true,
-    Shortlisted: true,
-    Rejected: true,
-    OnHold: true,
+    Assignments: true,
   });
 
   const handleToggle = (name) =>
@@ -69,8 +49,7 @@ const StatsCard = () => {
   const options = {
     chart: {
       type: "bar",
-      stacked: true,
-      stackType: "100%",
+      stacked: false,
       toolbar: { show: false },
     },
     plotOptions: {
@@ -84,25 +63,21 @@ const StatsCard = () => {
     dataLabels: { enabled: false },
     xaxis: {
       categories: xCategories,
-      labels: {
-        style: { fontSize: "12px" },
-        offsetY: 2,
-        rotate: -45,
-        trim: false,
-        hideOverlappingLabels: false,
-      },
+      labels: { style: { fontSize: "12px" }, offsetY: 1, rotate: 0 },
     },
-    grid: {
-      show: false,
-      padding: { bottom: -10 },
-    },
+    grid: { show: false, padding: { bottom: -10 } },
     colors: filteredSeries.map((s) => s.color),
     legend: { show: false },
     fill: { opacity: 1 },
-    tooltip: { y: { formatter: (val) => `${val}%` } },
+    tooltip: { y: { formatter: (val) => `${val}` } },
     yaxis: {
-      labels: { formatter: (val) => `${val}%`, style: { fontSize: "14px" } },
-      max: 100,
+      min: 0,
+      max: Math.ceil((Math.max(...monthData, 10) + 10) / 20) * 20, // 🔥 Round up to nearest multiple of 20
+      tickAmount: 4, // 🔥 4 intervals for a clean scale: 0, 20, 40, 60, 80
+      labels: {
+        formatter: (val) => `${Math.round(val)}`, // 🔥 Round to nearest integer
+        style: { fontSize: "14px" },
+      },
     },
   };
 
@@ -125,111 +100,14 @@ const StatsCard = () => {
         <h2
           style={{ fontSize: "20px", marginBottom: "1rem", fontWeight: "bold" }}
         >
-          Statistics of Active Applications
+          Monthly Assignations
         </h2>
-        <button
-          onClick={() =>
-            setMode((prev) => (prev === "month" ? "week" : "month"))
-          }
-          style={{
-            position: "absolute",
-            top: "1rem",
-            right: "1rem",
-            backgroundColor: "transparent",
-            border: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.3rem",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          <span
-            style={{
-              backgroundColor: "#EDE9FE",
-              borderRadius: "8px",
-              padding: "4px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <FiCalendar size={16} color="#6C3DF3" />
-          </span>
-          <span style={{ color: "#000" }}>
-            {mode === "month" ? "Month ▼" : "Week ▼"}
-          </span>
-        </button>
-
-        <div style={{ position: "relative", paddingBottom: "2rem" }}>
-          <Chart
-            options={options}
-            series={filteredSeries}
-            type="bar"
-            height={250}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "0",
-              left: "0",
-              right: "0",
-              display: "flex",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              paddingTop: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
-            {fullData[mode].map((s) => (
-              <label
-                key={s.name}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  cursor: "pointer",
-                  gap: "0.3rem",
-                  margin: "0.3rem",
-                }}
-              >
-                <div
-                  onClick={() => handleToggle(s.name)}
-                  style={{
-                    width: "40px",
-                    height: "20px",
-                    borderRadius: "999px",
-                    backgroundColor: activeSeries[s.name] ? s.color : "#ccc",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: activeSeries[s.name]
-                      ? "flex-end"
-                      : "flex-start",
-                    padding: "2px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "16px",
-                      height: "16px",
-                      borderRadius: "50%",
-                      backgroundColor: "#fff",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
-                    }}
-                  ></div>
-                </div>
-                <span
-                  style={{
-                    fontWeight: "normal",
-                    color: "#000",
-                    fontSize: "12px",
-                  }}
-                >
-                  {s.name}
-                </span>
-              </label>
-            ))}
-          </div>
-        </div>
+        <Chart
+          options={options}
+          series={filteredSeries}
+          type="bar"
+          height={250}
+        />
       </div>
     </div>
   );

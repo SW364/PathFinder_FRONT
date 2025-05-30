@@ -230,3 +230,45 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s, box-shadow 0.3s;
 }
+
+.homepage-add-button-container .add-button {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.homepage-add-button-container .add-button button {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-add-button-container .add-button button:first-child {
+  background-color: #9b4dff;
+}
+
+.homepage-add-button-container .add-button button:first-child:hover {
+  background-color: #7e3fe1;
+}
+
+.homepage-add-button-container .add-button button:last-child {
+  background-color: #1a1a1a;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.homepage-add-button-container .add-button button:last-child.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.homepage-add-button-container .add-button button:last-child:hover {
+  background-color: #333333;
+}

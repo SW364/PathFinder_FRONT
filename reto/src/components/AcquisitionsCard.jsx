@@ -2,36 +2,45 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, Divider } from "@mui/material";
 import { motion } from "framer-motion";
 
-const acquisitionData = [
-  { name: "Applications", percent: 80, color: "#6C3DF3" },
-  { name: "Shortlisted", percent: 55, color: "#FFC34D" },
-  { name: "Rejected", percent: 47, color: "#FF6347" },
-  { name: "On Hold", percent: 35, color: "#C7C7FF" },
-  { name: "Finalised", percent: 24, color: "#34D399" }, // verde
-];
+// Función para asignar colores automáticamente
+const getColor = (index) => {
+  const colors = ["#6C3DF3", "#38b2ac", "#60a5fa", "#C7C7FF", "#34D399"];
+  return colors[index % colors.length];
+};
 
-const AcquisitionsCard = () => {
-  const [animatedPercents, setAnimatedPercents] = useState(
+const AcquisitionsCard = ({ courses }) => {
+  // Mapea los datos del backend para el componente
+  const acquisitionData = courses
+    .map((course, index) => ({
+      name: course.Course.name, // Nombre del curso
+      count: Number(course.count_course), // Número de personas que tomaron el curso
+      color: getColor(index),
+    }))
+    .slice(0, 5); // ✅ Mostrar solo los primeros 5 cursos
+
+  // 🔥 Calcular el máximo para normalizar
+  const maxCount = Math.max(...acquisitionData.map((c) => c.count), 1); // Evitar división por 0
+
+  const [animatedCounts, setAnimatedCounts] = useState(
     acquisitionData.map(() => 0)
   );
 
   useEffect(() => {
     const intervals = acquisitionData.map((item, index) => {
       return setInterval(() => {
-        setAnimatedPercents((prev) => {
-          const newPercents = [...prev];
-          if (newPercents[index] < item.percent) {
-            newPercents[index] += 1;
+        setAnimatedCounts((prev) => {
+          const newCounts = [...prev];
+          if (newCounts[index] < item.count) {
+            newCounts[index] += 1;
           } else {
             clearInterval(intervals[index]);
           }
-          return newPercents;
+          return newCounts;
         });
-      }, 10); // Velocidad ajustable
+      }, 20);
     });
-
     return () => intervals.forEach((int) => clearInterval(int));
-  }, []);
+  }, [courses]);
 
   return (
     <motion.div
@@ -62,18 +71,7 @@ const AcquisitionsCard = () => {
           mb={2}
         >
           <Typography variant="h6" fontWeight="bold">
-            Acquisitions
-          </Typography>
-          <Typography
-            sx={{
-              backgroundColor: "#EDE9FE",
-              padding: "4px 8px",
-              borderRadius: "8px",
-              fontSize: "12px",
-              fontWeight: "500",
-            }}
-          >
-            Month ▼
+            Courses By Popularity
           </Typography>
         </Box>
 
@@ -98,10 +96,9 @@ const AcquisitionsCard = () => {
                 </Typography>
               </Box>
               <Typography variant="body2" fontWeight={600}>
-                {animatedPercents[index]}%
+                {animatedCounts[index]} {/* Mostrar número de personas */}
               </Typography>
             </Box>
-
             <Box
               sx={{
                 backgroundColor: "#f0f0f0",
@@ -113,15 +110,17 @@ const AcquisitionsCard = () => {
             >
               <motion.div
                 initial={{ width: "0%" }}
-                animate={{ width: `${animatedPercents[index]}%` }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                style={{
-                  backgroundColor: item.color,
-                  height: "100%",
+                animate={{
+                  width: `${
+                    maxCount === 0
+                      ? 0
+                      : Math.min((animatedCounts[index] / maxCount) * 100, 100)
+                  }%`,
                 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                style={{ backgroundColor: item.color, height: "100%" }}
               />
             </Box>
-
             {index < acquisitionData.length - 1 && <Divider sx={{ my: 1 }} />}
           </Box>
         ))}
