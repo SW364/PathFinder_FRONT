@@ -6,6 +6,7 @@ import AcquisitionsCard from "../components/AcquisitionsCard";
 import "../styles/Dashboard.css";
 
 export default function Dashboard() {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
 
@@ -16,7 +17,7 @@ export default function Dashboard() {
       return;
     }
 
-    fetch("https://pathfinder-back-hnoj.onrender.com/data", {
+    fetch(`${API_BACK}/data`, {
       method: "GET",
       headers: { token },
     })

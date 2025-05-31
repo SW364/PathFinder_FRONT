@@ -16,7 +16,6 @@ const Layout = ({ children, name, notifications = [], title, subtitle }) => {
     "/profile",
     "/profile/edit",
     "/recommendations",
-    "/assignation/project/manager",
     "/createproject",
   ];
 

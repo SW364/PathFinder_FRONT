@@ -211,22 +211,14 @@ function App() {
             <Route
               path="/assignation/project/:id"
               element={
-                <Layout
-                  title="Details"
-                  subtitle=""
-                  name={localStorage.getItem("userName") || "Usuario"}
-                >
-                  <ProjectDetail />
-                </Layout>
+                <ProjectDetail/>
               }
             />
 
             <Route
               path="/assignation/project/manager/:id"
               element={
-                <Layout>
-                  <ProjectDetailM />
-                </Layout>
+                <ProjectDetailM />
               }
             />
           </Routes>
