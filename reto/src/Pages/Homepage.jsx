@@ -1,6 +1,5 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Layout from "../components/Layout";
 import React, { useEffect, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import MiniCalendar from "../components/MiniCalendar";
@@ -19,30 +18,14 @@ import {
 } from "swiper/modules";
 
 const HomePage = () => {
-  // Add these lines in HomePage.jsx (inside your component):
-  const [recommendedCourses, setRecommendedCourses] = useState([]);
-  const [addedCourses, setAddedCourses] = useState(() => {
-    return JSON.parse(localStorage.getItem("addedCourses")) || [];
-  });
-
-  const handleAddCourse = () => {
-    const selected = recommendedCourses[0]; // 👈 You can pick the first course or handle selection
-    const updated = [...addedCourses, selected];
-    localStorage.setItem("addedCourses", JSON.stringify(updated));
-    setAddedCourses(updated);
-  };
-
-  const handleGoToCourses = () => {
-    window.location.href = "/courses"; // Or use react-router's navigate("/courses")
-  };
-
-  const isAdded = addedCourses.some(
-    (course) => course?.title === recommendedCourses[0]?.title // 👈 Adjust as needed
-  );
-
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [showModal, setShowModal] = useState(false);
   const [newNote, setNewNote] = useState("");
   const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
+  const [addedCourses, setAddedCourses] = useState([]);
+  const [isAdded, setIsAdded] = useState(false);
 
   const [notifications, setNotifications] = useState([]);
   const [certs, setCerts] = useState([]);
@@ -62,27 +45,37 @@ const HomePage = () => {
     fetchUserName();
     fetchCertifications();
     fetchProjects();
-  }, []);
-
-  useEffect(() => {
-    const storedCourses =
-      JSON.parse(localStorage.getItem("recommendedCourses")) || [];
+    const storedCourses = JSON.parse(
+      localStorage.getItem("recommendedCourses")
+    ) || [
+      {
+        name: "React Basics",
+        description: "Learn the basics of React",
+        imgUrl: "react.png",
+        instructor: "John Doe",
+        language: "English",
+      },
+      {
+        name: "Advanced Node.js",
+        description: "Deep dive into Node.js",
+        imgUrl: "node.png",
+        instructor: "Jane Smith",
+        language: "English",
+      },
+    ]; // fallback example courses
     setRecommendedCourses(storedCourses);
   }, []);
 
   const fetchUserName = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            token,
-          },
-        }
-      );
+      const response = await fetch(`${API_BACK}/employees/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token,
+        },
+      });
       if (!response.ok)
         throw new Error("Error al obtener el nombre del usuario");
 
@@ -99,17 +92,12 @@ const HomePage = () => {
   const fetchCertifications = async () => {
     try {
       const token = localStorage.getItem("authToken");
-
-      const response = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/certifications",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            token: token,
-          },
-        }
-      );
-
+      const response = await fetch(`${API_BACK}/employees/certifications`, {
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+        },
+      });
       if (!response.ok) throw new Error("Error en la solicitud");
 
       const data = await response.json();
@@ -144,10 +132,7 @@ const HomePage = () => {
   const fetchProjects = async () => {
     try {
       const token = localStorage.getItem("authToken");
-
-      const apiUrl = new URL(
-        "https://pathfinder-back-hnoj.onrender.com/employees/projects"
-      );
+      const apiUrl = new URL(`${API_BACK}/employees/projects`);
       apiUrl.searchParams.append("status", "true");
 
       const response = await fetch(apiUrl.toString(), {
@@ -180,18 +165,27 @@ const HomePage = () => {
     }
   };
 
+  const handleAddCourse = () => {
+    setAddedCourses([...addedCourses, selectedCourse]);
+    setIsAdded(true);
+  };
+
+  const handleGoToCourses = () => {
+    alert("Navigating to courses page...");
+  };
+
   return (
     <>
       <div className="homepage-container fade-in">
+        {/* Secciones previas */}
         <Row className="mt-4">
           <Col md={8}>
             <div className="projects-box">
               <Projects projects={projects} />
             </div>
-
+            {/* Quick Notes */}
             <div className="notes-box mt-4">
               <h5 className="section-header">Quick Notes</h5>
-
               {savedNotes.length > 0 ? (
                 <ul className="saved-notes-list mt-3">
                   {savedNotes.map((note, index) => (
@@ -249,7 +243,7 @@ const HomePage = () => {
                         "quickNotesList",
                         JSON.stringify(updatedNotes)
                       );
-                      setNewNote(""); // Clear input
+                      setNewNote("");
                     }
                   }}
                 >
@@ -258,16 +252,15 @@ const HomePage = () => {
               </div>
             </div>
           </Col>
-
           <Col md={4}>
             <MiniCalendar />
           </Col>
         </Row>
 
+        {/* Certifications */}
         <div className="section-header-container">
           <h4 className="section-header">Certifications</h4>
         </div>
-
         <Row className="mt-2">
           {certs.map((cert) => (
             <Col key={cert.id} md={6} className="mb-3">
@@ -280,6 +273,7 @@ const HomePage = () => {
           ))}
         </Row>
 
+        {/* Recommended Courses */}
         {recommendedCourses.length > 0 && (
           <>
             <div className="section-header-container mt-5">
@@ -332,7 +326,6 @@ const HomePage = () => {
                 <button onClick={handleAddCourse} disabled={isAdded}>
                   {isAdded ? "Added" : "Add"}
                 </button>
-
                 <button
                   className={addedCourses.length > 0 ? "enabled" : ""}
                   onClick={handleGoToCourses}
@@ -377,7 +370,6 @@ const HomePage = () => {
               </div>
               <p className="preview-text">Preview this course</p>
             </div>
-
             <div className="course-image-container">
               <div className="course-image">
                 <img
@@ -389,7 +381,6 @@ const HomePage = () => {
             </div>
           </div>
         </Modal.Body>
-
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close

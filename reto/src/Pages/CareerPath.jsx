@@ -4,7 +4,9 @@ import "../styles/CareerPath.css";
 import SidebarExpandButton from "../components/SidebarExpandButton";
 import { useLocation } from "react-router-dom";
 
+  
 export default function CareerPath({ collapsed, setCollapsed }) {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [form, setForm] = useState({
     objective: "",
     skills: "",
@@ -29,7 +31,7 @@ export default function CareerPath({ collapsed, setCollapsed }) {
     try {
       // Save goals
       const saveResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/goals",
+        `${API_BACK}/employees/goals`,
         {
           method: "PUT",
           headers: {
@@ -51,7 +53,7 @@ export default function CareerPath({ collapsed, setCollapsed }) {
 
       // Get AI recommendations
       const aiResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/ai/courses",
+        `${API_BACK}/ai/courses`,
         {
           method: "GET",
           headers: {
@@ -82,7 +84,7 @@ export default function CareerPath({ collapsed, setCollapsed }) {
       const token = localStorage.getItem("authToken");
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {

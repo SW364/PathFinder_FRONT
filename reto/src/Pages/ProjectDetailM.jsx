@@ -1,45 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import {
-  Container,
-  Spinner,
-  Alert,
-  Row,
-  Col,
-  Card
-} from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Container, Spinner, Alert, Row, Col, Card } from "react-bootstrap";
 import {
   FaHourglassStart,
   FaHourglassEnd,
   FaCalendarAlt,
   FaCheckCircle,
-  FaTimesCircle
-} from 'react-icons/fa';
+  FaTimesCircle,
+} from "react-icons/fa";
 import Header from "../components/Header";
-import '../styles/ProjectDetails.css';
+import "../styles/ProjectDetails.css";
 
 export const ProjectDetailM = () => {
   const { id } = useParams();
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const [roles, setRoles] = useState([{ name: '', description: '' }]);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const [roles, setRoles] = useState([{ name: "", description: "" }]);
+  const [submitMessage, setSubmitMessage] = useState("");
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const token = localStorage.getItem('authToken');
-        const res = await fetch(`https://pathfinder-back-hnoj.onrender.com/projects/${id}`, {
-          headers: { 'Content-Type': 'application/json', token },
-        });
+        const token = localStorage.getItem("authToken");
+        const res = await fetch(
+          `https://pathfinder-back-hnoj.onrender.com/projects/${id}`,
+          {
+            headers: { "Content-Type": "application/json", token },
+          }
+        );
         const data = await res.json();
         if (data.error) setError(data.error);
         else setProject(data.project);
       } catch {
-        setError('Failed to load project');
+        setError("Failed to load project");
       } finally {
         setLoading(false);
       }
@@ -54,7 +50,7 @@ export const ProjectDetailM = () => {
   };
 
   const handleAddRole = () => {
-    setRoles([...roles, { name: '', description: '' }]);
+    setRoles([...roles, { name: "", description: "" }]);
   };
 
   const handleRemoveRole = (index) => {
@@ -63,24 +59,27 @@ export const ProjectDetailM = () => {
   };
 
   const handleSubmitRoles = async () => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     try {
-      const response = await fetch('https://pathfinder-back-hnoj.onrender.com/projects/roles', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          token: token,
-        },
-        body: JSON.stringify({
-          projectId: parseInt(id),
-          roles: roles,
-        }),
-      });
+      const response = await fetch(
+        "https://pathfinder-back-hnoj.onrender.com/projects/roles",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            token: token,
+          },
+          body: JSON.stringify({
+            projectId: parseInt(id),
+            roles: roles,
+          }),
+        }
+      );
 
       const data = await response.json();
-      setSubmitMessage(data.msg || data.error || 'Unexpected response');
+      setSubmitMessage(data.msg || data.error || "Unexpected response");
     } catch (error) {
-      setSubmitMessage('Something went wrong');
+      setSubmitMessage("Something went wrong");
     }
   };
 
@@ -111,37 +110,39 @@ export const ProjectDetailM = () => {
 
   return (
     <>
-      <Header
-        title={`${project.name}`}
-        subtitle={`Client: ${project.client}`}
-        notifications={[]}
-        collapsed={false}
-        setCollapsed={() => {}}
-        name={project.name}
-        client={project.client}
-      />
-
       <Container className="mt-5">
-
         {/* Detalles del proyecto */}
         <Card className="mb-4 shadow-sm">
           <Card.Body>
-            <p className="text-muted mb-4">Description: {project.description}</p>
+            <p className="text-muted mb-4">
+              Description: {project.description}
+            </p>
 
             <Row className="mb-2 align-items-center">
-              <Col xs={1}><FaHourglassStart style={{ color: '#6f42c1' }} /></Col>
-              <Col><strong>Start Date:</strong> {project.startDate || 'Not defined'}</Col>
+              <Col xs={1}>
+                <FaHourglassStart style={{ color: "#6f42c1" }} />
+              </Col>
+              <Col>
+                <strong>Start Date:</strong>{" "}
+                {project.startDate || "Not defined"}
+              </Col>
             </Row>
 
             <Row className="mb-2 align-items-center">
-              <Col xs={1}><FaHourglassEnd style={{ color: '#6f42c1' }} /></Col>
-              <Col><strong>End Date:</strong> {project.endDate || 'In progress'}</Col>
+              <Col xs={1}>
+                <FaHourglassEnd style={{ color: "#6f42c1" }} />
+              </Col>
+              <Col>
+                <strong>End Date:</strong> {project.endDate || "In progress"}
+              </Col>
             </Row>
 
             <Row className="align-items-center">
-              <Col xs={1}><FaCalendarAlt style={{ color: '#6f42c1' }} /></Col>
+              <Col xs={1}>
+                <FaCalendarAlt style={{ color: "#6f42c1" }} />
+              </Col>
               <Col>
-                <strong>Status:</strong>{' '}
+                <strong>Status:</strong>{" "}
                 {project.status ? (
                   <span className="text-success">
                     <FaCheckCircle className="me-1" /> Active
@@ -168,7 +169,9 @@ export const ProjectDetailM = () => {
                     className="form-control"
                     placeholder="Role Name"
                     value={role.name}
-                    onChange={(e) => handleRoleChange(index, 'name', e.target.value)}
+                    onChange={(e) =>
+                      handleRoleChange(index, "name", e.target.value)
+                    }
                   />
                 </Col>
                 <Col md={5}>
@@ -177,12 +180,14 @@ export const ProjectDetailM = () => {
                     className="form-control"
                     placeholder="Role Description"
                     value={role.description}
-                    onChange={(e) => handleRoleChange(index, 'description', e.target.value)}
+                    onChange={(e) =>
+                      handleRoleChange(index, "description", e.target.value)
+                    }
                   />
                 </Col>
                 <Col md={2}>
                   <button
-                    className='remove'
+                    className="remove"
                     onClick={() => handleRemoveRole(index)}
                   >
                     Remove
@@ -191,11 +196,17 @@ export const ProjectDetailM = () => {
               </Row>
             ))}
 
-            <button className="outline-purple-add-role btn btn-sm"  onClick={handleAddRole}>
+            <button
+              className="outline-purple-add-role btn btn-sm"
+              onClick={handleAddRole}
+            >
               + Add Role
             </button>
 
-            <button  className="outline-purple-submit-role btn btn-sm" onClick={handleSubmitRoles}>
+            <button
+              className="outline-purple-submit-role btn btn-sm"
+              onClick={handleSubmitRoles}
+            >
               Submit Roles
             </button>
 

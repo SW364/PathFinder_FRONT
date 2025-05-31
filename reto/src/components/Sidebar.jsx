@@ -15,7 +15,9 @@ function Sidebar({ collapsed, setCollapsed }) {
     navigate("/");
   };
 
-  const isAdvancedUser = level === "TFS" || level === "Manager";
+  const isManager = level === "Manager";
+  const isTFS = level === "TFS";
+  const isUsuario = level === "Usuario";
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -43,28 +45,37 @@ function Sidebar({ collapsed, setCollapsed }) {
               {!collapsed && "Home"}
             </Link>
           </li>
-          {isAdvancedUser && (
+
+          {/* Solo Manager puede ver Dashboard */}
+          {isManager && (
             <li className="sidebar-link-container">
               <Link to="/dashboard" className="sidebar-link fs-5 fw-light">
                 {!collapsed && "Dashboard"}
               </Link>
             </li>
           )}
+
           <li className="sidebar-link-container">
             <Link to="/career" className="sidebar-link fs-5 fw-light">
               {!collapsed && "Career Path"}
             </Link>
           </li>
+
           <li className="sidebar-link-container">
             <Link to="/courses" className="sidebar-link fs-5 fw-light">
               {!collapsed && "Courses"}
             </Link>
           </li>
-          <li className="sidebar-link-container">
-            <Link to="/assignation" className="sidebar-link fs-5 fw-light">
-              {!collapsed && "Assignation"}
-            </Link>
-          </li>
+
+          {/* Ocultar Assignation si es Usuario */}
+          {!isUsuario && (
+            <li className="sidebar-link-container">
+              <Link to="/assignation" className="sidebar-link fs-5 fw-light">
+                {!collapsed && "Assignation"}
+              </Link>
+            </li>
+          )}
+
           <li className="sidebar-link-container">
             <Link to="/profile" className="sidebar-link fs-5 fw-light">
               {!collapsed && "Profile"}

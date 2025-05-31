@@ -116,7 +116,6 @@ function App() {
                 <Layout
                   title={
                     {
-                      Usuario: "Your Current Projects",
                       TFS: "TFS Dashboard – Manage Your Teams",
                       Manager: "Manager View – Oversee Project Assignments",
                     }[localStorage.getItem("userLevel")] ||
@@ -212,16 +211,21 @@ function App() {
             <Route
               path="/assignation/project/:id"
               element={
-                <Layout>
+                <Layout
+                  title="Details"
+                  subtitle=""
+                  name={localStorage.getItem("userName") || "Usuario"}
+                >
                   <ProjectDetail />
                 </Layout>
               }
             />
-             <Route 
+
+            <Route
               path="/assignation/project/manager/:id"
               element={
                 <Layout>
-                  <ProjectDetailM/>
+                  <ProjectDetailM />
                 </Layout>
               }
             />

@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import { motion, useInView } from "framer-motion";
 import WorkIcon from "@mui/icons-material/Work";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080"; // <- fallback
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ProjectTimeline = () => {
   const [events, setEvents] = useState([]);
@@ -29,6 +29,12 @@ const ProjectTimeline = () => {
         if (!res.ok) throw new Error("Respuesta HTTP " + res.status);
 
         const data = await res.json();
+        console.log("API RESPONSE:", data); // Debug Log
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
         if (!Array.isArray(data.AbilitiesA))
           throw new Error("Formato de respuesta inesperado");
 
@@ -40,6 +46,7 @@ const ProjectTimeline = () => {
         }));
         setEvents(mapped);
       } catch (err) {
+        console.error(err); // Optional : lgo to console
         setError(err.message);
       } finally {
         setLoading(false);
