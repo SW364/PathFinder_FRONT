@@ -12,8 +12,9 @@ export const ManagerView = () => {
   const [projectList, setProjectList] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState("staff"); // <- nuevo
-  const [searchTerm, setSearchTerm] = useState(""); // 🔥 Agregado
+  const [activeSection, setActiveSection] = useState("staff"); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  console.log(projectList);
 
   const navigate = useNavigate();
 
