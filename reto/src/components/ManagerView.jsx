@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from './Header';
-import StaffCard from './StaffCard';
-import ProjectCard from './ProjectCard';
-import { Container, Row, Col, Alert, Spinner, Button } from 'react-bootstrap';
-import '../styles/ManagerView.css';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import StaffCard from "./StaffCard";
+import ProjectCard from "./ProjectCard";
+import { Container, Row, Col, Alert, Spinner, Button } from "react-bootstrap";
+import "../styles/ManagerView.css";
+import SearchIcon from "@mui/icons-material/Search"
 
 export const ManagerView = () => {
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [staffList, setStaffList] = useState([]);
   const [projectList, setProjectList] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState('staff');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [activeSection, setActiveSection] = useState("staff"); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  console.log(projectList);
 
   const navigate = useNavigate();
 
@@ -23,11 +24,11 @@ export const ManagerView = () => {
         const token = localStorage.getItem("authToken");
 
         const [staffRes, projectRes] = await Promise.all([
-          fetch('https://pathfinder-back-hnoj.onrender.com/employees/staff', {
-            headers: { 'Content-Type': 'application/json', token },
+          fetch(`${API_BACK}/employees/staff`, {
+            headers: { "Content-Type": "application/json", token },
           }),
-          fetch('https://pathfinder-back-hnoj.onrender.com/projects/', {
-            headers: { 'Content-Type': 'application/json', token },
+          fetch(`${API_BACK}/projects/`, {
+            headers: { "Content-Type": "application/json", token },
           }),
         ]);
 
@@ -41,7 +42,7 @@ export const ManagerView = () => {
           setProjectList(projectData.projects || []);
         }
       } catch (err) {
-        setError('Error al cargar los datos.');
+        setError("Error al cargar los datos.");
       } finally {
         setLoading(false);
       }
@@ -50,41 +51,41 @@ export const ManagerView = () => {
     fetchData();
   }, []);
 
-  const filteredStaff = staffList.filter(staff =>
+  const filteredStaff = staffList.filter((staff) =>
     staff.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredProjects = projectList.filter(project =>
+  const filteredProjects = projectList.filter((project) =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleNewProjectClick = () => {
-    navigate('/createproject');
+    navigate("/createproject");
   };
 
   return (
     <div className="manager-view">
-      <Header title="Manager View" subtitle="Welcome to the Manager View" />
-
       <Container className="mt-3">
-        {/* Títulos y buscador con botón */}
         <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
           <div className="d-flex align-items-center">
             <h4
-              className={`section-header clickable me-4 ${activeSection === 'staff' ? 'active-tab' : ''}`}
-              onClick={() => setActiveSection('staff')}
+              className={`section-header clickable me-4 ${
+                activeSection === "staff" ? "active-tab" : ""
+              }`}
+              onClick={() => setActiveSection("staff")}
             >
               Staff information
             </h4>
             <h4
-              className={`section-header clickable ${activeSection === 'projects' ? 'active-tab' : ''}`}
-              onClick={() => setActiveSection('projects')}
+              className={`section-header clickable ${
+                activeSection === "projects" ? "active-tab" : ""
+              }`}
+              onClick={() => setActiveSection("projects")}
             >
               Projects information
             </h4>
           </div>
-
-          <div className="d-flex align-items-center gap-3">
+          <Col xs={12} md={4} className="mt-2 mt-md-0">
             <div className="search-bar-container">
               <SearchIcon className="search-icon" />
               <input
@@ -95,13 +96,16 @@ export const ManagerView = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <Button className="new-project-btn" variant="outline" onClick={handleNewProjectClick}>
-              New Project
-            </Button>
-          </div>
+          </Col>
+          <Button
+            className="new-project-btn"
+            variant="outline"
+            onClick={handleNewProjectClick}
+          >
+            New Project
+          </Button>
         </div>
 
-        {/* Contenido */}
         {loading ? (
           <div className="d-flex justify-content-center my-5">
             <Spinner animation="border" variant="primary" />
@@ -110,8 +114,8 @@ export const ManagerView = () => {
           <Alert variant="danger">{error}</Alert>
         ) : (
           <>
-            {activeSection === 'staff' && (
-              filteredStaff.length > 0 ? (
+            {activeSection === "staff" &&
+              (staffList.length > 0 ? (
                 <Row>
                   {filteredStaff.map((staff) => (
                     <Col key={staff.email} md={6} lg={4}>
@@ -119,11 +123,12 @@ export const ManagerView = () => {
                     </Col>
                   ))}
                 </Row>
-              ) : <Alert className="text-center custom-alert">No staff found.</Alert>
-            )}
+              ) : (
+                <p>No staff found.</p>
+              ))}
 
-            {activeSection === 'projects' && (
-              filteredProjects.length > 0 ? (
+            {activeSection === "projects" &&
+              (projectList.length > 0 ? (
                 <Row>
                   {filteredProjects.map((project) => (
                     <Col key={project.id} md={6} lg={4}>
@@ -131,8 +136,9 @@ export const ManagerView = () => {
                     </Col>
                   ))}
                 </Row>
-              ) : <Alert className="text-center custom-alert">No projects found.</Alert>
-            )}
+              ) : (
+                <p>No Projects.</p>
+              ))}
           </>
         )}
       </Container>

@@ -59,22 +59,32 @@
 .section-header {
   position: relative;
   display: inline-block;
-  margin-left: 20px; /* Ajusta según lo que quieras mover a la derecha */
+  font-size: 1.6rem; /* 🔥 Cambia este tamaño */
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  margin-top: 0; /* Remove or reduce top margin */
+  color: #333;
+}
+
+.section-header-container {
+  margin-top: 3rem; /* Ajusta según tu preferencia */
 }
 
 .notes-box {
-  background-color: #f9f9f9;
-  padding: 1rem;
-  border-radius: 10px;
+  background-color: #fdfdfd; /* Brighter white */
+  padding: 1.2rem;
+  border-radius: 12px;
   border-top: 4px solid var(--primary-purple);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
   margin-top: 1.5rem;
 }
 
 .notes-box h5 {
+  margin-top: 0rem;
   margin-bottom: 0.8rem;
   color: #333;
   font-weight: 600;
+  font-size: 1.3rem;
 }
 
 .notes-textarea {
@@ -109,22 +119,20 @@
   padding-left: 0;
   margin-top: 0.8rem;
 }
-
 .saved-note-item {
-  background-color: #fff;
-  border: 1px solid #eee;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
+  background-color: #fff; /* Fondo blanco */
+  border: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #333;
+  gap: 0.7rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-
-.saved-note-item i {
-  color: var(--primary-purple);
+.saved-note-item i.fas.fa-sticky-note {
+  color: var(--primary-purple); /* Only target the sticky note icon */
 }
 
 .projects-box {
@@ -146,30 +154,121 @@
   margin-left: auto;
 }
 
-.note-check-btn,
-.note-delete-btn {
-  background: none;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.note-check-btn {
+  border: none;
   cursor: pointer;
-  font-size: 0.75rem;
-  width: 26px;
-  height: 26px;
+  font-size: 1.2rem;
+  width: auto;
+  height: auto;
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: green; /* ✅ Always green for check */
   transition: all 0.2s ease;
-  color: #444;
+}
+
+.note-delete-btn {
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  width: auto;
+  height: auto;
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red; /* ✅ Always red for delete */
+  transition: all 0.2s ease;
 }
 
 .note-check-btn:hover {
-  background-color: #d4f7dc;
-  border-color: green;
-  color: green;
+  filter: brightness(1.2); /* Optional: brighten on hover */
 }
 
 .note-delete-btn:hover {
-  background-color: #fce0e0;
-  border-color: red;
-  color: red;
+  filter: brightness(1.2); /* Optional: brighten on hover */
+}
+
+.add-note-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.new-note-input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.save-note-btn {
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.save-note-btn:hover {
+  background-color: var(--dark-purple);
+}
+
+.notes-box:hover,
+.projects-box:hover,
+.mini-calendar-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.homepage-add-button-container .add-button {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.homepage-add-button-container .add-button button {
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-add-button-container .add-button button:first-child {
+  background-color: #9b4dff;
+}
+
+.homepage-add-button-container .add-button button:first-child:hover {
+  background-color: #7e3fe1;
+}
+
+.homepage-add-button-container .add-button button:last-child {
+  background-color: #1a1a1a;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.homepage-add-button-container .add-button button:last-child.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.homepage-add-button-container .add-button button:last-child:hover {
+  background-color: #333333;
 }

@@ -6,6 +6,7 @@ import "../styles/Courses.css";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const API_BACK = process.env.REACT_APP_API_URL;
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,7 +15,7 @@ const Courses = () => {
 
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/courses",
+          `${API_BACK}/employees/courses`,
           {
             method: "GET",
             headers: {
@@ -68,12 +69,6 @@ const Courses = () => {
 
   return (
     <div className="courses-page">
-      <Header
-        title="Your learning journey continues here"
-        subtitle="Pick up where you left off and continue growing your skills!"
-        notifications={[]}
-      />
-
       <Container>
         {error && <div className="alert alert-danger">{error}</div>}
 

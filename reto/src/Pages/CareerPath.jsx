@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CareerPath.css";
-import { useEffect } from "react";
+import SidebarExpandButton from "../components/SidebarExpandButton";
+import { useLocation } from "react-router-dom";
 
-export default function CareerPath() {
+  
+export default function CareerPath({ collapsed, setCollapsed }) {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [form, setForm] = useState({
     objective: "",
     skills: "",
     values: "",
   });
 
-  const [loading, setLoading] = useState(false); // ✅ loading state
+  const isSidebarCollapsed = collapsed;
+
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,9 +29,9 @@ export default function CareerPath() {
     const token = localStorage.getItem("authToken");
 
     try {
-      // Paso 1: Guardar objetivos del usuario
+      // Save goals
       const saveResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/employees/goals",
+        `${API_BACK}/employees/goals`,
         {
           method: "PUT",
           headers: {
@@ -45,9 +51,9 @@ export default function CareerPath() {
         throw new Error("Failed to save goals: " + saveResult.error);
       }
 
-      // Paso 2: Obtener recomendaciones
+      // Get AI recommendations
       const aiResponse = await fetch(
-        "https://pathfinder-back-hnoj.onrender.com/ai/courses",
+        `${API_BACK}/ai/courses`,
         {
           method: "GET",
           headers: {
@@ -78,12 +84,12 @@ export default function CareerPath() {
       const token = localStorage.getItem("authToken");
       try {
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/employees/",
+          `${API_BACK}/employees/`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              token: token,
+              token,
             },
           }
         );
@@ -99,9 +105,7 @@ export default function CareerPath() {
         console.error("Error fetching goals:", error);
       }
     };
-
-    fetchGoals();
-  }, []);
+  }, [location]); // ✅ rerun logic when route changes
 
   return (
     <div className="career-path-container fade-in">
@@ -113,8 +117,15 @@ export default function CareerPath() {
           <li>Let your values guide your choices.</li>
         </ul>
       </div>
+
       <div className="goal-main">
-        <h1>What is your next goal?</h1>
+        <div className="goal-header">
+          {isSidebarCollapsed && (
+            <SidebarExpandButton setCollapsed={setCollapsed} />
+          )}
+          <h1>What is your next goal?</h1>
+        </div>
+
         <p>
           Let us help you build a career you love. By considering your profile
           and aspirations, we will recommend personalized courses that set you

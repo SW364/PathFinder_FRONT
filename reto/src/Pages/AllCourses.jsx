@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
 import CourseCard from "../components/CourseCard";
 import { Container, Row, Col, Spinner, Alert } from "react-bootstrap";
 import "../styles/AllCourses.css";
 import SearchIcon from "@mui/icons-material/Search";
 
+
 export const AllCourses = () => {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,7 +18,7 @@ export const AllCourses = () => {
         const token = localStorage.getItem("authToken");
 
         const response = await fetch(
-          "https://pathfinder-back-hnoj.onrender.com/courses/",
+          `${API_BACK}/courses/`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -50,10 +51,6 @@ export const AllCourses = () => {
 
   return (
     <div>
-      <Header
-        title="Our Courses"
-        subtitle="Explore our wide range of courses"
-      />
       <Container className="all-couses">
         <Row className="align-items-center mb-4">
           <Col>
@@ -80,10 +77,8 @@ export const AllCourses = () => {
         )}
 
         {error && <Alert variant="danger">{error}</Alert>}
-                {filteredCourses.length === 0 && !loading && !error ? (
-          <Alert className="text-center custom-alert">
-            No results found.
-          </Alert>
+        {filteredCourses.length === 0 && !loading && !error ? (
+          <Alert className="text-center custom-alert">No results found.</Alert>
         ) : (
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             {filteredCourses.map((course) => (

@@ -4,6 +4,7 @@ import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import '../styles/CreateProject.css';
 
 const CreateProjectPage = () => {
+  const API_BACK = process.env.REACT_APP_API_URL; 
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -48,7 +49,7 @@ const CreateProjectPage = () => {
     }
 
     const response = await fetch(
-      'https://pathfinder-back-hnoj.onrender.com/projects/',
+      `${API_BACK}/projects/`,
       {
         method: 'POST',
         headers: {
@@ -145,7 +146,7 @@ const CreateProjectPage = () => {
                 onChange={handleInputChange}
                 required
               />
-              <Form.Text className="form-text-muted">Format: YYYY-MM-DD</Form.Text>
+              
             </Form.Group>
 
             <div className="d-flex justify-content-between">
