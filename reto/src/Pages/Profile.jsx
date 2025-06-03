@@ -228,12 +228,8 @@ function Profile({ collapsed, setCollapsed }) {
             )}
           </div>
         </div>
-
-        {/* ✅ Nueva sección con línea de tiempo */}
-        <div className="project-timeline-box">
           <ProjectTimeline />
-        </div>
-      </div>{" "}
+      </div>
     </div>
   );
 }

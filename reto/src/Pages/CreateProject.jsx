@@ -146,7 +146,7 @@ const CreateProjectPage = () => {
                 onChange={handleInputChange}
                 required
               />
-              <Form.Text className="form-text-muted">Format: YYYY-MM-DD</Form.Text>
+              
             </Form.Group>
 
             <div className="d-flex justify-content-between">
