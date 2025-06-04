@@ -10,7 +10,7 @@ describe('Pruebas de Login en producción', () => {
     cy.contains('button', 'Yes').click();
     cy.get('#password').type(USER_PASSWORD);
     cy.contains('button', 'Log in').click();
-    cy.url().should('include', '/Home');
+    cy.url().should('include', '/home');
     cy.window().its('localStorage.authToken').should('exist');
   });
 
