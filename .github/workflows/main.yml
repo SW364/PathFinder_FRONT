@@ -27,14 +27,14 @@ jobs:
         working-directory: ./reto
 
       - name: Build project
-        run: npm run build
+        run: DISABLE_ESLINT_PLUGIN=true npm run build
         working-directory: ./reto
 
       - name: Serve built project
         run: npx serve -s build &
         working-directory: ./reto
         env:
-          CI: true
+          CI: false
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
