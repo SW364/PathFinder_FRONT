@@ -1,0 +1,30 @@
+name: Cypress Tests - Login to Production
+
+on:
+  push:
+    branches:
+      - feature/cypress-ci
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests against production
+        uses: cypress-io/github-action@v6
+        with:
+          spec: cypress/e2e/login.cy.js
