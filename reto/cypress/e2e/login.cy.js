@@ -1,6 +1,6 @@
 // cypress/e2e/login.cy.js
 describe('Pruebas de Login en producción', () => {
-  const BASE_URL = 'https://path-finder-front.vercel.app';
+  const BASE_URL = 'https://localhost:3000';
   const USER_EMAIL = 'camagc6@gmail.com';
   const USER_PASSWORD = '12345678';
 
