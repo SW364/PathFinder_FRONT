@@ -13,10 +13,6 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: reto  
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -28,17 +24,21 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: reto
 
       - name: Build project
         run: npm run build
+        working-directory: reto
 
       - name: Serve built project
         run: npx serve -s build &
+        working-directory: reto
         env:
           CI: true
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
+          working-directory: reto
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
