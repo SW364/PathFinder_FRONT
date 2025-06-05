@@ -1,52 +1,51 @@
 describe('Career Path Form Flow', () => {
+  const BASE_URL = 'http://localhost:3000';
   const EMAIL = 'camagc6@gmail.com';
   const PASSWORD = '12345678';
 
-  it('Logs in and fills out career path form successfully', () => {
-    cy.visit('http://localhost:3000');
+  it('Logs in and completes career path form', () => {
+    // 1. Visit login
+    cy.visit(BASE_URL);
 
-    // Paso 1: Email
+    // 2. Enter email
     cy.get('input[type="email"]').type(EMAIL);
 
-    // Paso 2: Botón "Yes"
+    // 3. Click "Yes"
     cy.contains('button', 'Yes').click();
 
-    // Paso 3: Password
+    // 4. Enter password
     cy.get('input[type="password"]').type(PASSWORD);
 
-    // Paso 4: Log in
+    // 5. Click "Log in"
     cy.get('button.purple-btn').contains('Log in').click();
 
-    // Espera que se redireccione a /home y el botón esté visible
-    cy.url().should('include', '/home');
+    // 6. Wait for /home and confirm login success
+    cy.url({ timeout: 10000 }).should('include', '/home');
+    cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
 
-    // Espera que aparezca el enlace a Career
-    cy.get('.sidebar-link-container a.sidebar-link', { timeout: 10000 })
-      .should('contain.text', 'Career')
-      .click();
+    // 7. Click "Career Path" in the sidebar
+    cy.contains('Career Path', { timeout: 10000 }).click();
 
-    // Verifica la URL de career
-    cy.url().should('include', '/career');
+    // 8. Confirm redirection
+    cy.url({ timeout: 10000 }).should('include', '/career');
 
-    // Llenar los textareas
+    // 9. Fill out the form
     cy.get('textarea[name="objective"]')
       .should('be.visible')
-      .type('I want to specialize in frontend development using React and TypeScript.');
+      .type('I want to grow into a technical lead role in frontend development.');
 
     cy.get('textarea[name="skills"]')
       .should('be.visible')
-      .type('JavaScript fundamentals, UI/UX principles, and advanced React patterns.');
+      .type('I want to improve my React, testing, and architectural skills.');
 
     cy.get('textarea[name="values"]')
       .should('be.visible')
-      .type('My goal is to create meaningful software that aligns with user needs and personal growth.');
+      .type('I’m driven by personal growth and creating meaningful digital experiences.');
 
-    // Enviar el formulario
-    cy.get('button[type="submit"]')
-      .should('contain.text', 'Find Courses')
-      .click();
+    // 10. Submit the form
+    cy.get('button[type="submit"]').contains('Find Courses').click();
 
-    // Esperar que redirija a /recommendations
+    // 11. Wait for redirect to /recommendations
     cy.url({ timeout: 10000 }).should('include', '/recommendations');
   });
 });
