@@ -18,6 +18,8 @@ describe('Career Path Form Flow', () => {
     cy.visit(`${BASE_URL}/home`);
     cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
 
+    cy.get('.floating-expand-btn-header').click();
+
     
     // Clic en "Career Path" usando href
     cy.get('a[href="/career"]', { timeout: 10000 }).click();
