@@ -1,51 +1,50 @@
-name: Cypress Tests
+// cypress/e2e/career_path_form.cy.js
 
-on:
-  push:
-    branches:
-      - main
+describe('Career Path Form Flow', () => {
+  const BASE_URL = 'http://localhost:3000';
 
-  pull_request:
-    branches:
-      - main
+  it('Logs in and fills out career path form successfully', () => {
+    // Visit home
+    cy.visit(BASE_URL);
 
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
+    // Step 1: Email
+    cy.get('input[type="email"]').type('camagc6@gmail.com');
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    // Step 2: Click "Yes" button
+    cy.contains('button.btn.px-4.purple-outline-btn.rounded-pill', 'Yes').click();
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+    // Step 3: Password
+    cy.get('input[type="password"]').type('12345678');
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./reto
+    // Step 4: Click "Log in" button
+    cy.get('button.btn.w-100.py-2.mb-3.purple-btn.rounded-pill.shadow-sm').click();
 
-      - name: Build project
-        run: DISABLE_ESLINT_PLUGIN=true npm run build
-        working-directory: ./reto
+    // Step 5: Wait for redirection to /home
+    cy.url({ timeout: 10000 }).should('include', '/home');
 
-      - name: Serve built project
-        run: npx serve -s build &
-        working-directory: ./reto
-        env:
-          CI: false
+    // Step 6: Ensure goal-header button is present
+    cy.get('.goal-header button').should('exist').click();
 
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./reto
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
+    // Step 7: Open sidebar and go to Career Path
+    cy.get('li.sidebar-link-container a.sidebar-link').contains('Career').click();
 
-      - name: Upload Cypress screenshots (on failure)
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: reto/cypress/screenshots
+    // Step 8: Fill out the form
+    cy.get('textarea[name="objective"]')
+      .should('be.visible')
+      .type('I want to become a front-end engineer specialized in accessibility and performance.');
+
+    cy.get('textarea[placeholder*="identify the priority areas"]')
+      .should('be.visible')
+      .type('I need to improve my JavaScript, testing, and responsive design skills.');
+
+    cy.get('textarea[name="values"]')
+      .should('be.visible')
+      .type('I am motivated by creating inclusive digital experiences and growing as a mentor.');
+
+    // Step 9: Submit the form
+    cy.get('button[type="submit"]').contains('Find Courses').click();
+
+    // Step 10: Wait for redirection to recommendations
+    cy.url({ timeout: 10000 }).should('include', '/recommendations');
+  });
+});
