@@ -11,36 +11,36 @@ describe('Career Path Form Flow', () => {
       cy.get('input[type="password"]').type(PASSWORD);
       cy.get('button.purple-btn').contains('Log in').click();
       cy.url({ timeout: 10000 }).should('include', '/home');
-      cy.window().its('localStorage.authToken').should('exist');
+      cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
     });
   });
 
   it('Logs in and completes career path form', () => {
     cy.visit(`${BASE_URL}/home`);
-    cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
 
-    // Click "Career Path"
-    cy.get('.sidebar-link-container a.sidebar-link').contains('Career Path').click();
+    // Clic en "Career Path" usando href
+    cy.get('a[href="/career"]', { timeout: 10000 }).click();
 
+    // Confirmar redirección
     cy.url({ timeout: 10000 }).should('include', '/career');
 
-    // Fill out the form
+    // Llenar formulario
     cy.get('textarea[name="objective"]')
       .should('be.visible')
-      .type('I want to grow into a technical lead role in frontend development.');
+      .type('I want to become a technical leader focused on scalable frontend solutions.');
 
     cy.get('textarea[name="skills"]')
       .should('be.visible')
-      .type('I want to improve my React, testing, and architectural skills.');
+      .type('React, testing strategies, and scalable UI architecture.');
 
     cy.get('textarea[name="values"]')
       .should('be.visible')
-      .type('I’m driven by personal growth and creating meaningful digital experiences.');
+      .type('Creating meaningful impact and growing as a mentor.');
 
-    // Submit form
+    // Enviar formulario
     cy.get('button[type="submit"]').contains('Find Courses').click();
 
-    // Check redirect
+    // Confirmar redirección a recomendaciones
     cy.url({ timeout: 10000 }).should('include', '/recommendations');
   });
 });
