@@ -19,9 +19,6 @@ describe('Career Path Form Flow', () => {
     cy.visit(`${BASE_URL}/home`);
     cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
 
-    // Open sidebar if necessary
-    cy.get('.goal-header button', { timeout: 10000 }).click();
-
     // Click "Career Path"
     cy.get('.sidebar-link-container a.sidebar-link').contains('Career Path').click();
 
