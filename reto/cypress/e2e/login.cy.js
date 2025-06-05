@@ -17,5 +17,31 @@ describe('Career Path Form Flow', () => {
   it('Logs in and completes career path form', () => {
     cy.visit(`${BASE_URL}/home`);
     cy.contains('Welcome, Gilberto Camacho', { timeout: 10000 }).should('be.visible');
+
+    
+    // Clic en "Career Path" usando href
+    cy.get('a[href="/career"]', { timeout: 10000 }).click();
+
+    // Confirmar redirección
+    cy.url({ timeout: 10000 }).should('include', '/career');
+
+    // Llenar formulario
+    cy.get('textarea[name="objective"]')
+      .should('be.visible')
+      .type('I want to become a technical leader focused on scalable frontend solutions.');
+
+    cy.get('textarea[name="skills"]')
+      .should('be.visible')
+      .type('React, testing strategies, and scalable UI architecture.');
+
+    cy.get('textarea[name="values"]')
+      .should('be.visible')
+      .type('Creating meaningful impact and growing as a mentor.');
+
+    // Enviar formulario
+    cy.get('button[type="submit"]').contains('Find Courses').click();
+
+    // Confirmar redirección a recomendaciones
+    cy.url({ timeout: 10000 }).should('include', '/recommendations');
   });
 });
