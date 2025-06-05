@@ -1,9 +1,7 @@
-// cypress/e2e/home.cy.js
-describe('Pantalla inicial de login', () => {
-  it('Debe mostrar el campo de email y los botones Yes/No', () => {
+// cypress/e2e/error-test.cy.js
+describe('Prueba de fallo controlado', () => {
+  it('Debe fallar al buscar un texto inexistente', () => {
     cy.visit('/');
-    cy.get('input[type="email"]', { timeout: 10000 }).should('be.visible');
-    cy.contains('button', 'Yes').should('be.visible');
-    cy.contains('button', 'No').should('be.visible');
+    cy.contains('Este texto no existe en la app', { timeout: 5000 }).should('be.visible');
   });
 });
