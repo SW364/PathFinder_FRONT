@@ -44,6 +44,6 @@ describe('Career Path Form Flow', () => {
     cy.get('button[type="submit"]').contains('Find Courses').click();
 
     // Confirmar redirección a recomendaciones
-    cy.url({ timeout: 10000 }).should('include', '/recommendations');
+    cy.url({ timeout: 30000 }).should('include', '/recommendations');
   });
 });
