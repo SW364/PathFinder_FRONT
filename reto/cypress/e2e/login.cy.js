@@ -1,50 +1,52 @@
-// cypress/e2e/career_path_form.cy.js
-
 describe('Career Path Form Flow', () => {
-  const BASE_URL = 'http://localhost:3000';
+  const EMAIL = 'camagc6@gmail.com';
+  const PASSWORD = '12345678';
 
   it('Logs in and fills out career path form successfully', () => {
-    // Visit home
-    cy.visit(BASE_URL);
+    cy.visit('http://localhost:3000');
 
-    // Step 1: Email
-    cy.get('input[type="email"]').type('camagc6@gmail.com');
+    // Paso 1: Email
+    cy.get('input[type="email"]').type(EMAIL);
 
-    // Step 2: Click "Yes" button
-    cy.contains('button.btn.px-4.purple-outline-btn.rounded-pill', 'Yes').click();
+    // Paso 2: Botón "Yes"
+    cy.contains('button', 'Yes').click();
 
-    // Step 3: Password
-    cy.get('input[type="password"]').type('12345678');
+    // Paso 3: Password
+    cy.get('input[type="password"]').type(PASSWORD);
 
-    // Step 4: Click "Log in" button
-    cy.get('button.btn.w-100.py-2.mb-3.purple-btn.rounded-pill.shadow-sm').click();
+    // Paso 4: Log in
+    cy.get('button.purple-btn').contains('Log in').click();
 
-    // Step 5: Wait for redirection to /home
-    cy.url({ timeout: 10000 }).should('include', '/home');
+    // Espera que se redireccione a /home y el botón esté visible
+    cy.url().should('include', '/home');
 
-    // Step 6: Ensure goal-header button is present
-    cy.get('.goal-header button').should('exist').click();
+    // Espera que aparezca el enlace a Career
+    cy.get('.sidebar-link-container a.sidebar-link', { timeout: 10000 })
+      .should('contain.text', 'Career')
+      .click();
 
-    // Step 7: Open sidebar and go to Career Path
-    cy.get('li.sidebar-link-container a.sidebar-link').contains('Career').click();
+    // Verifica la URL de career
+    cy.url().should('include', '/career');
 
-    // Step 8: Fill out the form
+    // Llenar los textareas
     cy.get('textarea[name="objective"]')
       .should('be.visible')
-      .type('I want to become a front-end engineer specialized in accessibility and performance.');
+      .type('I want to specialize in frontend development using React and TypeScript.');
 
-    cy.get('textarea[placeholder*="identify the priority areas"]')
+    cy.get('textarea[name="skills"]')
       .should('be.visible')
-      .type('I need to improve my JavaScript, testing, and responsive design skills.');
+      .type('JavaScript fundamentals, UI/UX principles, and advanced React patterns.');
 
     cy.get('textarea[name="values"]')
       .should('be.visible')
-      .type('I am motivated by creating inclusive digital experiences and growing as a mentor.');
+      .type('My goal is to create meaningful software that aligns with user needs and personal growth.');
 
-    // Step 9: Submit the form
-    cy.get('button[type="submit"]').contains('Find Courses').click();
+    // Enviar el formulario
+    cy.get('button[type="submit"]')
+      .should('contain.text', 'Find Courses')
+      .click();
 
-    // Step 10: Wait for redirection to recommendations
+    // Esperar que redirija a /recommendations
     cy.url({ timeout: 10000 }).should('include', '/recommendations');
   });
 });
