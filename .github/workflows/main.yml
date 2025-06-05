@@ -42,3 +42,10 @@ jobs:
           working-directory: ./reto
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
+
+      - name: Upload Cypress screenshots (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: reto/cypress/screenshots
